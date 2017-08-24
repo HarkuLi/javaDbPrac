@@ -5,9 +5,12 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 import java.sql.Connection;
 
 public class ConnectionPool {
-	private DataSource datasource;
+	//static for reuses
+	private static DataSource datasource;
 	
 	public ConnectionPool() {
+		if(datasource != null) return;
+		System.out.println("new datasource");
 		PoolProperties p = new PoolProperties();
 		p.setUrl("jdbc:mysql://127.0.0.1/db1?useSSL=false");
         p.setDriverClassName("com.mysql.jdbc.Driver");
@@ -22,8 +25,8 @@ public class ConnectionPool {
         p.setTimeBetweenEvictionRunsMillis(30000);
         p.setMaxActive(100);
         p.setInitialSize(3);
-        p.setMaxWait(10000);
-        p.setRemoveAbandonedTimeout(60);
+        p.setMaxWait(5);
+        p.setRemoveAbandonedTimeout(5);
         p.setMinEvictableIdleTimeMillis(30000);
         p.setMinIdle(3);
         p.setLogAbandoned(true);
