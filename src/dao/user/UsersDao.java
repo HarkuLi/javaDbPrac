@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import model.user.UsersModel;
 import service.user.ConnectionPool;
@@ -70,13 +71,24 @@ public class UsersDao{
 	}
 	
 	public void create(String name, String age, String birth) {
-		int id = getMaxId()+1;
+		String id = UUID.randomUUID().toString();
+		System.out.println("id: " + id);
+		System.out.println("id length: " + id.length());
 		String sqlStr = "insert into users (id, name, age, birth)";
-		sqlStr += " values ('" + id + "', '" + name + "', " + age + ", '" + birth + "')";
+		sqlStr += " values (?, ?, ?, ?)";
 		
 		try {
+			DateFormat sdf = new SimpleDateFormat(datePattern);
+			//note: the type Date here is java.sql.date
+			//      but sdf.parse(String) returns java.util.date
+			Date birthDate = new Date(sdf.parse(birth).getTime());
+			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
+			pst.setString(1, id);
+			pst.setString(2, name);
+			pst.setInt(3, Integer.parseInt(age));
+			pst.setDate(4, birthDate);
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -87,40 +99,15 @@ public class UsersDao{
 		}
 	}
 	
-	public ArrayList<UsersModel> read(String sel) {
-		String sqlStr = "select " + sel + " from users";
-		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>();
-		
-		System.out.println("sqlStr: " + sqlStr);
-		
-		try {
-			con = conPool.getConnection();
-			stat = con.createStatement();
-			rs = stat.executeQuery(sqlStr);
-						
-			while(rs.next()){
-				tableList.add(new UsersModel(
-						rs.getInt("id"),
-						rs.getString("name"),
-						rs.getInt("age"),
-						rs.getDate("birth")
-					)
-				);
-			}
-			return tableList;
-		}
-		catch(Exception e) {
-			System.out.println("Exception in read: " + e.toString());
-		}
-		finally {
-			close();
-		}
-		
-		return null;
-	}
-	
 	public ArrayList<UsersModel> read(String sel, String where, String limit) {
-		String sqlStr = "select " + sel + " from users where " + where + " limit " + limit;
+		String sqlStr = "select " + sel +
+				        " from users";
+		if(where != null && where.length() != 0) {
+			sqlStr   += " where " + where;
+		}
+		sqlStr		 += " order by name" +
+				        " limit " + limit;
+		
 		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>();
 		
 		try {
@@ -130,7 +117,7 @@ public class UsersDao{
 						
 			while(rs.next()){
 				tableList.add(new UsersModel(
-						rs.getInt("id"),
+						rs.getString("id"),
 						rs.getString("name"),
 						rs.getInt("age"),
 						rs.getDate("birth")
@@ -157,7 +144,7 @@ public class UsersDao{
 		try {
 			DateFormat sdf = new SimpleDateFormat(datePattern);
 			//note: the type Date here is java.sql.date
-			//but sdf.parse(String) returns java.util.date
+			//      but sdf.parse(String) returns java.util.date
 			Date birthDate = new Date(sdf.parse(birth).getTime());
 			
 			con = conPool.getConnection();
@@ -165,7 +152,7 @@ public class UsersDao{
 			pst.setString(1, name);
 			pst.setInt(2, Integer.parseInt(age));
 			pst.setDate(3, birthDate);
-			pst.setInt(4, Integer.parseInt(id));
+			pst.setString(4, id);
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -183,7 +170,7 @@ public class UsersDao{
 		try {
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setInt(1, Integer.parseInt(id));
+			pst.setString(1, id);
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -192,28 +179,6 @@ public class UsersDao{
 		finally {
 			close();
 		}
-	}
-	
-	private int getMaxId() {
-		String sqlStr = "select max(id) from users";
-		
-		try {
-			con = conPool.getConnection();
-			stat = con.createStatement();
-			rs = stat.executeQuery(sqlStr);
-						
-			while(rs.next()){
-				return rs.getInt(1);
-			}
-		}
-		catch(Exception e) {
-			System.out.println("Exception in getMaxId: " + e.toString());
-		}
-		finally {
-			close();
-		}
-		
-		return 0;
 	}
 	
 	private void close() {

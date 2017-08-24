@@ -24,38 +24,36 @@ public class UsersService{
 		return userList.get(0);
 	}
 	
-	public ArrayList<UsersModel> getTable() {
-		return dao.read("*");
-	}
-	
 	public ArrayList<UsersModel> getPage(int page) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
+		//paging
+		String limit = Integer.toString(skipNum);
+		limit += "," + Integer.toString(ENTRY_PER_PAGE);
+		
 		return dao.read(
 			"*",
-			"id not in (select * from (select id from users limit " + skipNum + ") tmpTab)",
-			Integer.toString(ENTRY_PER_PAGE)
+			null,
+			limit
 		);
 	}
 	
 	public ArrayList<UsersModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
+		String where = null;
+		
 		//paging
-		String where = "id not in ";
-		String skipIdTable = "(select * from (select id from users";
+		String limit = Integer.toString(skipNum);
+		limit += "," + Integer.toString(ENTRY_PER_PAGE);
 		
 		//filters
 		String filterStr = filterQueryStr(filter);
-		if(filterStr.length() != 0) skipIdTable += " where " + filterStr;
-		skipIdTable += " limit " + skipNum;
-		skipIdTable += ") tmpTab)";
-		where += skipIdTable;
-		if(filterStr.length() != 0) where += " and " + filterStr;
+		if(filterStr.length() != 0) where = filterStr;
 		
 		return dao.read(
 			"*",
 			where,
-			Integer.toString(ENTRY_PER_PAGE)
+			limit
 		);
 	}
 	
