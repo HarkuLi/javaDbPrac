@@ -10,7 +10,8 @@ var birthFilter_to = "";
 // ready //
 ///////////
 $(() => {
-  
+	selectPage(currentPage);
+	
   ///////////////
   // listeners //
   ///////////////
@@ -238,22 +239,27 @@ function selectPage(page){
   
 	currentPage = page;
 	$("body").css("cursor", "progress");
-  $(".data_rows").remove();
   
   getList(page)
   	.then(data => {
-  		if(data.list) renderData(data.list);
-  		else $("#data_table").css("display", "none");
+  		renderData(data.list);
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
   	});
 }
 
 /**
- * 
+ * change the values of existing row elements
+ * hide and clean the values of the redundant rows
+ * add new row elements if existing row elements are not enough
  * @param dataList {Array<Object>}
  */
 function renderData(dataList){
+	if(!dataList){
+		$("#data_table").css("display", "none");
+		return;
+	}
+	
 	const sizeMap = {
 		id: 3,
 		name: 15,
@@ -263,7 +269,35 @@ function renderData(dataList){
 	
 	$("#data_table").css("display", "");
 	
-	for(let data of dataList){
+	//deal with existing row elements
+	var idx = 0;
+	var rowList = $("#data_table").find(".data_rows");
+	for(let row of rowList){
+		let inputList = $(row).find("input");
+		
+		//number of row elements > data
+	  //hide and clean values of the redundant rows
+		if(!dataList[idx]){
+			for(let ele of inputList){
+				$(ele).prop("value", "");
+			}
+			$(row).css("display", "none");
+			++idx;
+			continue;
+		}
+		
+		for(let ele of inputList){
+			let prop = $(ele).prop("name");
+			$(ele).prop("value", dataList[idx][prop]);
+		}
+		$(row).css("display", "");
+		++idx;
+	}
+	
+	//number of existing row elements < data
+	//add and set new row elements
+	for(; idx<dataList.length; ++idx){
+		let data = dataList[idx];
 		let dataRow = $("<tr></tr>");
 		let rowEntry;
 		let input;
