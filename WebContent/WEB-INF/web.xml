@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>test</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+    <servlet-name>showUser</servlet-name>
+    <servlet-class>controller.user.ShowUsers</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>userPage</servlet-name>
+    <servlet-class>controller.user.GetPageEntry</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>newUser</servlet-name>
+    <servlet-class>controller.user.NewUser</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>updateUser</servlet-name>
+    <servlet-class>controller.user.UpdateUser</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>delUser</servlet-name>
+    <servlet-class>controller.user.DeleteUser</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>getUser</servlet-name>
+    <servlet-class>controller.user.GetUser</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>showUser</servlet-name>
+    <url-pattern>/show_user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userPage</servlet-name>
+    <url-pattern>/user_page</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>newUser</servlet-name>
+    <url-pattern>/new_user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>updateUser</servlet-name>
+    <url-pattern>/update_user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>delUser</servlet-name>
+    <url-pattern>/del_user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>getUser</servlet-name>
+    <url-pattern>/get_user</url-pattern>
+  </servlet-mapping>
+</web-app>
