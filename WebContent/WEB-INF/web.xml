@@ -5,6 +5,8 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   
+<!-- servlet -->
+  <!-- user page -->
   <servlet>
     <servlet-name>showUser</servlet-name>
     <servlet-class>controller.user.ShowUsers</servlet-class>
@@ -29,7 +31,14 @@
     <servlet-name>getUser</servlet-name>
     <servlet-class>controller.user.GetUser</servlet-class>
   </servlet>
-  
+  <!-- occupation page -->
+  <servlet>
+    <servlet-name>occList</servlet-name>
+    <servlet-class>controller.occ.OccListPage</servlet-class>
+  </servlet>
+
+<!-- route -->
+  <!-- user page -->
   <servlet-mapping>
     <servlet-name>showUser</servlet-name>
     <url-pattern>/show_user</url-pattern>
@@ -54,7 +63,13 @@
     <servlet-name>getUser</servlet-name>
     <url-pattern>/get_user</url-pattern>
   </servlet-mapping>
-  
+  <!-- occupation page -->
+  <servlet-mapping>
+    <servlet-name>occList</servlet-name>
+    <url-pattern>/occ_list</url-pattern>
+  </servlet-mapping>
+
+<!-- connection pool -->
   <resource-ref>
     <description>DB Connection</description>
     <res-ref-name>jdbc/db1</res-ref-name>
