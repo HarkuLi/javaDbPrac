@@ -33,8 +33,8 @@
   </servlet>
   <!-- occupation page -->
   <servlet>
-    <servlet-name>occList</servlet-name>
-    <servlet-class>controller.occ.OccListPage</servlet-class>
+    <servlet-name>showOcc</servlet-name>
+    <servlet-class>controller.occ.ShowOcc</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>occPage</servlet-name>
@@ -69,8 +69,8 @@
   </servlet-mapping>
   <!-- occupation page -->
   <servlet-mapping>
-    <servlet-name>occList</servlet-name>
-    <url-pattern>/occ_list</url-pattern>
+    <servlet-name>showOcc</servlet-name>
+    <url-pattern>/show_occ</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>occPage</servlet-name>
