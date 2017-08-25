@@ -14,7 +14,7 @@ import org.json.*;
 import model.user.UsersModel;
 import service.user.UsersService;
 
-public class GetPageEntry extends HttpServlet {
+public class GetUserPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**

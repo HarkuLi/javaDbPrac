@@ -13,7 +13,7 @@
   </servlet>
   <servlet>
     <servlet-name>userPage</servlet-name>
-    <servlet-class>controller.user.GetPageEntry</servlet-class>
+    <servlet-class>controller.user.GetUserPage</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>newUser</servlet-name>
@@ -35,6 +35,10 @@
   <servlet>
     <servlet-name>occList</servlet-name>
     <servlet-class>controller.occ.OccListPage</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>occPage</servlet-name>
+    <servlet-class>controller.occ.GetOccPage</servlet-class>
   </servlet>
 
 <!-- route -->
@@ -67,6 +71,10 @@
   <servlet-mapping>
     <servlet-name>occList</servlet-name>
     <url-pattern>/occ_list</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>occPage</servlet-name>
+    <url-pattern>/occ_page</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->
