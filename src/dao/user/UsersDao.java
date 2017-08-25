@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import model.user.UsersModel;
-import service.user.ConnectionPool;
+import service.ConnectionPool;
 
 public class UsersDao{
 	private ConnectionPool conPool;
@@ -72,8 +72,6 @@ public class UsersDao{
 	
 	public void create(String name, String age, String birth) {
 		String id = UUID.randomUUID().toString();
-		System.out.println("id: " + id);
-		System.out.println("id length: " + id.length());
 		String sqlStr = "insert into users (id, name, age, birth)";
 		sqlStr += " values (?, ?, ?, ?)";
 		

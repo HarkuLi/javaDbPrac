@@ -1,4 +1,4 @@
-package service.user;
+package service;
 
 //import org.apache.tomcat.jdbc.pool.DataSource;
 //import org.apache.tomcat.jdbc.pool.PoolProperties;
