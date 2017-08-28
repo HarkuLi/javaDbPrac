@@ -57,8 +57,8 @@ $(() => {
   	$("body").css("cursor", "progress");
   	edit(self)
   		.then(() => {
-  		$("body").css("cursor", "");
-  	});
+    		$("body").css("cursor", "");
+    	});
   });
   
   $("#data_table").on("click", ".delete", function(){
@@ -146,8 +146,6 @@ function save(self){
  * @return {Promise}
  */
 function edit(self){
-	var data = {};
-	
 	//set pop up window
 	$(".mask").prop("id", "edit_block");
 	$("#popup_form").children(":submit").prop("id", "user_modify");
