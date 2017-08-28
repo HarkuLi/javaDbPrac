@@ -273,6 +273,10 @@ function renderData(dataList){
 		
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
+			if(prop === "state"){
+				dataList[idx][prop] ? $(ele).prop("value", "enable") : $(ele).prop("value", "disable");
+				continue;
+			}
 			$(ele).prop("value", dataList[idx][prop]);
 		}
 		$(row).css("display", "");
@@ -295,7 +299,14 @@ function renderData(dataList){
 			if(prop === "id")	rowEntry.prop("class", "id");
 			input = $("<input>");
 			input.prop("name", prop);
-			input.prop("value", data[prop]);
+			
+			if(prop === "state"){
+				data[prop] ? input.prop("value", "enable") : input.prop("value", "disable");
+			}
+			else{
+				input.prop("value", data[prop]);
+			}
+			
 			input.prop("disabled", true);
 			input.prop("size", sizeMap[prop]);
 			rowEntry.append(input);

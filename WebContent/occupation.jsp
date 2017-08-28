@@ -57,7 +57,7 @@
 	<table id="data_table">
 		<tr>
 			<th>name</th>
-			<th>enable</th>
+			<th>state</th>
 			<th></th>
 			<th></th>
 		</tr>
