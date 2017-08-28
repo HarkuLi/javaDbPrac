@@ -18,7 +18,7 @@ public class UsersService{
 	public UsersModel getUser(String id) {
 		ArrayList<UsersModel> userList = dao.read(
 			"*",
-			"id = " + id,
+			"id = '" + id + "'",
 			"1"
 		);
 		return userList.get(0);
