@@ -33,12 +33,7 @@ $(() => {
   	
   	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
   	
-  	newUser()
-  		.then(data => {
-  			if(data.errMsg) return alert(data.errMsg);
-  			selectPage(currentPage);
-  	  	closePopup();
-  		});
+  	newUser();
   });
   
   $("#new_btn").on("click", () => {
@@ -193,6 +188,24 @@ function isFillAll(form){
 		if(!$(ele).prop("value").length) return false;
 	}
 	return true;
+}
+
+function newUser(){
+	var passedData = {};
+	var dataList = $("#popup_form").children(".data");
+	
+	for(let ele of dataList){
+		let prop = $(ele).prop("name");
+		let val = $(ele).prop("value");
+		passedData[prop] = val;
+	}
+	
+	return doCreate(passedData)
+		.then(data => {
+			if(data.errMsg) return alert(data.errMsg);
+			selectPage(currentPage);
+	  	closePopup();
+		});
 }
 
 function filterSearch(){
@@ -377,18 +390,10 @@ function doUpdate(passedData){
 
 /**
  * 
+ * @param passedData {Object} {name: String, age: String, birth: String}
  * @return {Promise} if error, return: {errMsg: String}
  */
-function newUser(){
-	var passedData = {};
-	var dataList = $("#popup_form").children(".data");
-	
-	for(let ele of dataList){
-		let prop = $(ele).prop("name");
-		let val = $(ele).prop("value");
-		passedData[prop] = val;
-	}
-	
+function doCreate(passedData){
 	return new Promise((resolve, reject) => {
 		$.post("new_user", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
