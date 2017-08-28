@@ -162,8 +162,8 @@ public class UsersDao{
 	}
 	
 	public void delete(String id) {
-		String sqlStr = "delete from users " +
-						"where id = ?";
+		String sqlStr = "delete from users" +
+						" where id = ?";
 		
 		try {
 			con = conPool.getConnection();

@@ -132,8 +132,8 @@ public class OccDao {
 	
 	public void update(HashMap<String, Object> data) {
 		String sqlStr = "update " + tableName +
-						"set name = ?, state = ?" +
-						"where id = ?";
+						" set name = ?, state = ?" +
+						" where id = ?";
 		
 		try {
 			con = conPool.getConnection();
@@ -152,9 +152,9 @@ public class OccDao {
 	}
 	
 	public void delete(String id) {
-		String sqlStr = "delete from" + tableName +
-						"where id = ?";
-		
+		String sqlStr = "delete from " + tableName +
+						" where id = ?";
+				
 		try {
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);

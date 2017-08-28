@@ -44,6 +44,10 @@
   	<servlet-name>newOcc</servlet-name>
     <servlet-class>controller.occ.NewOcc</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>delOcc</servlet-name>
+    <servlet-class>controller.occ.DeleteOcc</servlet-class>
+  </servlet>
 
 <!-- route -->
   <!-- user page -->
@@ -83,6 +87,10 @@
   <servlet-mapping>
     <servlet-name>newOcc</servlet-name>
     <url-pattern>/new_occ</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>delOcc</servlet-name>
+    <url-pattern>/del_occ</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->

@@ -60,16 +60,16 @@ $(() => {
 //  	});
 //  });
 //  
-//  $("#data_table").on("click", ".delete", function(){
-//  	var self = this;
-//  	delRow(self)
-//  		.then(rst => {
-//  			if(!rst) return;
-//  			//reload the page
-//  			selectPage(currentPage);
-//  		});
-//  });
-//  
+  $("#data_table").on("click", ".delete", function(){
+  	var self = this;
+  	delRow(self)
+  		.then(rst => {
+  			if(!rst) return;
+  			//reload the page
+  			selectPage(currentPage);
+  		});
+  });
+  
 //  $("#popup_form").on("click", "#occ_modify", function(event){
 //  	event.preventDefault();
 //  	
