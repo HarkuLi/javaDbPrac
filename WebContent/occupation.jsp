@@ -17,7 +17,7 @@
 		<p>Filter:</p>
 		<strong>Name: </strong><input type="text" id="name_filter"><br>
 		<strong>State: </strong>
-		<select name="state">
+		<select id="state_filter" name="state">
 			<option value="">--</option>
 			<option value="1">enable</option>
 			<option value="0">disable</option>

@@ -22,11 +22,11 @@ $(() => {
     selectPage(currentPage+1);
   });
   
-//  $("#filter_search").on("click", () => {
-//  	if(!isFilterChange()) return;
-//  	filterSearch();
-//  });
-//  
+  $("#filter_search").on("click", () => {
+  	if(!isFilterChange()) return;
+  	filterSearch();
+  });
+  
 //  $("#popup_form").on("click", "#user_create", function(event){
 //  	event.preventDefault();
 //  	
@@ -195,22 +195,10 @@ function isFillAll(form){
 	return true;
 }
 
-function filterSearch(){
-	var dateFormatMsg = "wrong date format, correct format: YYYY-MM-DD.";
-	var birthFrom = $("#birth_from_filter").prop("value");
-	var birthTo = $("#birth_to_filter").prop("value");
-	
-	//check input format
-	var reg = /^\d{4}-\d{2}-\d{2}$/;
-	if(birthFrom.length && !reg.test(birthFrom))
-		return alert(dateFormatMsg);
-  if(birthTo.length && !reg.test(birthTo))
-  	return alert(dateFormatMsg);
-		
+function filterSearch(){	
 	//record new filters
 	nameFilter = $("#name_filter").prop("value");
-	birthFilter_from = birthFrom;
-	birthFilter_to = birthTo;
+	stateFilter = $("#state_filter").prop("value");
 	
 	//go to page 1
 	currentPage = 1;
@@ -223,8 +211,7 @@ function filterSearch(){
  */
 function isFilterChange(){
 	if($("#name_filter").prop("value") !== nameFilter) return true;
-	if($("#birth_from_filter").prop("value") !== birthFilter_from) return true;
-	if($("#birth_to_filter").prop("value") !== birthFilter_to) return true;
+	if($("#state_filter").prop("value") !== stateFilter) return true;
 	return false;
 }
 
