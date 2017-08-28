@@ -22,6 +22,15 @@ public class OccService {
 		dao.create(newData);
 	}
 	
+	public OccModel getOcc(String id) {
+		ArrayList<OccModel> occList = dao.read(
+			"*",
+			"id = '" + id + "'",
+			"1"
+		);
+		return occList.get(0);
+	}
+	
 	public ArrayList<OccModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		String where = null;

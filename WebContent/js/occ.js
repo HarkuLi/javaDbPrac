@@ -51,15 +51,15 @@ $(() => {
   		});
   });
   
-//  $("#data_table").on("click", ".edit", function(){
-//  	var self = this;
-//  	$("body").css("cursor", "progress");
-//  	edit(self)
-//  		.then(() => {
-//  		$("body").css("cursor", "");
-//  	});
-//  });
-//  
+  $("#data_table").on("click", ".edit", function(){
+  	var self = this;
+  	$("body").css("cursor", "progress");
+  	edit(self)
+  		.then(() => {
+    		$("body").css("cursor", "");
+    	});
+  });
+  
   $("#data_table").on("click", ".delete", function(){
   	var self = this;
   	delRow(self)
@@ -145,8 +145,6 @@ function save(self){
  * @return {Promise}
  */
 function edit(self){
-	var data = {};
-	
 	//set pop up window
 	$(".mask").prop("id", "edit_block");
 	$("#popup_form").children(":submit").prop("id", "occ_modify");
@@ -156,11 +154,26 @@ function edit(self){
 	
 	return getOcc(id)
 		.then(data => {
+			const checkTypeList = ["state"];
+			
 			//set pop up form
+				//set text type
 			var inputList = $("#popup_form").children(".data");
 			for(let ele of inputList){
 				let propName = $(ele).prop("name");
+				if(checkTypeList.indexOf(propName) !== -1) continue;
 				$(ele).prop("value", data[propName]);
+			}
+				//set checked type
+			for(let name of checkTypeList){
+				let val = data[name] ? "1" : "0";
+				let checkList = $("#popup_form").children("[name='"+ name +"']");
+				for(let ele of checkList){
+					if($(ele).prop("value") === val){
+						$(ele).prop("checked", true);
+						break;
+					}
+				}
 			}
 			
 			//show pop up window
