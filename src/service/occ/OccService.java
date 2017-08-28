@@ -14,6 +14,14 @@ public class OccService {
 		dao = new OccDao();
 	}
 	
+	public void createOcc(String name, String state) {
+		HashMap<String, Object> newData = new HashMap<String, Object>();
+		
+		newData.put("name", name);
+		newData.put("state", state);
+		dao.create(newData);
+	}
+	
 	public ArrayList<OccModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		String where = null;

@@ -27,30 +27,30 @@ $(() => {
   	filterSearch();
   });
   
-//  $("#popup_form").on("click", "#user_create", function(event){
-//  	event.preventDefault();
-//  	
-//  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
-//  	
-//  	newUser()
-//  		.then(data => {
-//  			if(data.errMsg) return alert(data.errMsg);
-//  			selectPage(currentPage);
-//  	  	closePopup();
-//  		});
-//  });
-//  
-//  $("#new_btn").on("click", () => {
-//  	//set pop up window
-//  	$(".mask").css("display", "flex");
-//  	$(".mask").prop("id", "new_block");
-//  	$("#popup_form").children(":submit").prop("id", "user_create");
-//  });
-//  
-//  $(".close_btn").on("click", function(){
-//  	closePopup();
-//  });
-//  
+  $("#new_btn").on("click", () => {
+  	//set pop up window
+  	$(".mask").css("display", "flex");
+  	$(".mask").prop("id", "new_block");
+  	$("#popup_form").children(":submit").prop("id", "occ_create");
+  });
+  
+  $(".close_btn").on("click", function(){
+  	closePopup();
+  });
+  
+  $("#popup_form").on("click", "#occ_create", function(event){
+  	event.preventDefault();
+  	
+  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+  	
+  	newOcc()
+  		.then(data => {
+  			if(data.errMsg) return alert(data.errMsg);
+  			selectPage(currentPage);
+  	  	closePopup();
+  		});
+  });
+  
 //  $("#data_table").on("click", ".edit", function(){
 //  	var self = this;
 //  	$("body").css("cursor", "progress");
@@ -70,7 +70,7 @@ $(() => {
 //  		});
 //  });
 //  
-//  $("#popup_form").on("click", "#user_modify", function(event){
+//  $("#popup_form").on("click", "#occ_modify", function(event){
 //  	event.preventDefault();
 //  	
 //  	var self = this;
@@ -149,12 +149,12 @@ function edit(self){
 	
 	//set pop up window
 	$(".mask").prop("id", "edit_block");
-	$("#popup_form").children(":submit").prop("id", "user_modify");
+	$("#popup_form").children(":submit").prop("id", "occ_modify");
 	
 	var dataRow = $(self).parent().parent();
 	var id = $(dataRow).find(".id").children().prop("value");
 	
-	return getUser(id)
+	return getOcc(id)
 		.then(data => {
 			//set pop up form
 			var inputList = $("#popup_form").children(".data");
@@ -175,6 +175,10 @@ function clrFields(form){
 	var inputList = $(form).children(".data");
 	
 	for(let ele of inputList){
+		if($(ele).prop("name") === "state"){
+			$(ele).prop("checked", false);
+			continue;
+		}
 		$(ele).prop("value", "");
 	}
 }
@@ -184,7 +188,7 @@ function clrFields(form){
  * @return {Boolean}
  */
 function isFillAll(form){
-	const exceptList = ["id"];
+	const exceptList = ["id", "state"];
 	
 	var inputList = $(form).children(".data");
 	
@@ -192,7 +196,23 @@ function isFillAll(form){
 		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
 		if(!$(ele).prop("value").length) return false;
 	}
+	
+	//check state field
+	if(!checkedVal($("#popup_form").children("[name='state']"))) return false;
+	
 	return true;
+}
+
+/**
+ * 
+ * @param checkEleList {Array<Object>} all checked type(radio/checkbox) elements with the same name
+ * @return {String} return null if no one checked
+ */
+function checkedVal(checkEleList){
+	for(let ele of checkEleList){
+		if($(ele).prop("checked") === true) return $(ele).prop("value");
+	}
+	return null;
 }
 
 function filterSearch(){	
@@ -351,7 +371,7 @@ function pageNumDisp(totalPage){
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post("del_user", {id}, (data, status) => {
+		$.post("del_occ", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -365,7 +385,7 @@ function doDel(id){
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("update_user", passedData, (data, status) => {
+		$.post("update_occ", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -376,18 +396,25 @@ function doUpdate(passedData){
  * 
  * @return {Promise} if error, return: {errMsg: String}
  */
-function newUser(){
+function newOcc(){
+	const checkTypeList = ["state"];
 	var passedData = {};
 	var dataList = $("#popup_form").children(".data");
 	
 	for(let ele of dataList){
 		let prop = $(ele).prop("name");
+		if(checkTypeList.indexOf(prop) !== -1) continue;
 		let val = $(ele).prop("value");
 		passedData[prop] = val;
 	}
 	
+	//record values of checked types
+	for(let name of checkTypeList){
+		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
+	}
+	
 	return new Promise((resolve, reject) => {
-		$.post("new_user", passedData, (data, status) => {
+		$.post("new_occ", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -419,11 +446,11 @@ function getList(page){
 /**
  * 
  * @param id {String}
- * @return {Objcet} user data of the id
+ * @return {Objcet} occupation data of the id
  */
-function getUser(id){
+function getOcc(id){
 	return new Promise((resolve, reject) => {
-    $.post("get_user", {id}, (data, status) => {
+    $.post("get_occ", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });

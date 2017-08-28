@@ -40,6 +40,10 @@
   	<servlet-name>occPage</servlet-name>
     <servlet-class>controller.occ.GetOccPage</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>newOcc</servlet-name>
+    <servlet-class>controller.occ.NewOcc</servlet-class>
+  </servlet>
 
 <!-- route -->
   <!-- user page -->
@@ -75,6 +79,10 @@
   <servlet-mapping>
     <servlet-name>occPage</servlet-name>
     <url-pattern>/occ_page</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>newOcc</servlet-name>
+    <url-pattern>/new_occ</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->

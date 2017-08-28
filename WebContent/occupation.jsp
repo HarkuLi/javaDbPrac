@@ -44,7 +44,7 @@
 			<div class="txt_right">
 				<i class="material-icons close_btn">clear</i>
 			</div>
-			<!-- form for new user -->
+			<!-- form for new occupation -->
 			<div class="txt_center">
 				<form id="popup_form">
 					<jsp:include page="partial/occ/detail.jsp"></jsp:include>
