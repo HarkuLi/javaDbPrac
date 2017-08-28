@@ -49,7 +49,7 @@ public class OccService {
 		String state = filter.get("state");
 		
 		if(name != null) {
-			rst += "name = " + name;
+			rst += "name like '%" + name + "%'";
 		}
 		if(state != null) {
 			if(rst.length() != 0) rst += " and ";
