@@ -59,27 +59,27 @@
   <!-- interest page -->
   <servlet>
     <servlet-name>showInt</servlet-name>
-    <servlet-class>controller.int.ShowInt</servlet-class>
+    <servlet-class>controller.interest.ShowInt</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>intPage</servlet-name>
-    <servlet-class>controller.int.GetIntPage</servlet-class>
+    <servlet-class>controller.interest.GetIntPage</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>newInt</servlet-name>
-    <servlet-class>controller.int.NewInt</servlet-class>
+    <servlet-class>controller.interest.NewInt</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>updateInt</servlet-name>
-    <servlet-class>controller.int.UpdateInt</servlet-class>
+    <servlet-class>controller.interest.UpdateInt</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>delInt</servlet-name>
-    <servlet-class>controller.int.DeleteInt</servlet-class>
+    <servlet-class>controller.interest.DeleteInt</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>getInt</servlet-name>
-    <servlet-class>controller.int.GetInt</servlet-class>
+    <servlet-class>controller.interest.GetInt</servlet-class>
   </servlet>
 
 <!-- route -->
