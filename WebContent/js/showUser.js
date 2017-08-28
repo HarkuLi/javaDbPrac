@@ -136,6 +136,7 @@ function save(self){
   	})
   	.then(rst => {
   		if(!rst) return;
+  		selectPage(currentPage);
   		closePopup();
   	});
 }
