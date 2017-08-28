@@ -421,7 +421,7 @@ function doDel(id){
 
 /**
  * 
- * @param passedData {Object} {id: String, name: String, age: String, birth: String}
+ * @param passedData {Object} {id: String, name: String, state: String}
  * @return {Promise} if error, return: {errMsg: String}
  */
 function doUpdate(passedData){
@@ -435,7 +435,7 @@ function doUpdate(passedData){
 
 /**
  * 
- * @param passedData {Object} {id: String, name: String, age: String, birth: String}
+ * @param passedData {Object} {name: String, state: String}
  * @return {Promise} if error, return: {errMsg: String}
  */
 function doCreate(passedData){
