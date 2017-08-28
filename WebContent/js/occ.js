@@ -60,6 +60,13 @@ $(() => {
     	});
   });
   
+  $("#popup_form").on("click", "#occ_modify", function(event){
+  	event.preventDefault();
+  	
+  	var self = this;
+  	save(self);
+  });
+  
   $("#data_table").on("click", ".delete", function(){
   	var self = this;
   	delRow(self)
@@ -69,13 +76,6 @@ $(() => {
   			selectPage(currentPage);
   		});
   });
-  
-//  $("#popup_form").on("click", "#occ_modify", function(event){
-//  	event.preventDefault();
-//  	
-//  	var self = this;
-//  	save(self);
-//  });
 });
 
 ///////////////
@@ -114,14 +114,21 @@ function delRow(self){
 function save(self){
 	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
 	
+	const checkTypeList = ["state"];
 	var passedData = {};
-	var inputList = $("#popup_form").children(".data");
+	var dataList = $("#popup_form").children(".data");
 	
 	//record the input values
-	for(let ele of inputList){
-		let propName = $(ele).prop("name");
+	for(let ele of dataList){
+		let prop = $(ele).prop("name");
+		if(checkTypeList.indexOf(prop) !== -1) continue;
 		let val = $(ele).prop("value");
-		passedData[propName] = val;
+		passedData[prop] = val;
+	}
+	
+	//record values of checked types
+	for(let name of checkTypeList){
+		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
 	}
 	
 	//update the change
@@ -135,6 +142,7 @@ function save(self){
   	})
   	.then(rst => {
   		if(!rst) return;
+  		selectPage(currentPage);
   		closePopup();
   	});
 }

@@ -45,6 +45,10 @@
     <servlet-class>controller.occ.NewOcc</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>updateOcc</servlet-name>
+    <servlet-class>controller.occ.UpdateOcc</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>delOcc</servlet-name>
     <servlet-class>controller.occ.DeleteOcc</servlet-class>
   </servlet>
@@ -91,6 +95,10 @@
   <servlet-mapping>
     <servlet-name>newOcc</servlet-name>
     <url-pattern>/new_occ</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>updateOcc</servlet-name>
+    <url-pattern>/update_occ</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>delOcc</servlet-name>

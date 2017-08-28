@@ -18,7 +18,7 @@ public class OccService {
 		HashMap<String, Object> newData = new HashMap<String, Object>();
 		
 		newData.put("name", name);
-		newData.put("state", state);
+		newData.put("state", state.equals("1"));
 		dao.create(newData);
 	}
 	
@@ -58,6 +58,15 @@ public class OccService {
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
+	}
+	
+	public void update(String id, String name, String state) {
+		HashMap<String, Object> newData = new HashMap<String, Object>();
+		
+		newData.put("id", id);
+		newData.put("name", name);
+		newData.put("state", state.equals("1"));
+		dao.update(newData);
 	}
 	
 	public void delete(String id) {

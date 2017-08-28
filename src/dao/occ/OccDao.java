@@ -77,14 +77,13 @@ public class OccDao {
 		String sqlStr = "insert into " + tableName;
 		sqlStr		 += " (id, name, state)";
 		sqlStr       += " values (?, ?, ?)";
-		boolean state = newData.get("state").equals("1");
 		
 		try {
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
 			pst.setString(1, id);
 			pst.setString(2, (String) newData.get("name"));
-			pst.setBoolean(3, state);
+			pst.setBoolean(3, (boolean) newData.get("state"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
