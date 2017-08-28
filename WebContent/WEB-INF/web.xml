@@ -56,6 +56,31 @@
     <servlet-name>getOcc</servlet-name>
     <servlet-class>controller.occ.GetOcc</servlet-class>
   </servlet>
+  <!-- interest page -->
+  <servlet>
+    <servlet-name>showInt</servlet-name>
+    <servlet-class>controller.int.ShowInt</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>intPage</servlet-name>
+    <servlet-class>controller.int.GetIntPage</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>newInt</servlet-name>
+    <servlet-class>controller.int.NewInt</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>updateInt</servlet-name>
+    <servlet-class>controller.int.UpdateInt</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>delInt</servlet-name>
+    <servlet-class>controller.int.DeleteInt</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>getInt</servlet-name>
+    <servlet-class>controller.int.GetInt</servlet-class>
+  </servlet>
 
 <!-- route -->
   <!-- user page -->
@@ -107,6 +132,31 @@
   <servlet-mapping>
     <servlet-name>getOcc</servlet-name>
     <url-pattern>/get_occ</url-pattern>
+  </servlet-mapping>
+  <!-- interest page -->
+  <servlet-mapping>
+    <servlet-name>showInt</servlet-name>
+    <url-pattern>/show_int</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>intPage</servlet-name>
+    <url-pattern>/int_page</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>newInt</servlet-name>
+    <url-pattern>/new_int</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>updateInt</servlet-name>
+    <url-pattern>/update_int</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>delInt</servlet-name>
+    <url-pattern>/del_int</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>getInt</servlet-name>
+    <url-pattern>/get_int</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->
