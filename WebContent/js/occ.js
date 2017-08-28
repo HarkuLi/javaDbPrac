@@ -43,12 +43,7 @@ $(() => {
   	
   	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
   	
-  	newOcc()
-  		.then(data => {
-  			if(data.errMsg) return alert(data.errMsg);
-  			selectPage(currentPage);
-  	  	closePopup();
-  		});
+  	newOcc();
   });
   
   $("#data_table").on("click", ".edit", function(){
@@ -236,6 +231,31 @@ function checkedVal(checkEleList){
 	return null;
 }
 
+function newOcc(){
+	const checkTypeList = ["state"];
+	var passedData = {};
+	var dataList = $("#popup_form").children(".data");
+	
+	for(let ele of dataList){
+		let prop = $(ele).prop("name");
+		if(checkTypeList.indexOf(prop) !== -1) continue;
+		let val = $(ele).prop("value");
+		passedData[prop] = val;
+	}
+	
+	//record values of checked types
+	for(let name of checkTypeList){
+		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
+	}
+	
+	return doCreate(passedData)
+		.then(data => {
+			if(data.errMsg) return alert(data.errMsg);
+			selectPage(currentPage);
+	  	closePopup();
+		});
+}
+
 function filterSearch(){	
 	//record new filters
 	nameFilter = $("#name_filter").prop("value");
@@ -415,25 +435,10 @@ function doUpdate(passedData){
 
 /**
  * 
+ * @param passedData {Object} {id: String, name: String, age: String, birth: String}
  * @return {Promise} if error, return: {errMsg: String}
  */
-function newOcc(){
-	const checkTypeList = ["state"];
-	var passedData = {};
-	var dataList = $("#popup_form").children(".data");
-	
-	for(let ele of dataList){
-		let prop = $(ele).prop("name");
-		if(checkTypeList.indexOf(prop) !== -1) continue;
-		let val = $(ele).prop("value");
-		passedData[prop] = val;
-	}
-	
-	//record values of checked types
-	for(let name of checkTypeList){
-		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
-	}
-	
+function doCreate(passedData){
 	return new Promise((resolve, reject) => {
 		$.post("new_occ", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
