@@ -47,7 +47,7 @@
 			<!-- form for new user -->
 			<div class="txt_center">
 				<form id="popup_form">
-					<jsp:include page="partial/user/detail.jsp"></jsp:include>
+					<jsp:include page="partial/occ/detail.jsp"></jsp:include>
 				</form>
 			</div>
 		</div>
