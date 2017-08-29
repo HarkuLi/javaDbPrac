@@ -22,7 +22,6 @@ public class GetOcc extends HttpServlet {
     	throws ServletException, IOException {
     	
 		OccService dbService = new OccService();
-    	//HashMap<String, Object> rstMap = new HashMap<String, Object>();
 		JSONObject rstObj;
     	PrintWriter out = res.getWriter();
     	
