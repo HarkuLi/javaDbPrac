@@ -60,6 +60,15 @@ public class IntService {
 		return totalPage;
 	}
 	
+	public void update(String id, String name, String state) {
+		HashMap<String, Object> newData = new HashMap<String, Object>();
+		
+		newData.put("id", id);
+		newData.put("name", name);
+		newData.put("state", state.equals("1"));
+		dao.update(newData);
+	}
+	
 	private String filterQueryStr(HashMap<String, String> filter) {
 		String rst = "";
 		String name = filter.get("name");

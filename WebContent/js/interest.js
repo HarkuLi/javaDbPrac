@@ -54,11 +54,59 @@ $(() => {
     		$("body").css("cursor", "");
     	});
   });
+  
+  $("#popup_form").on("click", "#int_modify", function(event){
+  	event.preventDefault();
+  	
+  	var self = this;
+  	save(self);
+  });
 });
 
 ///////////////
 // functions //
 ///////////////
+
+/**
+ * 
+ * @param self {Object} copy of this
+ * @return {Promise}
+ */
+function save(self){
+	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+	
+	const checkTypeList = ["state"];
+	var passedData = {};
+	var dataList = $("#popup_form").children(".data");
+	
+	//record the input values
+	for(let ele of dataList){
+		let prop = $(ele).prop("name");
+		if(checkTypeList.indexOf(prop) !== -1) continue;
+		let val = $(ele).prop("value");
+		passedData[prop] = val;
+	}
+	
+	//record values of checked types
+	for(let name of checkTypeList){
+		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
+	}
+	
+	//update the change
+	return doUpdate(passedData)
+  	.then(data => {
+  		if(data.errMsg){
+  			alert(data.errMsg);
+  			return false;
+  		}
+  		return true;
+  	})
+  	.then(rst => {
+  		if(!rst) return;
+  		selectPage(currentPage);
+  		closePopup();
+  	});
+}
 
 /**
  * 
@@ -329,6 +377,21 @@ function pageNumDisp(totalPage){
   ////////////////////
   // ajax functions //
   ////////////////////
+
+/**
+ * 
+ * @param passedData {Object} {id: String, name: String, state: String}
+ * @return {Promise} if error, return: {errMsg: String}
+ */
+function doUpdate(passedData){
+	return new Promise((resolve, reject) => {
+		$.post("update_int", passedData, (data, status) => {
+      if(status !== "success") return reject("post status: " + status);
+      resolve(data);
+    });
+	});
+}
+
 
 /**
  * 
