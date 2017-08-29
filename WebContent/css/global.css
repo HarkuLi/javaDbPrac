@@ -53,3 +53,18 @@ td input{
 .popup_window input{
 	margin: 5px 0px;
 }
+
+.container{
+	display: flex;
+}
+
+.center_block{
+	margin: 0 auto;
+}
+
+
+
+
+
+
+

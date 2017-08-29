@@ -179,7 +179,7 @@ function clrFields(form){
  * @return {Boolean}
  */
 function isFillAll(form){
-	const exceptList = ["id"];
+	const exceptList = ["id", "photo"];
 	
 	var inputList = $(form).children(".data");
 	
@@ -191,13 +191,16 @@ function isFillAll(form){
 }
 
 function newUser(){
-	var passedData = {};
-	var dataList = $("#popup_form").children(".data");
+	const acceptFileType = ["image/jpeg", "image/png", "image/gif"];
+	var passedData = new FormData($("#popup_form")[0]);
+	var photo = $("#photo").prop("files")[0];
 	
-	for(let ele of dataList){
-		let prop = $(ele).prop("name");
-		let val = $(ele).prop("value");
-		passedData[prop] = val;
+	if(photo){
+		if(acceptFileType.indexOf(photo.type)===-1)
+			return alert("Unaccepted file type.");
+		let type = photo.type.split("/")[1];
+		console.log("type: " + type);
+		passedData.append("photo_type", type);
 	}
 	
 	return doCreate(passedData)
@@ -395,10 +398,18 @@ function doUpdate(passedData){
  */
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("new_user", passedData, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
-      resolve(data);
-    });
+		$.ajax({
+			url: "new_user",
+			type: "POST",
+			data: passedData,
+			dataType: "json",
+			processData: false,
+			contentType: false,
+			success: (data, status) => {
+        if(status !== "success") return reject("post status: " + status);
+        resolve(data);
+      }
+		});
 	});
 }
 

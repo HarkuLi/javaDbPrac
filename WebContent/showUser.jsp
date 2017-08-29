@@ -40,8 +40,8 @@
 				<i class="material-icons close_btn">clear</i>
 			</div>
 			<!-- form for new user -->
-			<div class="txt_center">
-				<form id="popup_form">
+			<div class="container">
+				<form id="popup_form" class="center_block" enctype="multipart/form-data">
 					<jsp:include page="partial/user/detail.jsp"></jsp:include>
 				</form>
 			</div>
