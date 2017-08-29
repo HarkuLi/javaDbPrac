@@ -1,24 +1,56 @@
 package service.user;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+
+import javax.servlet.http.Part;
 
 import dao.user.UsersDao;
 import model.user.UsersModel;
 
 public class UsersService{
+	private final int ENTRY_PER_PAGE = 10;
+	private final String STORE_PATH = "/home/nickli/upload";
+	private UsersDao dao;
+	
 	public UsersService() {
 		dao = new UsersDao();
 	}
 	
 	/**
 	 * 
-	 * @param newData {HashMap<String, Object>} {name: String, age: int, birth: String}
+	 * @param newData {HashMap<String, Object>}
+	 * 		{
+	 *       name: String,
+	 * 		 age: int,
+	 *       birth: String,
+	 *       photo: Part,    //not required
+	 *       photo_type: String    //not required
+	 *      }
 	 */
 	public void createUser(HashMap<String, Object> newData) {
 		String id = UUID.randomUUID().toString();
 		newData.put("id", id);
+		
+		//store photo
+		Part photo = (Part) newData.get("photo");
+		if(photo != null) {
+			String photoType = (String) newData.get("photo_type");
+			String fileName = id + "." + photoType;
+			String path = STORE_PATH + "/" + fileName;
+			
+			File dir = new File(STORE_PATH);
+			if(!dir.exists()) dir.mkdir();
+			try {
+				photo.write(path);
+				newData.put("photo", path);
+			} catch (Exception e) {
+				System.out.println("Exception in storing photo: " + e.toString());
+			}
+		}
+		
 		dao.create(newData);
 	}
 	
@@ -85,10 +117,6 @@ public class UsersService{
 	public void delete(String id) {
 		dao.delete(id);
 	}
-	
-	private final int ENTRY_PER_PAGE = 10;
-	
-	private UsersDao dao;
 	
 	private String filterQueryStr(HashMap<String, String> filter) {
 		String rst = "";
