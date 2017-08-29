@@ -22,6 +22,15 @@ public class IntService {
 		dao.create(newData);
 	}
 	
+	public IntModel getInterest(String id) {
+		ArrayList<IntModel> interestList = dao.read(
+			"*",
+			"id = '" + id + "'",
+			"1"
+		);
+		return interestList.get(0);
+	}
+	
 	public ArrayList<IntModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		String where = null;

@@ -45,11 +45,62 @@ $(() => {
   	
   	newInterest();
   });
+  
+  $("#data_table").on("click", ".edit", function(){
+  	var self = this;
+  	$("body").css("cursor", "progress");
+  	edit(self)
+  		.then(() => {
+    		$("body").css("cursor", "");
+    	});
+  });
 });
 
 ///////////////
 // functions //
 ///////////////
+
+/**
+ * 
+ * @param self {Object} copy of this
+ * @return {Promise}
+ */
+function edit(self){
+	//set pop up window
+	$(".mask").prop("id", "edit_block");
+	$("#popup_form").children(":submit").prop("id", "int_modify");
+	
+	var dataRow = $(self).parent().parent();
+	var id = $(dataRow).find(".id").children().prop("value");
+	
+	return getInterest(id)
+		.then(data => {
+			const checkTypeList = ["state"];
+			
+			//set pop up form
+				//set text type
+			var inputList = $("#popup_form").children(".data");
+			for(let ele of inputList){
+				let propName = $(ele).prop("name");
+				if(checkTypeList.indexOf(propName) !== -1) continue;
+				$(ele).prop("value", data[propName]);
+			}
+				//set checked type
+			for(let name of checkTypeList){
+				let val = data[name] ? "1" : "0";
+				let checkList = $("#popup_form").children("[name='"+ name +"']");
+				for(let ele of checkList){
+					if($(ele).prop("value") === val){
+						$(ele).prop("checked", true);
+						break;
+					}
+				}
+			}
+			
+			//show pop up window
+			$(".mask").css("display", "flex");
+		});
+}
 
 function newInterest(){
 	const checkTypeList = ["state"];
@@ -278,6 +329,20 @@ function pageNumDisp(totalPage){
   ////////////////////
   // ajax functions //
   ////////////////////
+
+/**
+ * 
+ * @param id {String}
+ * @return {Objcet} interest detail of the id
+ */
+function getInterest(id){
+	return new Promise((resolve, reject) => {
+    $.post("get_int", {id}, (data, status) => {
+      if(status !== "success") return reject("post status: " + status);
+      resolve(data);
+    });
+  });
+}
 
 /**
  * 
