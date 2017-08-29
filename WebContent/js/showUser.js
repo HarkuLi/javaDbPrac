@@ -402,7 +402,6 @@ function doCreate(passedData){
 			url: "new_user",
 			type: "POST",
 			data: passedData,
-			dataType: "json",
 			processData: false,
 			contentType: false,
 			success: (data, status) => {
