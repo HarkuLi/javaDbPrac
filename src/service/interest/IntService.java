@@ -14,6 +14,14 @@ public class IntService {
 		dao = new IntDao();
 	}
 	
+	public void createInt(String name, String state) {
+		HashMap<String, Object> newData = new HashMap<String, Object>();
+		
+		newData.put("name", name);
+		newData.put("state", state.equals("1"));
+		dao.create(newData);
+	}
+	
 	public ArrayList<IntModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		String where = null;

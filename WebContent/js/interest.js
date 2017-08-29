@@ -26,11 +26,109 @@ $(() => {
   	if(!isFilterChange()) return;
   	filterSearch();
   });
+  
+  $("#new_btn").on("click", () => {
+  	//set pop up window
+  	$(".mask").css("display", "flex");
+  	$(".mask").prop("id", "new_block");
+  	$("#popup_form").children(":submit").prop("id", "int_create");
+  });
+  
+  $(".close_btn").on("click", function(){
+  	closePopup();
+  });
+  
+  $("#popup_form").on("click", "#int_create", function(event){
+  	event.preventDefault();
+  	
+  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+  	
+  	newInterest();
+  });
 });
 
 ///////////////
 // functions //
 ///////////////
+
+function newInterest(){
+	const checkTypeList = ["state"];
+	var passedData = {};
+	var dataList = $("#popup_form").children(".data");
+	
+	for(let ele of dataList){
+		let prop = $(ele).prop("name");
+		if(checkTypeList.indexOf(prop) !== -1) continue;
+		let val = $(ele).prop("value");
+		passedData[prop] = val;
+	}
+	
+	//record values of checked types
+	for(let name of checkTypeList){
+		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
+	}
+	
+	return doCreate(passedData)
+		.then(data => {
+			if(data.errMsg) return alert(data.errMsg);
+			selectPage(currentPage);
+	  	closePopup();
+		});
+}
+
+/**
+ * 
+ * @param checkEleList {Array<Object>} all checked type(radio/checkbox) elements with the same name
+ * @return {String} return null if no one checked
+ */
+function checkedVal(checkEleList){
+	for(let ele of checkEleList){
+		if($(ele).prop("checked") === true) return $(ele).prop("value");
+	}
+	return null;
+}
+
+/**
+ * @param form {Object} jquery element
+ * @return {Boolean}
+ */
+function isFillAll(form){
+	const exceptList = ["id", "state"];
+	
+	var inputList = $(form).children(".data");
+	
+	for(let ele of inputList){
+		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
+		if(!$(ele).prop("value").length) return false;
+	}
+	
+	//check state field
+	if(!checkedVal($("#popup_form").children("[name='state']"))) return false;
+	
+	return true;
+}
+
+/**
+ * @param form {Object} jquery element
+ */
+function clrFields(form){
+	var inputList = $(form).children(".data");
+	
+	for(let ele of inputList){
+		if($(ele).prop("name") === "state"){
+			$(ele).prop("checked", false);
+			continue;
+		}
+		$(ele).prop("value", "");
+	}
+}
+
+function closePopup(){
+	clrFields($("#popup_form"));
+	$(".mask").prop("id", "");
+	$(".mask").css("display", "");
+	$("#popup_form").children(":submit").prop("id", "");
+}
 
 function filterSearch(){	
 	//record new filters
@@ -180,6 +278,20 @@ function pageNumDisp(totalPage){
   ////////////////////
   // ajax functions //
   ////////////////////
+
+/**
+ * 
+ * @param passedData {Object} {name: String, state: String}
+ * @return {Promise} if error, return: {errMsg: String}
+ */
+function doCreate(passedData){
+	return new Promise((resolve, reject) => {
+		$.post("new_int", passedData, (data, status) => {
+      if(status !== "success") return reject("post status: " + status);
+      resolve(data);
+    });
+	});
+}
 
 /**
  * @return {Promise} return value: {list: Array<Object>, totalPage: Number}
