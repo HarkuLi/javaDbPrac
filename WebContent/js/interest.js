@@ -61,11 +61,38 @@ $(() => {
   	var self = this;
   	save(self);
   });
+  
+  $("#data_table").on("click", ".delete", function(){
+  	var self = this;
+  	delRow(self)
+  		.then(rst => {
+  			if(!rst) return;
+  			//reload the page
+  			selectPage(currentPage);
+  		});
+  });
 });
 
 ///////////////
 // functions //
 ///////////////
+
+/**
+ * 
+ * @return {Promise} return: Boolean
+ */
+function delRow(self){
+	var check = confirm("[Warning] Delete the data?");
+	if(!check) return Promise.resolve(false);
+	
+	var dataRow = $(self).parent().parent();
+	var id = $(dataRow).find(".id").children().prop("value");
+	
+	return doDel(id)
+		.then(() => {
+			return true;
+		});
+}
 
 /**
  * 
@@ -377,6 +404,20 @@ function pageNumDisp(totalPage){
   ////////////////////
   // ajax functions //
   ////////////////////
+
+/**
+ * 
+ * @param id {String}
+ * @return {Promise} no return value
+ */
+function doDel(id){
+	return new Promise((resolve, reject) => {
+		$.post("del_int", {id}, (data, status) => {
+      if(status !== "success") return reject("post status: " + status);
+      resolve(data);
+    });
+	});
+}
 
 /**
  * 

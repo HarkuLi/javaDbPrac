@@ -69,6 +69,10 @@ public class IntService {
 		dao.update(newData);
 	}
 	
+	public void delete(String id) {
+		dao.delete(id);
+	}
+	
 	private String filterQueryStr(HashMap<String, String> filter) {
 		String rst = "";
 		String name = filter.get("name");
