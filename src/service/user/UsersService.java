@@ -11,8 +11,12 @@ public class UsersService{
 		dao = new UsersDao();
 	}
 	
-	public void createUser(String name, String age, String birth) {
-		dao.create(name, age, birth);
+	/**
+	 * 
+	 * @param newData {HashMap<String, Object>} {name: String, age: int, birth: String}
+	 */
+	public void createUser(HashMap<String, Object> newData) {
+		dao.create(newData);
 	}
 	
 	public UsersModel getUser(String id) {
@@ -67,8 +71,12 @@ public class UsersService{
 		return totalPage;
 	}
 	
-	public void update(String id, String name, String age, String birth) {
-		dao.update(id, name, age, birth);
+	/**
+	 * 
+	 * @param newData {HashMap<String, Object>} {id: String, name: String, age: int, birth: String}
+	 */
+	public void update(HashMap<String, Object> newData) {
+		dao.update(newData);
 	}
 	
 	public void delete(String id) {

@@ -50,6 +50,12 @@ public class UpdateUser extends HttpServlet {
 	    	return;
     	}
     	
-    	dbService.update(id, name, age, birth);
+    	//call service function
+    	HashMap<String, Object> newData = new HashMap<String, Object>();
+    	newData.put("id", id);
+    	newData.put("name", name);
+    	newData.put("age", Integer.parseInt(age));
+    	newData.put("birth", birth);
+    	dbService.update(newData);
     }
 }

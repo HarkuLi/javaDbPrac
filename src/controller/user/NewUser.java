@@ -49,6 +49,11 @@ public class NewUser extends HttpServlet {
 	    	return;
     	}
     	
-    	dbService.createUser(name, age, birth);
+    	//call service function
+    	HashMap<String, Object> newData = new HashMap<String, Object>();
+    	newData.put("name", name);
+    	newData.put("age", Integer.parseInt(age));
+    	newData.put("birth", birth);
+    	dbService.createUser(newData);
     }
 }

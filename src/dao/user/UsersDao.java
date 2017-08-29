@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import model.user.UsersModel;
@@ -70,7 +71,7 @@ public class UsersDao{
 		return -1;
 	}
 	
-	public void create(String name, String age, String birth) {
+	public void create(HashMap<String, Object> newData) {
 		String id = UUID.randomUUID().toString();
 		String sqlStr = "insert into users (id, name, age, birth)";
 		sqlStr += " values (?, ?, ?, ?)";
@@ -79,13 +80,13 @@ public class UsersDao{
 			DateFormat sdf = new SimpleDateFormat(datePattern);
 			//note: the type Date here is java.sql.date
 			//      but sdf.parse(String) returns java.util.date
-			Date birthDate = new Date(sdf.parse(birth).getTime());
+			Date birthDate = new Date(sdf.parse((String)newData.get("birth")).getTime());
 			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
 			pst.setString(1, id);
-			pst.setString(2, name);
-			pst.setInt(3, Integer.parseInt(age));
+			pst.setString(2, (String)newData.get("name"));
+			pst.setInt(3, (int)newData.get("age"));
 			pst.setDate(4, birthDate);
 			pst.executeUpdate();
 		}
@@ -134,7 +135,7 @@ public class UsersDao{
 		return null;
 	}
 	
-	public void update(String id, String name, String age, String birth) {
+	public void update(HashMap<String, Object> newData) {
 		String sqlStr = "update users " +
 						"set name = ?, age = ?, birth = ? " +
 						"where id = ?";
@@ -143,14 +144,14 @@ public class UsersDao{
 			DateFormat sdf = new SimpleDateFormat(datePattern);
 			//note: the type Date here is java.sql.date
 			//      but sdf.parse(String) returns java.util.date
-			Date birthDate = new Date(sdf.parse(birth).getTime());
+			Date birthDate = new Date(sdf.parse((String)newData.get("birth")).getTime());
 			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setString(1, name);
-			pst.setInt(2, Integer.parseInt(age));
+			pst.setString(1, (String)newData.get("name"));
+			pst.setInt(2, (int)newData.get("age"));
 			pst.setDate(3, birthDate);
-			pst.setString(4, id);
+			pst.setString(4, (String)newData.get("id"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
