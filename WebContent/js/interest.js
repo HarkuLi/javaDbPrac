@@ -21,11 +21,36 @@ $(() => {
   $("#next_page").on("click", () => {
     selectPage(currentPage+1);
   });
+  
+  $("#filter_search").on("click", () => {
+  	if(!isFilterChange()) return;
+  	filterSearch();
+  });
 });
 
 ///////////////
 // functions //
 ///////////////
+
+function filterSearch(){	
+	//record new filters
+	nameFilter = $("#name_filter").prop("value");
+	stateFilter = $("#state_filter").prop("value");
+	
+	//go to page 1
+	currentPage = 1;
+	selectPage(1);
+}
+
+/**
+ * 
+ * @return {Boolean}
+ */
+function isFilterChange(){
+	if($("#name_filter").prop("value") !== nameFilter) return true;
+	if($("#state_filter").prop("value") !== stateFilter) return true;
+	return false;
+}
 
 /**
  * go to the page
