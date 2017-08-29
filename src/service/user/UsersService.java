@@ -2,6 +2,7 @@ package service.user;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import dao.user.UsersDao;
 import model.user.UsersModel;
@@ -16,6 +17,8 @@ public class UsersService{
 	 * @param newData {HashMap<String, Object>} {name: String, age: int, birth: String}
 	 */
 	public void createUser(HashMap<String, Object> newData) {
+		String id = UUID.randomUUID().toString();
+		newData.put("id", id);
 		dao.create(newData);
 	}
 	

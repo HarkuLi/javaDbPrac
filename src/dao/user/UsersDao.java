@@ -9,7 +9,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 import model.user.UsersModel;
 import service.ConnectionPool;
@@ -72,7 +71,6 @@ public class UsersDao{
 	}
 	
 	public void create(HashMap<String, Object> newData) {
-		String id = UUID.randomUUID().toString();
 		String sqlStr = "insert into users (id, name, age, birth)";
 		sqlStr += " values (?, ?, ?, ?)";
 		
@@ -84,7 +82,7 @@ public class UsersDao{
 			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setString(1, id);
+			pst.setString(1, (String)newData.get("id"));
 			pst.setString(2, (String)newData.get("name"));
 			pst.setInt(3, (int)newData.get("age"));
 			pst.setDate(4, birthDate);
