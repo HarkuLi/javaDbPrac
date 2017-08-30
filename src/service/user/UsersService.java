@@ -32,20 +32,21 @@ public class UsersService{
 	 */
 	public void createUser(HashMap<String, Object> newData) {
 		String id = UUID.randomUUID().toString();
+		String fileName = UUID.randomUUID().toString();
 		newData.put("id", id);
 		
 		//store photo
 		Part photo = (Part) newData.get("photo");
 		if(photo != null) {
 			String photoType = (String) newData.get("photo_type");
-			String fileName = id + "." + photoType;
+			fileName += "." + photoType;	//filename extension
 			String path = STORE_PATH + "/" + fileName;
 			
 			File dir = new File(STORE_PATH);
 			if(!dir.exists()) dir.mkdir();
 			try {
 				photo.write(path);
-				newData.put("photo", path);
+				newData.put("photo", fileName);
 			} catch (Exception e) {
 				System.out.println("Exception in storing photo: " + e.toString());
 			}
