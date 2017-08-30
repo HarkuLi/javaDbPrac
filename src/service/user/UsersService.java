@@ -12,7 +12,7 @@ import model.user.UsersModel;
 
 public class UsersService{
 	private final int ENTRY_PER_PAGE = 10;
-	private final String STORE_PATH = "/home/nickli/upload";
+	private final String STORE_PATH = System.getProperty("user.home") + "/upload";
 	private UsersDao dao;
 	
 	public UsersService() {
