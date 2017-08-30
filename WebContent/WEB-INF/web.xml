@@ -81,6 +81,10 @@
     <servlet-name>getInt</servlet-name>
     <servlet-class>controller.interest.GetInt</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>userPhoto</servlet-name>
+    <servlet-class>controller.user.UserPhoto</servlet-class>
+  </servlet>
 
 <!-- route -->
   <!-- user page -->
@@ -157,6 +161,10 @@
   <servlet-mapping>
     <servlet-name>getInt</servlet-name>
     <url-pattern>/get_int</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userPhoto</servlet-name>
+    <url-pattern>/user_photo</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->
