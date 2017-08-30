@@ -50,6 +50,10 @@ public class IntService {
 		);
 	}
 	
+	public ArrayList<String> getList() {
+		return dao.getList();
+	}
+	
 	public int getTotalPage(HashMap<String, String> filter) {
 		String where = filterQueryStr(filter);
 		int rowNum;

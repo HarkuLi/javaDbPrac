@@ -31,6 +31,10 @@
     <servlet-name>getUser</servlet-name>
     <servlet-class>controller.user.GetUser</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>userPhoto</servlet-name>
+    <servlet-class>controller.user.UserPhoto</servlet-class>
+  </servlet>
   <!-- occupation page -->
   <servlet>
     <servlet-name>showOcc</servlet-name>
@@ -82,8 +86,8 @@
     <servlet-class>controller.interest.GetInt</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>userPhoto</servlet-name>
-    <servlet-class>controller.user.UserPhoto</servlet-class>
+  	<servlet-name>getIntList</servlet-name>
+    <servlet-class>controller.interest.GetIntList</servlet-class>
   </servlet>
 
 <!-- route -->
@@ -111,6 +115,10 @@
   <servlet-mapping>
     <servlet-name>getUser</servlet-name>
     <url-pattern>/get_user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>userPhoto</servlet-name>
+    <url-pattern>/user_photo</url-pattern>
   </servlet-mapping>
   <!-- occupation page -->
   <servlet-mapping>
@@ -163,8 +171,8 @@
     <url-pattern>/get_int</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>userPhoto</servlet-name>
-    <url-pattern>/user_photo</url-pattern>
+    <servlet-name>getIntList</servlet-name>
+    <url-pattern>/get_int_list</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->

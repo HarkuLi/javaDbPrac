@@ -94,22 +94,54 @@ public class IntDao {
 		}
 	}
 	
+	public ArrayList<String> getList() {
+		String sqlStr = "select name from " + tableName +
+						" where state = true" +
+				        " order by name";
+		ArrayList<String> rst = new ArrayList<String>();
+		
+		con = conPool.getConnection();
+		
+		try {
+			con = conPool.getConnection();
+			stat = con.createStatement();
+			rs = stat.executeQuery(sqlStr);
+			
+			while(rs.next()){
+				rst.add(rs.getString("name"));
+			}
+			return rst;
+		}
+		catch(Exception e) {
+			System.out.println("Exception in read: " + e.toString());
+		}
+		finally {
+			close();
+		}
+		
+		return null;
+	}
+	
 	public ArrayList<IntModel> read(String sel, String where, String limit) {
 		String sqlStr = "select " + sel +
 				        " from " + tableName;
 		if(where != null && where.length() != 0) {
 			sqlStr   += " where " + where;
 		}
-		sqlStr		 += " order by name" +
-				        " limit " + limit;
+		sqlStr		 += " order by name";
+		if(limit != null && limit.length() != 0) {
+			sqlStr   += " limit " + limit;
+		}
 		
 		ArrayList<IntModel> tableList = new ArrayList<IntModel>();
+		
+		con = conPool.getConnection();
 		
 		try {
 			con = conPool.getConnection();
 			stat = con.createStatement();
 			rs = stat.executeQuery(sqlStr);
-						
+			
 			while(rs.next()){
 				HashMap<String, Object> data = new HashMap<String, Object>();
 				data.put("id", rs.getString("id"));
