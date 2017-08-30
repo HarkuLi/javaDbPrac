@@ -7,26 +7,30 @@ public class UsersModel{
 	private String name;
 	private int age;
 	private Date birth;
+	private String photoName;
 	
 	public UsersModel() {
 		id = null;
 		name = null;
 		age = 0;
 		birth = null;
+		photoName = null;
 	}
 	
-	public UsersModel(String _id, String _name, int _age, Date _birth){
+	public UsersModel(String _id, String _name, int _age, Date _birth, String _photoName){
 		id = _id;
 		name = _name;
 		age = _age;
 		birth = _birth;
+		photoName = _photoName;
 	}
 	
-	public void setValue(String _id, String _name, int _age, Date _birth) {
+	public void setValue(String _id, String _name, int _age, Date _birth, String _photoName) {
 		id = _id;
 		name = _name;
 		age = _age;
 		birth = _birth;
+		photoName = _photoName;
 	}
 	
 	public String getId() {
@@ -43,5 +47,9 @@ public class UsersModel{
 	
 	public Date getBirth() {
 		return birth;
+	}
+	
+	public String getPhotoName() {
+		return photoName;
 	}
 }
