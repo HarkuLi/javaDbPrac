@@ -143,6 +143,14 @@ public class UsersService{
 	}
 	
 	public void delete(String id) {
+		//delete the photo
+		String photoName = getUser(id).getPhotoName();
+		if(photoName != null) {
+			String path = STORE_PATH + "/" + photoName;
+			File file = new File(path);
+			if(file.exists()) file.delete();
+		}
+		
 		dao.delete(id);
 	}
 	
