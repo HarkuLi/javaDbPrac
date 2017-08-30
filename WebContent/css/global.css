@@ -22,6 +22,10 @@ td input{
 	display: none;
 }
 
+.hidden_data{
+	display: none;
+}
+
 .mask{
 	height: 100%;
 	width: 100%;

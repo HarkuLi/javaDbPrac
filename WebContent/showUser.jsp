@@ -51,6 +51,7 @@
 	<!-- show table -->
 	<table id="data_table">
 		<tr>
+			<th>photo</th>
 			<th>name</th>
 			<th>age</th>
 			<th>birth</th>

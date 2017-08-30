@@ -71,7 +71,7 @@ public class UsersDao{
 	}
 	
 	public void create(HashMap<String, Object> newData) {
-		String sqlStr = "insert into users (id, name, age, birth, photo_path)";
+		String sqlStr = "insert into users (id, name, age, birth, photo_name)";
 		sqlStr += " values (?, ?, ?, ?, ?)";
 		
 		try {
@@ -118,7 +118,8 @@ public class UsersDao{
 						rs.getString("id"),
 						rs.getString("name"),
 						rs.getInt("age"),
-						rs.getDate("birth")
+						rs.getDate("birth"),
+						rs.getString("photo_name")
 					)
 				);
 			}

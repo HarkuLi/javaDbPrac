@@ -14,7 +14,7 @@ public class UsersModel{
 		name = null;
 		age = 0;
 		birth = null;
-		photoName = null;
+		photoName= null;
 	}
 	
 	public UsersModel(String _id, String _name, int _age, Date _birth, String _photoName){

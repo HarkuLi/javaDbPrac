@@ -1,6 +1,7 @@
 /**
  * 
  */
+const route = "/javaDbPrac/";
 var currentPage = 1;
 var nameFilter = "";
 var birthFilter_from = "";
@@ -258,6 +259,7 @@ function selectPage(page){
   getList(page)
   	.then(data => {
   		renderData(data.list);
+  		console.log("data: " + JSON.stringify(data));
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
   	});
@@ -279,8 +281,12 @@ function renderData(dataList){
 		id: 3,
 		name: 15,
 		age: 3,
-		birth: 10
+		birth: 10,
+		photoName: 1
 	};
+	
+	const hideList = ["id", "photoName"];
+	const propList = ["id", "photoName", "photo", "name", "age", "birth"];
 	
 	$("#data_table").css("display", "");
 	
@@ -301,10 +307,16 @@ function renderData(dataList){
 			continue;
 		}
 		
+		//set input entries
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
 			$(ele).prop("value", dataList[idx][prop]);
 		}
+		
+	  //set photo entry
+		let photo = $(row).find("img");
+		$(photo).prop("src", route + "user_photo?n=" + dataList[idx].photoName);
+		
 		$(row).css("display", "");
 		++idx;
 	}
@@ -320,8 +332,22 @@ function renderData(dataList){
 		
 		dataRow.prop("class", "data_rows");
 		
-		for(let prop in data){
+		for(let prop of propList){
 			rowEntry = $("<td></td>");
+			
+			//photo entry
+			if(prop === "photo"){
+				let img = $("<img>");
+				img.prop("src", route + "user_photo?n=" + data.photoName);
+				img.prop("height", "40")
+				img.prop("width", "40")
+				rowEntry.append(img);
+				dataRow.append(rowEntry);
+				continue;
+			}
+			
+			//text entry
+			if(hideList.indexOf(prop) >= 0) rowEntry.prop("class", "hidden_data");
 			if(prop === "id")	rowEntry.prop("class", "id");
 			input = $("<input>");
 			input.prop("name", prop);
