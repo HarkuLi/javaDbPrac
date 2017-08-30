@@ -41,13 +41,8 @@ public class NewUser extends HttpServlet {
     	String age = req.getParameter("age");
     	String birth = req.getParameter("birth");
     	Part photo = req.getPart("photo");
-    	String photoType = req.getParameter("photo_type");
-    	
-//    	System.out.println("photo: " + photo.getSubmittedFileName());
-//    	System.out.println("size: " + photo.getSize());
-//    	System.out.println("age: " + age);
-//    	System.out.println("type: " + photo.getContentType());
-    	
+    	String photoType = req.getParameter("photoType");
+    	 	
     	//check data
     	String pattern = "^\\d+$";
     	Pattern r = Pattern.compile(pattern);
@@ -67,7 +62,7 @@ public class NewUser extends HttpServlet {
     	newData.put("birth", birth);
     	if(photo.getSize() != 0) {
     		newData.put("photo", photo);
-    		newData.put("photo_type", photoType);
+    		newData.put("photoType", photoType);
     	}
     	dbService.createUser(newData);
     }

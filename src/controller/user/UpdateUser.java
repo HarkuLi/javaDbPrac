@@ -7,13 +7,17 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 
 import service.user.UsersService;
+
+@MultipartConfig
 
 public class UpdateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +41,9 @@ public class UpdateUser extends HttpServlet {
     	String name = req.getParameter("name");
     	String age = req.getParameter("age");
     	String birth = req.getParameter("birth");
+    	Part photo = req.getPart("photo");
+    	String photoType = req.getParameter("photoType");
+    	String photoName = req.getParameter("photoName");
     	
     	//check data
     	String pattern = "^\\d+$";
@@ -56,6 +63,11 @@ public class UpdateUser extends HttpServlet {
     	newData.put("name", name);
     	newData.put("age", Integer.parseInt(age));
     	newData.put("birth", birth);
+    	if(photo.getSize() != 0) {
+    		newData.put("photo", photo);
+    		newData.put("photoType", photoType);
+    		newData.put("photoName", photoName);
+    	}
     	dbService.update(newData);
     }
 }

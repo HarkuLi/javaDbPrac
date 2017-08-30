@@ -70,6 +70,8 @@ $(() => {
   $("#popup_form").on("click", "#user_modify", function(event){
   	event.preventDefault();
   	
+  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+  	
   	var self = this;
   	save(self);
   });
@@ -80,6 +82,7 @@ $(() => {
 ///////////////
 
 function closePopup(){
+	$("#current_photo").prop("src", "/javaDbPrac/user_photo");
 	clrFields($("#popup_form"));
 	$(".mask").prop("id", "");
 	$(".mask").css("display", "");
@@ -109,16 +112,15 @@ function delRow(self){
  * @return {Promise}
  */
 function save(self){
-	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+	const acceptFileType = ["image/jpeg", "image/png", "image/gif"];
+	var passedData = new FormData($("#popup_form")[0]);
+	var photo = $("#photo").prop("files")[0];
 	
-	var passedData = {};
-	var inputList = $("#popup_form").children(".data");
-	
-	//record the input values
-	for(let ele of inputList){
-		let propName = $(ele).prop("name");
-		let val = $(ele).prop("value");
-		passedData[propName] = val;
+	if(photo){
+		if(acceptFileType.indexOf(photo.type)===-1)
+			return alert("Unaccepted file type.");
+		let type = photo.type.split("/")[1];
+		passedData.append("photoType", type);
 	}
 	
 	//update the change
@@ -152,6 +154,9 @@ function edit(self){
 	
 	return getUser(id)
 		.then(data => {
+			//set current photo
+			$("#current_photo").prop("src", route + "/user_photo?n=" + data.photoName);
+			
 			//set pop up form
 			var inputList = $("#popup_form").children(".data");
 			for(let ele of inputList){
@@ -180,7 +185,7 @@ function clrFields(form){
  * @return {Boolean}
  */
 function isFillAll(form){
-	const exceptList = ["id", "photo"];
+	const exceptList = ["id", "photo", "photoName"];
 	
 	var inputList = $(form).children(".data");
 	
@@ -200,8 +205,7 @@ function newUser(){
 		if(acceptFileType.indexOf(photo.type)===-1)
 			return alert("Unaccepted file type.");
 		let type = photo.type.split("/")[1];
-		console.log("type: " + type);
-		passedData.append("photo_type", type);
+		passedData.append("photoType", type);
 	}
 	
 	return doCreate(passedData)
@@ -259,7 +263,6 @@ function selectPage(page){
   getList(page)
   	.then(data => {
   		renderData(data.list);
-  		console.log("data: " + JSON.stringify(data));
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
   	});
@@ -405,21 +408,43 @@ function doDel(id){
 
 /**
  * 
- * @param passedData {Object} {id: String, name: String, age: String, birth: String}
+ * @param passedData {Object} (formData)
+ * 			{
+ * 				id: String,
+ * 				name: String,
+ * 				age: String,
+ * 				birth: String,
+ * 				photo: Object,
+ * 				photoType: String
+ * 			}
  * @return {Promise} if error, return: {errMsg: String}
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("update_user", passedData, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
-      resolve(data);
-    });
+		$.ajax({
+			url: "update_user",
+			type: "POST",
+			data: passedData,
+			processData: false,
+			contentType: false,
+			success: (data, status) => {
+        if(status !== "success") return reject("post status: " + status);
+        resolve(data);
+      }
+		});
 	});
 }
 
 /**
  * 
- * @param passedData {Object} {name: String, age: String, birth: String}
+ * @param passedData {Object}
+ * 			{
+ * 				name: String,
+ * 				age: String,
+ * 				birth: String,
+ * 				photo: Object,
+ * 				photoType: String
+ * 			}
  * @return {Promise} if error, return: {errMsg: String}
  */
 function doCreate(passedData){

@@ -12,7 +12,7 @@ import model.user.UsersModel;
 
 public class UsersService{
 	private final int ENTRY_PER_PAGE = 10;
-	private final String STORE_PATH = System.getProperty("user.home") + "/upload";
+	private final String STORE_PATH = System.getProperty("user.home") + "/upload/";
 	private UsersDao dao;
 	
 	public UsersService() {
@@ -27,20 +27,20 @@ public class UsersService{
 	 * 		 age: int,
 	 *       birth: String,
 	 *       photo: Part,    //not required
-	 *       photo_type: String    //not required
+	 *       photoType: String    //not required
 	 *      }
 	 */
 	public void createUser(HashMap<String, Object> newData) {
 		String id = UUID.randomUUID().toString();
-		String fileName = UUID.randomUUID().toString();
 		newData.put("id", id);
 		
 		//store photo
 		Part photo = (Part) newData.get("photo");
 		if(photo != null) {
-			String photoType = (String) newData.get("photo_type");
+			String fileName = UUID.randomUUID().toString();
+			String photoType = (String) newData.get("photoType");
 			fileName += "." + photoType;	//filename extension
-			String path = STORE_PATH + "/" + fileName;
+			String path = STORE_PATH + fileName;
 			
 			File dir = new File(STORE_PATH);
 			if(!dir.exists()) dir.mkdir();
@@ -112,6 +112,33 @@ public class UsersService{
 	 * @param newData {HashMap<String, Object>} {id: String, name: String, age: int, birth: String}
 	 */
 	public void update(HashMap<String, Object> newData) {
+		Part photo = (Part) newData.get("photo");
+		if(photo != null) {
+			//delete original photo
+			String fileName = (String)newData.get("photoName");
+			if(fileName != null) {
+				String path = STORE_PATH + "/" + fileName;
+				File file = new File(path);
+				if(file.exists()) file.delete();
+			}
+			
+			//store new photo
+			fileName = UUID.randomUUID().toString();
+			String photoType = (String) newData.get("photoType");
+			fileName += "." + photoType;	//filename extension
+			
+			String path = STORE_PATH + fileName;
+			
+			File dir = new File(STORE_PATH);
+			if(!dir.exists()) dir.mkdir();
+			try {
+				photo.write(path);
+				newData.put("photo", fileName);
+			} catch (Exception e) {
+				System.out.println("Exception in storing photo: " + e.toString());
+			}
+		}
+		
 		dao.update(newData);
 	}
 	

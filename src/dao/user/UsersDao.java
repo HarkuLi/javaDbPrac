@@ -137,8 +137,12 @@ public class UsersDao{
 	
 	public void update(HashMap<String, Object> newData) {
 		String sqlStr = "update users " +
-						"set name = ?, age = ?, birth = ? " +
-						"where id = ?";
+						"set name = ?, age = ?, birth = ? ";
+		String photoName = (String) newData.get("photo");
+		if(photoName != null) {
+			sqlStr   += ", photo_name = '" + photoName + "' ";
+		}
+		sqlStr       += "where id = ?";
 		
 		try {
 			DateFormat sdf = new SimpleDateFormat(datePattern);

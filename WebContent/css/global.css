@@ -63,7 +63,13 @@ td input{
 }
 
 .center_block{
+	display: block;
 	margin: 0 auto;
+}
+
+.mid_img{
+	max-height: 200px;
+	max-width: 500px;
 }
 
 
