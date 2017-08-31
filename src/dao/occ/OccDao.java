@@ -100,8 +100,10 @@ public class OccDao {
 		if(where != null && where.length() != 0) {
 			sqlStr   += " where " + where;
 		}
-		sqlStr		 += " order by name" +
-				        " limit " + limit;
+		sqlStr		 += " order by name";
+		if(limit != null && limit.length() != 0) {
+			sqlStr   += " limit " + limit;
+		}
 		
 		ArrayList<OccModel> tableList = new ArrayList<OccModel>();
 		

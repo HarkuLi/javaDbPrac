@@ -31,6 +31,10 @@ public class OccService {
 		return occList.get(0);
 	}
 	
+	public ArrayList<OccModel> getList() {
+		return dao.read("*", "state = true", null);
+	}
+	
 	public ArrayList<OccModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		String where = null;

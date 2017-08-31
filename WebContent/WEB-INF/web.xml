@@ -60,6 +60,10 @@
     <servlet-name>getOcc</servlet-name>
     <servlet-class>controller.occ.GetOcc</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>getOccList</servlet-name>
+    <servlet-class>controller.occ.GetOccList</servlet-class>
+  </servlet>
   <!-- interest page -->
   <servlet>
     <servlet-name>showInt</servlet-name>
@@ -144,6 +148,10 @@
   <servlet-mapping>
     <servlet-name>getOcc</servlet-name>
     <url-pattern>/get_occ</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>getOccList</servlet-name>
+    <url-pattern>/get_occ_list</url-pattern>
   </servlet-mapping>
   <!-- interest page -->
   <servlet-mapping>
