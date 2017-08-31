@@ -114,14 +114,13 @@ public class UsersDao{
 			rs = stat.executeQuery(sqlStr);
 						
 			while(rs.next()){
-				tableList.add(new UsersModel(
-						rs.getString("id"),
-						rs.getString("name"),
-						rs.getInt("age"),
-						rs.getDate("birth"),
-						rs.getString("photo_name")
-					)
-				);
+				UsersModel newUser = new UsersModel();
+				newUser.setId(rs.getString("id"));
+				newUser.setName(rs.getString("name"));
+				newUser.setAge(rs.getInt("age"));
+				newUser.setBirth(rs.getDate("birth"));
+				newUser.setPhotoName(rs.getString("photo_name"));
+				tableList.add(newUser);
 			}
 			return tableList;
 		}
