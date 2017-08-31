@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import service.ConnectionPool;
 
@@ -21,15 +20,15 @@ public class UserIntDao {
 		conPool = new ConnectionPool();
 	}
 	
-	public void create(String id, String interest) {
+	public void create(String userId, String interest) {
 		String sqlStr = "insert into " + tableName;
-		sqlStr	     += " (id, interest)";
+		sqlStr	     += " (userId, interest)";
 		sqlStr 		 += " values (?, ?)";
 		
 		try {
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setString(1, id);
+			pst.setString(1, userId);
 			pst.setString(2, interest);
 			pst.executeUpdate();
 		}
@@ -43,20 +42,20 @@ public class UserIntDao {
 	
 	/**
 	 * 
-	 * @param id {String} user's id
+	 * @param userId {String} user's id
 	 * @return {ArrayList<String>} return a list of interest id of the user
 	 */
-	public ArrayList<String> read(String id) {
+	public ArrayList<String> read(String userId) {
 		String sqlStr = "select interest" +
 				        " from " + tableName +
-			            " where id = ?";
+			            " where userId = ?";
 		
 		ArrayList<String> rstList = new ArrayList<String>();
 		
 		try {
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setString(1, id);
+			pst.setString(1, userId);
 			rs = pst.executeQuery();
 						
 			while(rs.next()){
@@ -81,7 +80,7 @@ public class UserIntDao {
 //		if(photoName != null) {
 //			sqlStr   += ", photo_name = '" + photoName + "' ";
 //		}
-//		sqlStr       += "where id = ?";
+//		sqlStr       += "where userId = ?";
 //		
 //		try {
 //			DateFormat sdf = new SimpleDateFormat(datePattern);
@@ -94,7 +93,7 @@ public class UserIntDao {
 //			pst.setString(1, (String)newData.get("name"));
 //			pst.setInt(2, (int)newData.get("age"));
 //			pst.setDate(3, birthDate);
-//			pst.setString(4, (String)newData.get("id"));
+//			pst.setString(4, (String)newData.get("userId"));
 //			pst.executeUpdate();
 //		}
 //		catch(Exception e) {
@@ -105,23 +104,23 @@ public class UserIntDao {
 //		}
 //	}
 //	
-//	public void delete(String id) {
-//		String sqlStr = "delete from users" +
-//						" where id = ?";
-//		
-//		try {
-//			con = conPool.getConnection();
-//			pst = con.prepareStatement(sqlStr);
-//			pst.setString(1, id);
-//			pst.executeUpdate();
-//		}
-//		catch(Exception e) {
-//			System.out.println("Exception in delete: " + e.toString());
-//		}
-//		finally {
-//			close();
-//		}
-//	}
+	public void delete(String userId) {
+		String sqlStr = "delete from " + tableName +
+						" where userId = ?";
+		
+		try {
+			con = conPool.getConnection();
+			pst = con.prepareStatement(sqlStr);
+			pst.setString(1, userId);
+			pst.executeUpdate();
+		}
+		catch(Exception e) {
+			System.out.println("Exception in delete: " + e.toString());
+		}
+		finally {
+			close();
+		}
+	}
 	
 	private void close() {
 		try {

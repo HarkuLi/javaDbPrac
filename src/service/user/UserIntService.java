@@ -27,6 +27,6 @@ public class UserIntService {
 	}
 	
 	public void delInterests(String id) {
-		
+		dao.delete(id);
 	}
 }

@@ -157,6 +157,8 @@ public class UsersService{
 			if(file.exists()) file.delete();
 		}
 		
+		UIS.delInterests(id);
+		
 		dao.delete(id);
 	}
 	
