@@ -86,19 +86,18 @@ $(() => {
 function renderInterestList(){
 	getInterestList()
 		.then(list => {
-			console.log(list);
 			$("#interest_box").empty();
 			var ul = $("<ul></ul>");
-			for(let name of list){
+			for(let ele of list){
 				let li = $("<li></li>");
 				let label = $("<label></label>");
 				let input = $("<input></input>");
 				input.prop("class", "data");
 				input.prop("type", "checkbox");
 				input.prop("name", "interest[]");
-				input.prop("value", name);
+				input.prop("value", ele.id);
 				label.append(input);
-				label.append(name);
+				label.append(ele.name);
 				li.append(label);
 				ul.append(li);
 			}
@@ -199,8 +198,12 @@ function edit(self){
  */
 function clrFields(form){
 	var dataList = $(form).find(".data");
-	$(dataList).prop("value", "");
-	$(dataList).prop("checked", false);
+	
+	var txtData = $(dataList).filter("[type!='checkbox']");
+	$(txtData).prop("value", "");
+	
+	var selectData = $(dataList).filter(":checkbox, :radio");
+	$(selectData).prop("checked", false);
 }
 
 /**
