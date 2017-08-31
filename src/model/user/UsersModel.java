@@ -9,6 +9,7 @@ public class UsersModel{
 	private int age;
 	private Date birth;
 	private String photoName;
+	//a list of interest id
 	private ArrayList<String> interest;
 	
 	public UsersModel() {

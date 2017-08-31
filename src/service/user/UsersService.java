@@ -65,7 +65,9 @@ public class UsersService{
 			"id = '" + id + "'",
 			"1"
 		);
-		return userList.get(0);
+		UsersModel user = userList.get(0);
+		user.setInterest(UIS.getInterests(id));
+		return user;
 	}
 	
 	public ArrayList<UsersModel> getPage(int page) {

@@ -17,11 +17,16 @@ public class UserIntService {
 		}
 	}
 	
-	public void delInterests(String id) {
-		
+	/**
+	 * return a list of interest id
+	 * @param id {String}
+	 * @return {ArrayList<String>}
+	 */
+	public ArrayList<String> getInterests(String id) {
+		return dao.read(id);
 	}
 	
-	public ArrayList<String> getInterestList(String id){
-		return dao.read(id);
+	public void delInterests(String id) {
+		
 	}
 }

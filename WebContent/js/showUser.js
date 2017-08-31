@@ -182,10 +182,19 @@ function edit(self){
 			$("#current_photo").prop("src", route + "/user_photo?n=" + data.photoName);
 			
 			//set pop up form
-			var inputList = $("#popup_form").children(".data");
-			for(let ele of inputList){
+				//set non-checked type data
+			var txtData = $("#popup_form").children(".data");
+			for(let ele of txtData){
 				let propName = $(ele).prop("name");
 				$(ele).prop("value", data[propName]);
+			}
+				//set interest
+			var interestData = $("#interest_box").find("input");
+			for(let ele of interestData){
+				let interestId = $(ele).prop("value");
+				if(data.interest.indexOf(interestId) >= 0){
+					$(ele).prop("checked", true);
+				}
 			}
 			
 			//show pop up window
@@ -197,13 +206,14 @@ function edit(self){
  * @param form {Object} jquery element
  */
 function clrFields(form){
-	var dataList = $(form).find(".data");
+	var txtData = $(form).children(".data");
+	txtData = $(txtData).filter("[type!='checkbox']");
+	txtData = $(txtData).filter("[type!='radio']");
 	
-	var txtData = $(dataList).filter("[type!='checkbox']");
 	$(txtData).prop("value", "");
 	
-	var selectData = $(dataList).filter(":checkbox, :radio");
-	$(selectData).prop("checked", false);
+	var checkData = $(form).find(":checkbox, :radio");
+	$(checkData).prop("checked", false);
 }
 
 /**

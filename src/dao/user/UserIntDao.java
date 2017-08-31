@@ -41,8 +41,13 @@ public class UserIntDao {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param id {String} user's id
+	 * @return {ArrayList<String>} return a list of interest id of the user
+	 */
 	public ArrayList<String> read(String id) {
-		String sqlStr = "select name" +
+		String sqlStr = "select interest" +
 				        " from " + tableName +
 			            " where id = ?";
 		
@@ -55,7 +60,7 @@ public class UserIntDao {
 			rs = pst.executeQuery();
 						
 			while(rs.next()){
-				rstList.add(rs.getString("name"));
+				rstList.add(rs.getString("interest"));
 			}
 			return rstList;
 		}
