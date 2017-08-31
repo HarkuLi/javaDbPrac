@@ -94,34 +94,6 @@ public class IntDao {
 		}
 	}
 	
-	public ArrayList<String> getList() {
-		String sqlStr = "select name from " + tableName +
-						" where state = true" +
-				        " order by name";
-		ArrayList<String> rst = new ArrayList<String>();
-		
-		con = conPool.getConnection();
-		
-		try {
-			con = conPool.getConnection();
-			stat = con.createStatement();
-			rs = stat.executeQuery(sqlStr);
-			
-			while(rs.next()){
-				rst.add(rs.getString("name"));
-			}
-			return rst;
-		}
-		catch(Exception e) {
-			System.out.println("Exception in read: " + e.toString());
-		}
-		finally {
-			close();
-		}
-		
-		return null;
-	}
-	
 	public ArrayList<IntModel> read(String sel, String where, String limit) {
 		String sqlStr = "select " + sel +
 				        " from " + tableName;
@@ -143,11 +115,11 @@ public class IntDao {
 			rs = stat.executeQuery(sqlStr);
 			
 			while(rs.next()){
-				HashMap<String, Object> data = new HashMap<String, Object>();
-				data.put("id", rs.getString("id"));
-				data.put("name", rs.getString("name"));
-				data.put("state", rs.getBoolean("state"));
-				tableList.add(new IntModel(data));
+				IntModel data = new IntModel();
+				data.setId(rs.getString("id"));
+				data.setName(rs.getString("name"));
+				data.setState(rs.getBoolean("state"));
+				tableList.add(data);
 			}
 			return tableList;
 		}

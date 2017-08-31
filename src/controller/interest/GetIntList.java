@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import model.interest.IntModel;
 import service.interest.IntService;
 
 public class GetIntList extends HttpServlet {
@@ -27,7 +28,7 @@ public class GetIntList extends HttpServlet {
 		JSONObject rstObj;
     	PrintWriter out = res.getWriter();
     	
-    	ArrayList<String> interestList = dbService.getList();
+    	ArrayList<IntModel> interestList = dbService.getList();
     	HashMap<String, Object> rstMap = new HashMap<String, Object>();
     	rstMap.put("list", interestList);
     	

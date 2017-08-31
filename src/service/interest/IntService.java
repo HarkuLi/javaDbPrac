@@ -50,8 +50,8 @@ public class IntService {
 		);
 	}
 	
-	public ArrayList<String> getList() {
-		return dao.getList();
+	public ArrayList<IntModel> getList() {
+		return dao.read("*", "state = true", null);
 	}
 	
 	public int getTotalPage(HashMap<String, String> filter) {
