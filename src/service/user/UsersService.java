@@ -14,9 +14,11 @@ public class UsersService{
 	private final int ENTRY_PER_PAGE = 10;
 	private final String STORE_PATH = System.getProperty("user.home") + "/upload/";
 	private UsersDao dao;
+	private UserIntService UIS;
 	
 	public UsersService() {
 		dao = new UsersDao();
+		UIS = new UserIntService();
 	}
 	
 	/**
@@ -51,6 +53,8 @@ public class UsersService{
 				System.out.println("Exception in storing photo: " + e.toString());
 			}
 		}
+		
+		UIS.saveInterests(id, (String[])newData.get("interests"));
 		
 		dao.create(newData);
 	}

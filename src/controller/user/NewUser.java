@@ -42,6 +42,7 @@ public class NewUser extends HttpServlet {
     	String birth = req.getParameter("birth");
     	Part photo = req.getPart("photo");
     	String photoType = req.getParameter("photoType");
+    	String[] interestList = req.getParameterValues("interest[]");
     	 	
     	//check data
     	String pattern = "^\\d+$";
@@ -64,6 +65,7 @@ public class NewUser extends HttpServlet {
     		newData.put("photo", photo);
     		newData.put("photoType", photoType);
     	}
+    	newData.put("interests", interestList);
     	dbService.createUser(newData);
     }
 }
