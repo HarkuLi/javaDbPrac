@@ -13,6 +13,7 @@ var birthFilter_to = "";
 $(() => {
 	//initialization
 	selectPage(currentPage);
+	renderOccList();
 	renderInterestList();
 	
   ///////////////
@@ -82,6 +83,25 @@ $(() => {
 ///////////////
 // functions //
 ///////////////
+
+function renderOccList(){
+	getOccList()
+		.then(list => {
+			$("#occ_list").empty();
+			
+			var option = $("<option></option>");
+			option.prop("value", "");
+			option.append("--");
+			$("#occ_list").append(option);
+			
+			for(let ele of list){
+				option = $("<option></option>");
+				option.prop("value", ele.id);
+				option.append(ele.name);
+				$("#occ_list").append(option);
+			}
+		});
+}
 
 function renderInterestList(){
 	getInterestList()
@@ -206,14 +226,7 @@ function edit(self){
  * @param form {Object} jquery element
  */
 function clrFields(form){
-	var txtData = $(form).children(".data");
-	txtData = $(txtData).filter("[type!='checkbox']");
-	txtData = $(txtData).filter("[type!='radio']");
-	
-	$(txtData).prop("value", "");
-	
-	var checkData = $(form).find(":checkbox, :radio");
-	$(checkData).prop("checked", false);
+	$(form)[0].reset();
 }
 
 /**
@@ -446,7 +459,20 @@ function pageNumDisp(totalPage){
 
 /**
  * 
- * @return {Promise} return array of interest
+ * @return {Promise} return a list of occupations
+ */
+function getOccList(){
+	return new Promise((resolve, reject) => {
+		$.get("get_occ_list", (data, status) => {
+			if(status !== "success") return reject("get status: " + status);
+			resolve(data.list);
+		});
+	});
+}
+
+/**
+ * 
+ * @return {Promise} return an list of interests
  */
 function getInterestList(){
 	return new Promise((resolve, reject) => {

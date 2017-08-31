@@ -74,6 +74,10 @@ td input{
 	margin: 5px;
 }
 
+.popup_window select{
+	margin: 5px 0px;
+}
+
 .popup_window .container{
 	overflow: auto;
 	height: 450px;

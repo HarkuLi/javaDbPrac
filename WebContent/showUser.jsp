@@ -43,6 +43,7 @@
 			<div class="container">
 				<form id="popup_form" class="center_block" enctype="multipart/form-data">
 					<jsp:include page="partial/user/detail.jsp"></jsp:include>
+					<input type="reset">
 				</form>
 			</div>
 		</div>
