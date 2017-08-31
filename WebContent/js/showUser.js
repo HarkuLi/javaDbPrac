@@ -11,7 +11,9 @@ var birthFilter_to = "";
 // ready //
 ///////////
 $(() => {
+	//initialization
 	selectPage(currentPage);
+	renderInterestList();
 	
   ///////////////
   // listeners //
@@ -80,6 +82,29 @@ $(() => {
 ///////////////
 // functions //
 ///////////////
+
+function renderInterestList(){
+	getInterestList()
+		.then(list => {
+			console.log(list);
+			$("#interest_box").empty();
+			var ul = $("<ul></ul>");
+			for(let name of list){
+				let li = $("<li></li>");
+				let label = $("<label></label>");
+				let input = $("<input></input>");
+				input.prop("class", "data");
+				input.prop("type", "checkbox");
+				input.prop("name", "interest[]");
+				input.prop("value", name);
+				label.append(input);
+				label.append(name);
+				li.append(label);
+				ul.append(li);
+			}
+			$("#interest_box").append(ul);
+		});
+}
 
 function closePopup(){
 	$("#current_photo").prop("src", "/javaDbPrac/user_photo");
@@ -173,11 +198,9 @@ function edit(self){
  * @param form {Object} jquery element
  */
 function clrFields(form){
-	var inputList = $(form).children(".data");
-	
-	for(let ele of inputList){
-		$(ele).prop("value", "");
-	}
+	var dataList = $(form).find(".data");
+	$(dataList).prop("value", "");
+	$(dataList).prop("checked", false);
 }
 
 /**
@@ -391,6 +414,19 @@ function pageNumDisp(totalPage){
   ////////////////////
   // ajax functions //
   ////////////////////
+
+/**
+ * 
+ * @return {Promise} return array of interest
+ */
+function getInterestList(){
+	return new Promise((resolve, reject) => {
+		$.get("get_int_list", (data, status) => {
+			if(status !== "success") return reject("get status: " + status);
+			resolve(data.list);
+		});
+	});
+}
 
 /**
  * 

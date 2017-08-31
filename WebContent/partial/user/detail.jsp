@@ -5,4 +5,7 @@
 name: <input type="text" class="data" name="name"><br>
 age: <input type="text" class="data" name="age"><br>
 birth: <input type="date" class="data" name="birth"><br>
+interests:
+<div id="interest_box">
+</div>
 <input type="submit" value="submit">

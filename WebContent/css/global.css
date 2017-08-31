@@ -40,10 +40,11 @@ td input{
 .popup_window{
 	margin: 0 auto;
 	min-width: 500px;
-	min-height: 300px;
+	max-height: 500px;
 	border: 1px solid black;
 	border-radius: 8px;
 	background-color: white;
+	overflow: auto;
 }
 
 .txt_right{
@@ -54,12 +55,9 @@ td input{
 	cursor: pointer;
 }
 
-.popup_window input{
-	margin: 5px 0px;
-}
-
 .container{
 	display: flex;
+	height: 450px;
 }
 
 .center_block{
@@ -72,7 +70,24 @@ td input{
 	max-width: 500px;
 }
 
+.popup_window input{
+	margin: 5px;
+}
 
+.popup_window .container{
+	overflow: auto;
+	height: 450px;
+	width: 495px;
+	margin: 0 auto;
+}
+
+ul{
+	-webkit-column-count: 2;
+	-moz-column-count: 2;
+	column-count: 2;
+	list-style: none;
+	padding: 0;
+}
 
 
 
