@@ -72,38 +72,7 @@ public class UserIntDao {
 		
 		return null;
 	}
-//	
-//	public void update(HashMap<String, Object> newData) {
-//		String sqlStr = "update users " +
-//						"set name = ?, age = ?, birth = ? ";
-//		String photoName = (String) newData.get("photo");
-//		if(photoName != null) {
-//			sqlStr   += ", photo_name = '" + photoName + "' ";
-//		}
-//		sqlStr       += "where userId = ?";
-//		
-//		try {
-//			DateFormat sdf = new SimpleDateFormat(datePattern);
-//			//note: the type Date here is java.sql.date
-//			//      but sdf.parse(String) returns java.util.date
-//			Date birthDate = new Date(sdf.parse((String)newData.get("birth")).getTime());
-//			
-//			con = conPool.getConnection();
-//			pst = con.prepareStatement(sqlStr);
-//			pst.setString(1, (String)newData.get("name"));
-//			pst.setInt(2, (int)newData.get("age"));
-//			pst.setDate(3, birthDate);
-//			pst.setString(4, (String)newData.get("userId"));
-//			pst.executeUpdate();
-//		}
-//		catch(Exception e) {
-//			System.out.println("Exception in update: " + e.toString());
-//		}
-//		finally {
-//			close();
-//		}
-//	}
-//	
+
 	public void delete(String userId) {
 		String sqlStr = "delete from " + tableName +
 						" where userId = ?";

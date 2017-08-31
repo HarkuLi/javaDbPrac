@@ -11,22 +11,29 @@ public class UserIntService {
 		dao = new UserIntDao();
 	}
 	
-	public void saveInterests(String id, String[] interestList) {
+	public void saveInterests(String userId, String[] interestList) {
 		for(String interestId : interestList) {
-			dao.create(id, interestId);
+			dao.create(userId, interestId);
 		}
 	}
 	
 	/**
 	 * return a list of interest id
-	 * @param id {String}
+	 * @param userId {String}
 	 * @return {ArrayList<String>}
 	 */
-	public ArrayList<String> getInterests(String id) {
-		return dao.read(id);
+	public ArrayList<String> getInterests(String userId) {
+		return dao.read(userId);
 	}
 	
-	public void delInterests(String id) {
-		dao.delete(id);
+	public void updateInterests(String userId, String[] interestList) {
+		dao.delete(userId);
+		for(String interestId : interestList) {
+			dao.create(userId, interestId);
+		}
+	}
+	
+	public void delInterests(String userId) {
+		dao.delete(userId);
 	}
 }

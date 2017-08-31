@@ -118,6 +118,7 @@ public class UsersService{
 	 * @param newData {HashMap<String, Object>} {id: String, name: String, age: int, birth: String}
 	 */
 	public void update(HashMap<String, Object> newData) {
+		//update photo
 		Part photo = (Part) newData.get("photo");
 		if(photo != null) {
 			//delete original photo
@@ -144,6 +145,10 @@ public class UsersService{
 				System.out.println("Exception in storing photo: " + e.toString());
 			}
 		}
+		
+		String[] interestList = (String[])newData.get("interests");
+		String userId = (String) newData.get("id");
+		if(interestList.length != 0) UIS.updateInterests(userId, interestList);
 		
 		dao.update(newData);
 	}
