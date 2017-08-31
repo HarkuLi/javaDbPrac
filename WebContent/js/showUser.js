@@ -217,6 +217,18 @@ function clrFields(form){
 }
 
 /**
+ * 
+ * @param checkEleList {Array<Object>} all checked type(radio/checkbox) elements with the same name
+ * @return {Boolean} return false if no one checked
+ */
+function isChecked(checkEleList){
+	for(let ele of checkEleList){
+		if($(ele).prop("checked") === true) return true;
+	}
+	return false;
+}
+
+/**
  * @param form {Object} jquery element
  * @return {Boolean}
  */
@@ -229,6 +241,10 @@ function isFillAll(form){
 		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
 		if(!$(ele).prop("value").length) return false;
 	}
+	
+	//check whether interests selected
+	if(!isChecked($("#interest_box").find("input"))) return false;
+	
 	return true;
 }
 
