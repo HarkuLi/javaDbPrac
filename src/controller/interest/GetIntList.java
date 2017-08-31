@@ -19,7 +19,7 @@ public class GetIntList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * response: {list: Array<String>} interest list
+	 * response: {list: Array<Object>} interest list
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
     	throws ServletException, IOException {
