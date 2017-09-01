@@ -6,7 +6,7 @@ name: <input type="text" class="data" name="name"><br>
 age: <input type="text" class="data" name="age"><br>
 birth: <input type="date" class="data" name="birth"><br>
 occupation:
-<select id="occ_list" class="data" name="occ"></select><br>
+<select id="occ_list" class="data" name="occupation"></select><br>
 interests:
 <div id="interest_box">
 </div>

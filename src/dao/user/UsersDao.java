@@ -121,6 +121,7 @@ public class UsersDao{
 				newUser.setAge(rs.getInt("age"));
 				newUser.setBirth(rs.getDate("birth"));
 				newUser.setPhotoName(rs.getString("photo_name"));
+				newUser.setOccupation(rs.getString("occupation"));
 				tableList.add(newUser);
 			}
 			return tableList;
