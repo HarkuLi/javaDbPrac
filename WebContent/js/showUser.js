@@ -85,14 +85,21 @@ $(() => {
 ///////////////
 
 function renderOccList(){
+	var defaultOcc = {
+		"--" : "",
+		"other" : "other"
+	};
+	
 	getOccList()
 		.then(list => {
 			$("#occ_list").empty();
 			
-			var option = $("<option></option>");
-			option.prop("value", "");
-			option.append("--");
-			$("#occ_list").append(option);
+			for(let prop in defaultOcc){
+				let option = $("<option></option>");
+				option.prop("value", defaultOcc[prop]);
+				option.append(prop);
+				$("#occ_list").append(option);
+			}
 			
 			for(let ele of list){
 				option = $("<option></option>");
