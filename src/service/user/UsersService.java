@@ -148,7 +148,7 @@ public class UsersService{
 		
 		String[] interestList = (String[])newData.get("interests");
 		String userId = (String) newData.get("id");
-		if(interestList.length != 0) UIS.updateInterests(userId, interestList);
+		UIS.updateInterests(userId, interestList);
 		
 		dao.update(newData);
 	}

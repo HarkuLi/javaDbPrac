@@ -12,6 +12,7 @@ public class UserIntService {
 	}
 	
 	public void saveInterests(String userId, String[] interestList) {
+		if(interestList == null) return;
 		for(String interestId : interestList) {
 			dao.create(userId, interestId);
 		}
@@ -27,10 +28,8 @@ public class UserIntService {
 	}
 	
 	public void updateInterests(String userId, String[] interestList) {
-		dao.delete(userId);
-		for(String interestId : interestList) {
-			dao.create(userId, interestId);
-		}
+		delInterests(userId);
+		saveInterests(userId, interestList);
 	}
 	
 	public void delInterests(String userId) {

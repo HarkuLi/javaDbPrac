@@ -255,9 +255,6 @@ function isFillAll(form){
 		if(!$(ele).prop("value").length) return false;
 	}
 	
-	//check whether interests selected
-	if(!isChecked($("#interest_box").find("input"))) return false;
-	
 	return true;
 }
 
