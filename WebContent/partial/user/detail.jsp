@@ -2,6 +2,9 @@
 <img src="/javaDbPrac/user_photo" id="current_photo" class="mid_img center_block">
 <input type="file" class="data" name="photo" id="photo"><br>
 <input type="hidden" class="data" name="photoName">
+state:
+<input type="radio" class="data" name="state" value="1"> enable
+<input type="radio" class="data" name="state" value="0"> disable<br>
 name: <input type="text" class="data" name="name"><br>
 age: <input type="text" class="data" name="age"><br>
 birth: <input type="date" class="data" name="birth"><br>

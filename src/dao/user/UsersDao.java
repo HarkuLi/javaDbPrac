@@ -71,8 +71,8 @@ public class UsersDao{
 	}
 	
 	public void create(HashMap<String, Object> newData) {
-		String sqlStr = "insert into users (id, name, age, birth, photo_name, occupation)";
-		sqlStr += " values (?, ?, ?, ?, ?, ?)";
+		String sqlStr = "insert into users (id, name, age, birth, photo_name, occupation, state)";
+		sqlStr += " values (?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			DateFormat sdf = new SimpleDateFormat(datePattern);
@@ -88,6 +88,7 @@ public class UsersDao{
 			pst.setDate(4, birthDate);
 			pst.setString(5, (String)newData.get("photo"));
 			pst.setString(6, (String)newData.get("occupation"));
+			pst.setBoolean(7, (boolean)newData.get("state"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
