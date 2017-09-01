@@ -11,6 +11,7 @@ public class UsersModel{
 	private String photoName;
 	//a list of interest id
 	private ArrayList<String> interest;
+	private String occupation;
 	
 	public UsersModel() {
 		id = null;
@@ -19,6 +20,7 @@ public class UsersModel{
 		birth = null;
 		photoName= null;
 		interest = null;
+		occupation = null;
 	}
 	
 	public void setId(String _id) {
@@ -45,6 +47,10 @@ public class UsersModel{
 		interest = _interest;
 	}
 	
+	public void setOccupation(String _occupation) {
+		occupation = _occupation;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -67,5 +73,9 @@ public class UsersModel{
 	
 	public ArrayList<String> getInterest() {
 		return interest;
+	}
+	
+	public String getOccupation() {
+		return occupation;
 	}
 }
