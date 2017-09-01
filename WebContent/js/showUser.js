@@ -265,7 +265,7 @@ function isChecked(checkEleList){
  * @return {Boolean}
  */
 function isFillAll(form){
-	const exceptList = ["id", "photo", "photoName"];
+	const exceptList = ["id", "photo", "photoName", "interest[]", "state"];
 	
 	var inputList = $(form).children(".data");
 	

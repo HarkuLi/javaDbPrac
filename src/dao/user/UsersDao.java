@@ -140,7 +140,7 @@ public class UsersDao{
 	
 	public void update(HashMap<String, Object> newData) {
 		String sqlStr = "update users " +
-						"set name = ?, age = ?, birth = ?, occupation = ? ";
+						"set name = ?, age = ?, birth = ?, occupation = ?, state = ? ";
 		String photoName = (String) newData.get("photo");
 		if(photoName != null) {
 			sqlStr   += ", photo_name = '" + photoName + "' ";
@@ -159,7 +159,8 @@ public class UsersDao{
 			pst.setInt(2, (int)newData.get("age"));
 			pst.setDate(3, birthDate);
 			pst.setString(4, (String)newData.get("occupation"));
-			pst.setString(5, (String)newData.get("id"));
+			pst.setBoolean(5, (boolean)newData.get("state"));
+			pst.setString(6, (String)newData.get("id"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {

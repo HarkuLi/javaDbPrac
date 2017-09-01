@@ -3,7 +3,7 @@
 <input type="file" class="data" name="photo" id="photo"><br>
 <input type="hidden" class="data" name="photoName">
 state:
-<input type="radio" class="data" name="state" value="1"> enable
+<input type="radio" class="data" name="state" value="1" checked> enable
 <input type="radio" class="data" name="state" value="0"> disable<br>
 name: <input type="text" class="data" name="name"><br>
 age: <input type="text" class="data" name="age"><br>
