@@ -123,6 +123,7 @@ public class UsersDao{
 				newUser.setBirth(rs.getDate("birth"));
 				newUser.setPhotoName(rs.getString("photo_name"));
 				newUser.setOccupation(rs.getString("occupation"));
+				newUser.setState(rs.getBoolean("state"));
 				tableList.add(newUser);
 			}
 			return tableList;

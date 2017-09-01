@@ -205,6 +205,8 @@ function edit(self){
 	
 	return getUser(id)
 		.then(data => {
+			const checkTypeList = ["state", "interest[]"];
+			
 			//set current photo
 			$("#current_photo").prop("src", route + "/user_photo?n=" + data.photoName);
 			
@@ -213,7 +215,17 @@ function edit(self){
 			var txtData = $("#popup_form").children(".data");
 			for(let ele of txtData){
 				let propName = $(ele).prop("name");
+				if(checkTypeList.indexOf(propName) !== -1) continue;
 				$(ele).prop("value", data[propName]);
+			}
+				//set state
+			var state = data.state ? "1" : "0";
+			let stateList = $("#popup_form").children("[name='state']");
+			for(let ele of stateList){
+				if($(ele).prop("value") === state){
+					$(ele).prop("checked", true);
+					break;
+				}
 			}
 				//set interest
 			var interestData = $("#interest_box").find("input");
@@ -591,6 +603,7 @@ function getUser(id){
 	return new Promise((resolve, reject) => {
     $.post("get_user", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
+      console.log("data: " + JSON.stringify(data));
       resolve(data);
     });
   });
