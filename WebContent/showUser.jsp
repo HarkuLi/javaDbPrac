@@ -55,6 +55,8 @@
 			<th>name</th>
 			<th>age</th>
 			<th>birth</th>
+			<th>occupation</th>
+			<th>state</th>
 			<th></th>
 			<th></th>
 		</tr>

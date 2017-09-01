@@ -7,15 +7,17 @@ var nameFilter = "";
 var birthFilter_from = "";
 var birthFilter_to = "";
 var processing = false;
+var occMap = {other : "other"};	//{occId: name}
 
 ///////////
 // ready //
 ///////////
 $(() => {
 	//initialization
-	selectPage(currentPage);
 	renderOccList();
 	renderInterestList();
+	//should initialized after renderOccList(), because it uses occMap
+	selectPage(currentPage);
 	
   ///////////////
   // listeners //
@@ -145,6 +147,9 @@ function renderOccList(){
 				option.prop("value", ele.id);
 				option.append(ele.name);
 				$("#occ_list").append(option);
+				
+				//record occupations
+				occMap[ele.id] = ele.name;
 			}
 		});
 }
@@ -379,6 +384,24 @@ function isFilterChange(){
 }
 
 /**
+ * 
+ * @param data
+ * @return {object}
+ */
+function handlePageData(data){
+	//deep copy
+	var rstData = JSON.parse(JSON.stringify(data));
+	
+	//replace occupation id as name
+	for(let ele of rstData.list){
+		if(!ele.occupation)	ele.occupation = "--";
+		else ele.occupation = occMap[ele.occupation];
+	}
+	
+	return rstData;
+}
+
+/**
  * go to the page
  * can be used for reload by select current page
  * @param page {Number}
@@ -392,6 +415,7 @@ function selectPage(page){
   
   return getList(page)
   	.then(data => {
+  		data = handlePageData(data);
   		renderData(data.list);
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
@@ -415,11 +439,14 @@ function renderData(dataList){
 		name: 15,
 		age: 3,
 		birth: 10,
-		photoName: 1
+		photoName: 1,
+		occupation:10,
+		state: 4
 	};
 	
 	const hideList = ["id", "photoName"];
-	const propList = ["id", "photoName", "photo", "name", "age", "birth"];
+	const propList = ["id", "photoName", "photo", "name",
+										"age", "birth", "occupation", "state"];
 	
 	$("#data_table").css("display", "");
 	
@@ -652,7 +679,6 @@ function getUser(id){
 	return new Promise((resolve, reject) => {
     $.post("get_user", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
-      console.log("data: " + JSON.stringify(data));
       resolve(data);
     });
   });
