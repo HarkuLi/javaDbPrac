@@ -12,6 +12,9 @@
 	<title>interest</title>
 </head>
 <body>
+	<!-- breadcrumbs -->
+	<jsp:include page="partial/breadcrumbs.jsp"></jsp:include>
+
 	<!-- filter -->
 	<div id="filter">
 		<p>Filter:</p>

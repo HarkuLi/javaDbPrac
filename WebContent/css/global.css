@@ -93,6 +93,16 @@ ul{
 	padding: 0;
 }
 
+.breadcrumbs{
+	display: inline-flex;
+	background-color: #b3ffff;
+}
+
+.breadcrumbs a{
+	text-decoration: none;
+	margin: 0 5px;
+}
+
 
 
 

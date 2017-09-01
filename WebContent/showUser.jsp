@@ -9,9 +9,12 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/global.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<title>show table</title>
+	<title>user</title>
 </head>
 <body>
+	<!-- breadcrumbs -->
+	<jsp:include page="partial/breadcrumbs.jsp"></jsp:include>
+
 	<!-- filter -->
 	<div class="filter">
 		<p>Filter:</p>
