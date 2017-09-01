@@ -6,6 +6,7 @@ var currentPage = 1;
 var nameFilter = "";
 var birthFilter_from = "";
 var birthFilter_to = "";
+var processing = false;
 
 ///////////
 // ready //
@@ -20,24 +21,47 @@ $(() => {
   // listeners //
   ///////////////
   $("#last_page").on("click", () => {
-    selectPage(currentPage-1);
+  	if(processing) return;
+  	
+  	processing = true;
+    selectPage(currentPage-1)
+    	.then(() => {
+    		processing = false;
+    	});
   });
   
   $("#next_page").on("click", () => {
-    selectPage(currentPage+1);
+  	if(processing) return;
+  	
+  	processing = true;
+    selectPage(currentPage+1)
+      .then(() => {
+    		processing = false;
+    	});
   });
   
   $("#filter_search").on("click", () => {
   	if(!isFilterChange()) return;
-  	filterSearch();
+  	if(processing) return;
+  	
+  	processing = true;
+  	filterSearch()
+    	.then(() => {
+    		processing = false;
+    	});
   });
   
   $("#popup_form").on("click", "#user_create", function(event){
   	event.preventDefault();
   	
+  	if(processing) return;
   	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
   	
-  	newUser();
+  	processing = true;
+  	newUser()
+    	.then(() => {
+    		processing = false;
+    	});
   });
   
   $("#new_btn").on("click", () => {
@@ -52,31 +76,46 @@ $(() => {
   });
   
   $("#data_table").on("click", ".edit", function(){
+  	if(processing) return;
+  	
   	var self = this;
+  	processing = true;
   	$("body").css("cursor", "progress");
   	edit(self)
   		.then(() => {
     		$("body").css("cursor", "");
+    		processing = false;
     	});
   });
   
   $("#data_table").on("click", ".delete", function(){
+  	if(processing) return;
+  	
   	var self = this;
+  	processing = true;
   	delRow(self)
   		.then(rst => {
   			if(!rst) return;
   			//reload the page
-  			selectPage(currentPage);
+  			return selectPage(currentPage);
+  		})
+  		.then(() => {
+  			processing = false;
   		});
   });
   
   $("#popup_form").on("click", "#user_modify", function(event){
   	event.preventDefault();
   	
+  	if(processing) return;
   	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
   	
   	var self = this;
-  	save(self);
+  	processing = true;
+  	save(self)
+    	.then(() => {
+    		processing = false;
+    	});
   });
 });
 
@@ -185,7 +224,9 @@ function save(self){
   	})
   	.then(rst => {
   		if(!rst) return;
-  		selectPage(currentPage);
+  		return selectPage(currentPage);
+  	})
+  	.then(() => {
   		closePopup();
   	});
 }
@@ -220,7 +261,7 @@ function edit(self){
 			}
 				//set state
 			var state = data.state ? "1" : "0";
-			let stateList = $("#popup_form").children("[name='state']");
+			let stateList = $("#popup_form").find("[name='state']");
 			for(let ele of stateList){
 				if($(ele).prop("value") === state){
 					$(ele).prop("checked", true);
@@ -274,6 +315,9 @@ function isFillAll(form){
 		if(!$(ele).prop("value").length) return false;
 	}
 	
+	//check state field
+	if(!isChecked($("#popup_form").find("[name='state']"))) return false;
+	
 	return true;
 }
 
@@ -297,6 +341,10 @@ function newUser(){
 		});
 }
 
+/**
+ * 
+ * @return {Promise}
+ */
 function filterSearch(){
 	var dateFormatMsg = "wrong date format, correct format: YYYY-MM-DD.";
 	var birthFrom = $("#birth_from_filter").prop("value");
@@ -316,7 +364,7 @@ function filterSearch(){
 	
 	//go to page 1
 	currentPage = 1;
-	selectPage(1);
+	return selectPage(1);
 }
 
 /**
@@ -334,14 +382,15 @@ function isFilterChange(){
  * go to the page
  * can be used for reload by select current page
  * @param page {Number}
+ * @return {Promise}
  */
 function selectPage(page){
-	if(page < 1) return;
+	if(page < 1) return Promise.resolve(false);
   
 	currentPage = page;
 	$("body").css("cursor", "progress");
   
-  getList(page)
+  return getList(page)
   	.then(data => {
   		renderData(data.list);
   		pageNumDisp(data.totalPage);
