@@ -12,6 +12,7 @@ public class UsersModel{
 	//a list of interest id
 	private ArrayList<String> interest;
 	private String occupation;
+	private boolean state;
 	
 	public UsersModel() {
 		id = null;
@@ -21,6 +22,7 @@ public class UsersModel{
 		photoName= null;
 		interest = null;
 		occupation = null;
+		state = true;
 	}
 	
 	public void setId(String _id) {
@@ -51,6 +53,10 @@ public class UsersModel{
 		occupation = _occupation;
 	}
 	
+	public void setState(boolean _state) {
+		state = _state;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -77,5 +83,9 @@ public class UsersModel{
 	
 	public String getOccupation() {
 		return occupation;
+	}
+	
+	public boolean getState() {
+		return state;
 	}
 }
