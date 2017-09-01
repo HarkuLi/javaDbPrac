@@ -13,10 +13,20 @@
 </head>
 <body>
 	<!-- filter -->
-	<div id="filter">
+	<div class="filter">
 		<p>Filter:</p>
-		<strong>Name: </strong><input type="text" id="name_filter"><br>
-		<strong>Birth: </strong>From <input type="date" id="birth_from_filter"> To <input type="date" id="birth_to_filter"><br>
+		<strong>Name: </strong><input type="text" id="name_filter" name="name"><br>
+		<strong>Birth: </strong>
+		From <input type="date" id="birth_from_filter" name="birthFrom">
+		To <input type="date" id="birth_to_filter"  name="birthTo"><br>
+		<strong>Occupation: </strong>
+		<select class="occ_list" name="occ"></select><br>
+		<strong>State: </strong>
+		<select name="state">
+			<option value="">--</option>
+			<option value="1">enable</option>
+			<option value="0">disable</option>
+		</select><br>
 		<button id="filter_search">Go</button>
 	</div>
 	<br>

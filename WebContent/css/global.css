@@ -70,11 +70,11 @@ td input{
 	max-width: 500px;
 }
 
-.popup_window input{
+.popup_window input, .filter input{
 	margin: 5px;
 }
 
-.popup_window select{
+.popup_window select, .filter select{
 	margin: 5px 0px;
 }
 

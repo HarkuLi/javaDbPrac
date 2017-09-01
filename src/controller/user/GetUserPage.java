@@ -40,6 +40,8 @@ public class GetUserPage extends HttpServlet {
     	filter.put("name", req.getParameter("name"));
     	filter.put("birthFrom", req.getParameter("birthFrom"));
     	filter.put("birthTo", req.getParameter("birthTo"));
+    	filter.put("occ", req.getParameter("occ"));
+    	filter.put("state", req.getParameter("state"));
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);

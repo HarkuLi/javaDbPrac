@@ -172,6 +172,8 @@ public class UsersService{
 		String name = filter.get("name");
 		String birthFrom = filter.get("birthFrom");
 		String birthTo = filter.get("birthTo");
+		String occ = filter.get("occ");
+		String state = filter.get("state");
 		
 		if(name != null) {
 			rst += "name like '%" + name + "%'";
@@ -183,6 +185,14 @@ public class UsersService{
 		if(birthTo != null) {
 			if(rst.length() != 0) rst += " and ";
 			rst += "birth <= '" + birthTo + "'";
+		}
+		if(occ != null) {
+			if(rst.length() != 0) rst += " and ";
+			rst += "occupation = '" + occ + "'";
+		}
+		if(state != null) {
+			if(rst.length() != 0) rst += " and ";
+			rst += "state = " + state;
 		}
 		
 		return rst;

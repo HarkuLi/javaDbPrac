@@ -3,11 +3,15 @@
  */
 const route = "/javaDbPrac/";
 var currentPage = 1;
-var nameFilter = "";
-var birthFilter_from = "";
-var birthFilter_to = "";
 var processing = false;
 var occMap = {other : "other"};	//{occId: name}
+var filter = {
+		name: "",
+		birthFrom: "",
+		birthTo: "",
+		occ: "",
+		state: ""
+};
 
 ///////////
 // ready //
@@ -133,20 +137,20 @@ function renderOccList(){
 	
 	getOccList()
 		.then(list => {
-			$("#occ_list").empty();
+			$(".occ_list").empty();
 			
 			for(let prop in defaultOcc){
 				let option = $("<option></option>");
 				option.prop("value", defaultOcc[prop]);
 				option.append(prop);
-				$("#occ_list").append(option);
+				$(".occ_list").append(option);
 			}
 			
 			for(let ele of list){
 				option = $("<option></option>");
 				option.prop("value", ele.id);
 				option.append(ele.name);
-				$("#occ_list").append(option);
+				$(".occ_list").append(option);
 				
 				//record occupations
 				occMap[ele.id] = ele.name;
@@ -352,8 +356,8 @@ function newUser(){
  */
 function filterSearch(){
 	var dateFormatMsg = "wrong date format, correct format: YYYY-MM-DD.";
-	var birthFrom = $("#birth_from_filter").prop("value");
-	var birthTo = $("#birth_to_filter").prop("value");
+	var birthFrom = $(".filter").find("[name='birthFrom']").prop("value");
+	var birthTo = $(".filter").find("[name='birthTo']").prop("value");
 	
 	//check input format
 	var reg = /^\d{4}-\d{2}-\d{2}$/;
@@ -363,9 +367,10 @@ function filterSearch(){
   	return alert(dateFormatMsg);
 		
 	//record new filters
-	nameFilter = $("#name_filter").prop("value");
-	birthFilter_from = birthFrom;
-	birthFilter_to = birthTo;
+  for(let prop in filter){
+  	let filterEle = $(".filter").find("[name='" + prop + "']")
+  	filter[prop] = $(filterEle).prop("value");
+  }
 	
 	//go to page 1
 	currentPage = 1;
@@ -377,9 +382,13 @@ function filterSearch(){
  * @return {Boolean}
  */
 function isFilterChange(){
-	if($("#name_filter").prop("value") !== nameFilter) return true;
-	if($("#birth_from_filter").prop("value") !== birthFilter_from) return true;
-	if($("#birth_to_filter").prop("value") !== birthFilter_to) return true;
+	var filterList = $(".filter").find("[name]");
+	
+	for(let ele of filterList){
+		let filterName = $(ele).prop("name");
+		if($(ele).prop("value") !== filter[filterName]) return true;
+	}
+
 	return false;
 }
 
@@ -389,6 +398,8 @@ function isFilterChange(){
  * @return {object}
  */
 function handlePageData(data){
+	if(!data.list) return data;
+	
 	//deep copy
 	var rstData = JSON.parse(JSON.stringify(data));
 	
@@ -655,12 +666,10 @@ function getList(page){
   };
   
   //filters
-  if(nameFilter.length)
-  	passedData.name = nameFilter;
-  if(birthFilter_from.length)
-  	passedData.birthFrom = birthFilter_from;
-  if(birthFilter_to.length)
-  	passedData.birthTo = birthFilter_to;
+  for(let prop in filter){
+  	if(filter[prop].length)
+  		passedData[prop] = filter[prop];
+  }
   
   return new Promise((resolve, reject) => {
     $.post("user_page", passedData, (data, status) => {
