@@ -412,7 +412,7 @@ function pageNumDisp(totalPage){
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post("del_int", {id}, (data, status) => {
+		$.post("interest/del", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -426,7 +426,7 @@ function doDel(id){
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("update_int", passedData, (data, status) => {
+		$.post("interest/update", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -441,7 +441,7 @@ function doUpdate(passedData){
  */
 function getInterest(id){
 	return new Promise((resolve, reject) => {
-    $.post("get_int", {id}, (data, status) => {
+    $.post("interest/get_one", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -455,7 +455,7 @@ function getInterest(id){
  */
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("new_int", passedData, (data, status) => {
+		$.post("interest/new", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -477,7 +477,7 @@ function getList(page){
   	passedData.state = stateFilter;
   
   return new Promise((resolve, reject) => {
-    $.post("int_page", passedData, (data, status) => {
+    $.post("interest/get_page", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });

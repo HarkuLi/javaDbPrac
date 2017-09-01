@@ -98,89 +98,89 @@
   <!-- user page -->
   <servlet-mapping>
     <servlet-name>showUser</servlet-name>
-    <url-pattern>/show_user</url-pattern>
+    <url-pattern>/user</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>userPage</servlet-name>
-    <url-pattern>/user_page</url-pattern>
+    <url-pattern>/user/get_page</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>newUser</servlet-name>
-    <url-pattern>/new_user</url-pattern>
+    <url-pattern>/user/new</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>updateUser</servlet-name>
-    <url-pattern>/update_user</url-pattern>
+    <url-pattern>/user/update</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>delUser</servlet-name>
-    <url-pattern>/del_user</url-pattern>
+    <url-pattern>/user/del</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>getUser</servlet-name>
-    <url-pattern>/get_user</url-pattern>
+    <url-pattern>/user/get_one</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>userPhoto</servlet-name>
-    <url-pattern>/user_photo</url-pattern>
+    <url-pattern>/user/photo</url-pattern>
   </servlet-mapping>
   <!-- occupation page -->
   <servlet-mapping>
     <servlet-name>showOcc</servlet-name>
-    <url-pattern>/show_occ</url-pattern>
+    <url-pattern>/occ</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>occPage</servlet-name>
-    <url-pattern>/occ_page</url-pattern>
+    <url-pattern>/occ/get_page</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>newOcc</servlet-name>
-    <url-pattern>/new_occ</url-pattern>
+    <url-pattern>/occ/new</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>updateOcc</servlet-name>
-    <url-pattern>/update_occ</url-pattern>
+    <url-pattern>/occ/update</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>delOcc</servlet-name>
-    <url-pattern>/del_occ</url-pattern>
+    <url-pattern>/occ/del</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>getOcc</servlet-name>
-    <url-pattern>/get_occ</url-pattern>
+    <url-pattern>/occ/get_one</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>getOccList</servlet-name>
-    <url-pattern>/get_occ_list</url-pattern>
+    <url-pattern>/occ/get_list</url-pattern>
   </servlet-mapping>
   <!-- interest page -->
   <servlet-mapping>
     <servlet-name>showInt</servlet-name>
-    <url-pattern>/show_int</url-pattern>
+    <url-pattern>/interest</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>intPage</servlet-name>
-    <url-pattern>/int_page</url-pattern>
+    <url-pattern>/interest/get_page</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>newInt</servlet-name>
-    <url-pattern>/new_int</url-pattern>
+    <url-pattern>/interest/new</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>updateInt</servlet-name>
-    <url-pattern>/update_int</url-pattern>
+    <url-pattern>/interest/update</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>delInt</servlet-name>
-    <url-pattern>/del_int</url-pattern>
+    <url-pattern>/interest/del</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>getInt</servlet-name>
-    <url-pattern>/get_int</url-pattern>
+    <url-pattern>/interest/get_one</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>getIntList</servlet-name>
-    <url-pattern>/get_int_list</url-pattern>
+    <url-pattern>/interest/get_list</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->

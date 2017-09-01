@@ -412,7 +412,7 @@ function pageNumDisp(totalPage){
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post("del_occ", {id}, (data, status) => {
+		$.post("occ/del", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -426,7 +426,7 @@ function doDel(id){
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("update_occ", passedData, (data, status) => {
+		$.post("occ/update", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -440,7 +440,7 @@ function doUpdate(passedData){
  */
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post("new_occ", passedData, (data, status) => {
+		$.post("occ/new", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -462,7 +462,7 @@ function getList(page){
   	passedData.state = stateFilter;
   
   return new Promise((resolve, reject) => {
-    $.post("occ_page", passedData, (data, status) => {
+    $.post("occ/get_page", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -476,7 +476,7 @@ function getList(page){
  */
 function getOcc(id){
 	return new Promise((resolve, reject) => {
-    $.post("get_occ", {id}, (data, status) => {
+    $.post("occ/get_one", {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
