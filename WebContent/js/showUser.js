@@ -330,23 +330,35 @@ function isFillAll(form){
 	return true;
 }
 
+/**
+ * 
+ * @return {Promise}
+ */
 function newUser(){
 	const acceptFileType = ["image/jpeg", "image/png", "image/gif"];
 	var passedData = new FormData($("#popup_form")[0]);
 	var photo = $("#photo").prop("files")[0];
 	
 	if(photo){
-		if(acceptFileType.indexOf(photo.type)===-1)
-			return alert("Unaccepted file type.");
+		if(acceptFileType.indexOf(photo.type)===-1){
+			alert("Unaccepted file type.");
+			return Promise.resolve(false);
+		}
 		let type = photo.type.split("/")[1];
 		passedData.append("photoType", type);
 	}
 	
 	return doCreate(passedData)
 		.then(data => {
-			if(data.errMsg) return alert(data.errMsg);
-			selectPage(currentPage);
-	  	closePopup();
+			if(data.errMsg){
+				alert(data.errMsg);
+				return false;
+			}
+			return selectPage(currentPage);
+		})
+		.then(rst => {
+			if(!rst) return;
+			closePopup();
 		});
 }
 
@@ -430,6 +442,7 @@ function selectPage(page){
   		renderData(data.list);
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
+  		return true;
   	});
 }
 
