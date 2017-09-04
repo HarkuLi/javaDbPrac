@@ -2,6 +2,7 @@
  * 
  */
 var currentPage = 1;
+var processing = false;
 var filter = {
 	name: "",
 	state: ""
@@ -17,16 +18,34 @@ $(() => {
   // listeners //
   ///////////////
   $("#last_page").on("click", () => {
-    selectPage(currentPage-1);
+  	if(processing) return;
+  	
+  	processing = true;
+    selectPage(currentPage-1)
+    	.then(() => {
+    		processing = false;
+    	});
   });
   
   $("#next_page").on("click", () => {
-    selectPage(currentPage+1);
+  	if(processing) return;
+  	
+  	processing = true;
+    selectPage(currentPage+1)
+      .then(() => {
+    		processing = false;
+    	});
   });
   
   $("#filter_search").on("click", () => {
+  	if(processing) return;
   	if(!isFilterChange()) return;
-  	filterSearch();
+  	
+  	processing = true;
+  	filterSearch()
+  		.then(() => {
+  			processing = false;
+  		});
   });
   
   $("#new_btn").on("click", () => {
@@ -43,36 +62,56 @@ $(() => {
   $("#popup_form").on("click", "#int_create", function(event){
   	event.preventDefault();
   	
+  	if(processing) return;
   	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
   	
-  	newInterest();
+  	processing = true;
+  	newInterest()
+    	.then(() => {
+  			processing = false;
+  		});
   });
   
   $("#data_table").on("click", ".edit", function(){
+  	if(processing) return;
+  	
+  	processing = true;
   	var self = this;
   	$("body").css("cursor", "progress");
   	edit(self)
   		.then(() => {
     		$("body").css("cursor", "");
+    		processing = false;
     	});
   });
   
   $("#popup_form").on("click", "#int_modify", function(event){
   	event.preventDefault();
   	
+  	if(processing) return;
   	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
   	
+  	processing = true;
   	var self = this;
-  	save(self);
+  	save(self)
+  		.then(() => {
+  			processing = false;
+  		});
   });
   
   $("#data_table").on("click", ".delete", function(){
+  	if(processing) return;
+  	
+  	processing = true;
   	var self = this;
   	delRow(self)
   		.then(rst => {
   			if(!rst) return;
   			//reload the page
-  			selectPage(currentPage);
+  			return selectPage(currentPage);
+  		})
+  		.then(() => {
+  			processing = false;
   		});
   });
 });
@@ -118,11 +157,10 @@ function save(self){
   			alert(data.errMsg);
   			return false;
   		}
-  		return true;
+  		return selectPage(currentPage);
   	})
   	.then(rst => {
   		if(!rst) return;
-  		selectPage(currentPage);
   		closePopup();
   	});
 }
@@ -169,6 +207,10 @@ function edit(self){
 		});
 }
 
+/**
+ * 
+ * @return {Promise}
+ */
 function newInterest(){
 	var formData = new FormData($("#popup_form")[0]);
 	var passedData = {};
@@ -179,9 +221,15 @@ function newInterest(){
 	
 	return doCreate(passedData)
 		.then(data => {
-			if(data.errMsg) return alert(data.errMsg);
-			selectPage(currentPage);
-	  	closePopup();
+			if(data.errMsg){
+				alert(data.errMsg);
+				return false;
+			}
+			return selectPage(currentPage);
+		})
+		.then(rst => {
+			if(!rst) return;
+			closePopup();
 		});
 }
 
@@ -239,6 +287,10 @@ function closePopup(){
 	$("#popup_form").children(":submit").prop("id", "");
 }
 
+/**
+ * 
+ * @return {Promise}
+ */
 function filterSearch(){
 	//record new filters
 	for(let name in filter){
@@ -247,7 +299,7 @@ function filterSearch(){
 	
 	//go to page 1
 	currentPage = 1;
-	selectPage(1);
+	return selectPage(1);
 }
 
 /**
@@ -267,18 +319,20 @@ function isFilterChange(){
  * go to the page
  * can be used for reload by select current page
  * @param page {Number}
+ * @return {Promise} return true if switch to the page
  */
 function selectPage(page){
-	if(page < 1) return;
+	if(page < 1) return Promise.resolve(false);
   
 	currentPage = page;
 	$("body").css("cursor", "progress");
   
-  getList(page)
+  return getList(page)
   	.then(data => {
   		renderData(data.list);
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
+  		return true;
   	});
 }
 
