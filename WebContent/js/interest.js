@@ -2,8 +2,10 @@
  * 
  */
 var currentPage = 1;
-var nameFilter = "";
-var stateFilter = "";
+var filter = {
+	name: "",
+	state: ""
+};
 
 ///////////
 // ready //
@@ -58,6 +60,8 @@ $(() => {
   $("#popup_form").on("click", "#int_modify", function(event){
   	event.preventDefault();
   	
+  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+  	
   	var self = this;
   	save(self);
   });
@@ -100,23 +104,11 @@ function delRow(self){
  * @return {Promise}
  */
 function save(self){
-	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
-	
-	const checkTypeList = ["state"];
+	var formData = new FormData($("#popup_form")[0]);
 	var passedData = {};
-	var dataList = $("#popup_form").children(".data");
 	
-	//record the input values
-	for(let ele of dataList){
-		let prop = $(ele).prop("name");
-		if(checkTypeList.indexOf(prop) !== -1) continue;
-		let val = $(ele).prop("value");
-		passedData[prop] = val;
-	}
-	
-	//record values of checked types
-	for(let name of checkTypeList){
-		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
+	for(let entry of formData.entries()){
+		passedData[entry[0]] = entry[1];
 	}
 	
 	//update the change
@@ -178,20 +170,11 @@ function edit(self){
 }
 
 function newInterest(){
-	const checkTypeList = ["state"];
+	var formData = new FormData($("#popup_form")[0]);
 	var passedData = {};
-	var dataList = $("#popup_form").children(".data");
 	
-	for(let ele of dataList){
-		let prop = $(ele).prop("name");
-		if(checkTypeList.indexOf(prop) !== -1) continue;
-		let val = $(ele).prop("value");
-		passedData[prop] = val;
-	}
-	
-	//record values of checked types
-	for(let name of checkTypeList){
-		passedData[name] = checkedVal($("#popup_form").children("[name='" + name + "']"));
+	for(let entry of formData.entries()){
+		passedData[entry[0]] = entry[1];
 	}
 	
 	return doCreate(passedData)
@@ -256,10 +239,11 @@ function closePopup(){
 	$("#popup_form").children(":submit").prop("id", "");
 }
 
-function filterSearch(){	
+function filterSearch(){
 	//record new filters
-	nameFilter = $("#name_filter").prop("value");
-	stateFilter = $("#state_filter").prop("value");
+	for(let name in filter){
+		filter[name] = $(".filter").find(`[name='${name}']`).prop("value");
+	}
 	
 	//go to page 1
 	currentPage = 1;
@@ -271,8 +255,11 @@ function filterSearch(){
  * @return {Boolean}
  */
 function isFilterChange(){
-	if($("#name_filter").prop("value") !== nameFilter) return true;
-	if($("#state_filter").prop("value") !== stateFilter) return true;
+	for(let name in filter){
+		let newVal = $(".filter").find(`[name='${name}']`).prop("value");
+		if(newVal !== filter[name]) return true;
+	}
+	
 	return false;
 }
 
@@ -471,10 +458,10 @@ function getList(page){
   };
   
   //filters
-  if(nameFilter.length)
-  	passedData.name = nameFilter;
-  if(stateFilter.length)
-  	passedData.state = stateFilter;
+  for(let name in filter){
+  	if(filter[name].length)
+  		passedData[name] = filter[name];
+  }
   
   return new Promise((resolve, reject) => {
     $.post("interest/get_page", passedData, (data, status) => {

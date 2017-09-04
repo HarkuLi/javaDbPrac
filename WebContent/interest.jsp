@@ -16,11 +16,11 @@
 	<jsp:include page="partial/breadcrumbs.jsp"></jsp:include>
 
 	<!-- filter -->
-	<div id="filter">
+	<div class="filter">
 		<p>Filter:</p>
-		<strong>Name: </strong><input type="text" id="name_filter"><br>
+		<strong>Name: </strong><input type="text" name="name"><br>
 		<strong>State: </strong>
-		<select id="state_filter" name="state">
+		<select name="state">
 			<option value="">--</option>
 			<option value="1">enable</option>
 			<option value="0">disable</option>
