@@ -25,6 +25,10 @@ public class UsersDao{
 		conPool = new ConnectionPool();
 	}
 	
+	/**
+	 * @param filter {HashMap<String, String>}
+	 * @return {int} total number of rows, and return -1 when the table doesn't exist
+	 */
 	public int getRowNum(HashMap<String, String> filter) {
 		String sqlStr = "select count(id) from users";
 		
@@ -93,7 +97,7 @@ public class UsersDao{
 	 * @param filter {HashMap<String, String>}
 	 * @param skipNum {int} how many rows to skip
 	 * @param readNum {int} how many rows to read
-	 * @return ArrayList<UsersModel> a list of user object
+	 * @return {ArrayList<UsersModel>} a list of user object
 	 */
 	public ArrayList<UsersModel> read(HashMap<String, String> filter, int skipNum, int readNum) {
 		String sqlStr = "select * from users";
