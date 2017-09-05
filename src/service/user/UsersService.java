@@ -28,31 +28,12 @@ public class UsersService{
 	 *       name: String,
 	 * 		 age: int,
 	 *       birth: String,
-	 *       photo: Part,    //not required
-	 *       photoType: String    //not required
+	 *       photoName: String    //not required
 	 *      }
 	 */
 	public void createUser(HashMap<String, Object> newData) {
 		String id = UUID.randomUUID().toString();
 		newData.put("id", id);
-		
-		//store photo
-		Part photo = (Part) newData.get("photo");
-		if(photo != null) {
-			String fileName = UUID.randomUUID().toString();
-			String photoType = (String) newData.get("photoType");
-			fileName += "." + photoType;	//filename extension
-			String path = STORE_PATH + fileName;
-			
-			File dir = new File(STORE_PATH);
-			if(!dir.exists()) dir.mkdir();
-			try {
-				photo.write(path);
-				newData.put("photo", fileName);
-			} catch (Exception e) {
-				System.out.println("Exception in storing photo: " + e.toString());
-			}
-		}
 		
 		UIS.saveInterests(id, (String[])newData.get("interests"));
 		
