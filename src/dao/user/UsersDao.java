@@ -270,7 +270,7 @@ public class UsersDao{
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "state = ?";
-			paramList.add(state);
+			paramList.add(state.equals("1"));
 		}
 		
 		rst.put("queryStr", queryStr);
