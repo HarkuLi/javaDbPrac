@@ -118,13 +118,10 @@ public class UsersDao{
 			
 			int idx = 1;
 			for(Object param : paramList) {
-				pst.setObject(idx, param);
-				++idx;
+				pst.setObject(idx++, param);
 			}
-			pst.setInt(idx, skipNum);
-			++idx;
-			pst.setInt(idx, readNum);
-			++idx;
+			pst.setInt(idx++, skipNum);
+			pst.setInt(idx++, readNum);
 			
 			rs = pst.executeQuery();
 			
@@ -152,13 +149,13 @@ public class UsersDao{
 	}
 	
 	public void update(HashMap<String, Object> newData) {
-		String sqlStr = "update users " +
-						"set name = ?, age = ?, birth = ?, occupation = ?, state = ? ";
+		String sqlStr = "update users" +
+						" set name = ?, age = ?, birth = ?, occupation = ?, state = ?";
 		String photoName = (String) newData.get("photo");
 		if(photoName != null) {
-			sqlStr   += ", photo_name = '" + photoName + "' ";
+			sqlStr   += ", photo_name = ?";
 		}
-		sqlStr       += "where id = ?";
+		sqlStr       += " where id = ?";
 		
 		try {
 			DateFormat sdf = new SimpleDateFormat(datePattern);
@@ -168,12 +165,16 @@ public class UsersDao{
 			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setString(1, (String)newData.get("name"));
-			pst.setInt(2, (int)newData.get("age"));
-			pst.setDate(3, birthDate);
-			pst.setString(4, (String)newData.get("occupation"));
-			pst.setBoolean(5, (boolean)newData.get("state"));
-			pst.setString(6, (String)newData.get("id"));
+			int idx = 1;
+			pst.setString (idx++, (String)newData.get("name"));
+			pst.setInt    (idx++, (int)newData.get("age"));
+			pst.setDate   (idx++, birthDate);
+			pst.setString (idx++, (String)newData.get("occupation"));
+			pst.setBoolean(idx++, (boolean)newData.get("state"));
+			if(photoName != null) {
+				pst.setString(idx++, photoName);
+			}
+			pst.setString (idx++, (String)newData.get("id"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
