@@ -60,47 +60,18 @@ public class UsersService{
 	}
 	
 	public UsersModel getUser(String id) {
-		ArrayList<UsersModel> userList = dao.read(
-			"*",
-			"id = '" + id + "'",
-			"1"
-		);
+		HashMap<String, String> filter = new HashMap<String, String>();
+		filter.put("id", id);
+		ArrayList<UsersModel> userList = dao.read(filter, 0, 1);
 		UsersModel user = userList.get(0);
 		user.setInterest(UIS.getInterests(id));
 		return user;
 	}
 	
-	public ArrayList<UsersModel> getPage(int page) {
-		int skipNum = ENTRY_PER_PAGE * (page - 1);
-		
-		//paging
-		String limit = Integer.toString(skipNum);
-		limit += "," + Integer.toString(ENTRY_PER_PAGE);
-		
-		return dao.read(
-			"*",
-			null,
-			limit
-		);
-	}
-	
 	public ArrayList<UsersModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
-		String where = null;
 		
-		//paging
-		String limit = Integer.toString(skipNum);
-		limit += "," + Integer.toString(ENTRY_PER_PAGE);
-		
-		//filters
-		String filterStr = filterQueryStr(filter);
-		if(filterStr.length() != 0) where = filterStr;
-		
-		return dao.read(
-			"*",
-			where,
-			limit
-		);
+		return dao.read(filter, skipNum, ENTRY_PER_PAGE);
 	}
 	
 	public int getTotalPage(HashMap<String, String> filter) {
@@ -162,36 +133,5 @@ public class UsersService{
 		UIS.delInterests(id);
 		
 		dao.delete(id);
-	}
-	
-	private String filterQueryStr(HashMap<String, String> filter) {
-		String rst = "";
-		String name = filter.get("name");
-		String birthFrom = filter.get("birthFrom");
-		String birthTo = filter.get("birthTo");
-		String occ = filter.get("occ");
-		String state = filter.get("state");
-		
-		if(name != null) {
-			rst += "name like '%" + name + "%'";
-		}
-		if(birthFrom != null) {
-			if(rst.length() != 0) rst += " and ";
-			rst += "birth >= '" + birthFrom + "'";
-		}
-		if(birthTo != null) {
-			if(rst.length() != 0) rst += " and ";
-			rst += "birth <= '" + birthTo + "'";
-		}
-		if(occ != null) {
-			if(rst.length() != 0) rst += " and ";
-			rst += "occupation = '" + occ + "'";
-		}
-		if(state != null) {
-			if(rst.length() != 0) rst += " and ";
-			rst += "state = " + state;
-		}
-		
-		return rst;
 	}
 }

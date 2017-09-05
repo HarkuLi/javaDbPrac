@@ -45,12 +45,12 @@ public class UsersDao{
 				++idx;
 			}
 			
-			rs = pst.executeQuery(sqlStr);
+			rs = pst.executeQuery();
 			
 			while(rs.next()) return rs.getInt(1);
 		}
 		catch(Exception e) {
-			System.out.println("Exception in getRowNum.");
+			System.out.println("Exception in getRowNum: " + e.toString());
 		}
 		finally {
 			close();
@@ -88,22 +88,47 @@ public class UsersDao{
 		}
 	}
 	
-	public ArrayList<UsersModel> read(String sel, String where, String limit) {
-		String sqlStr = "select " + sel +
-				        " from users";
-		if(where != null && where.length() != 0) {
-			sqlStr   += " where " + where;
-		}
+	/**
+	 * 
+	 * @param filter {HashMap<String, String>}
+	 * @param skipNum {int} how many rows to skip
+	 * @param readNum {int} how many rows to read
+	 * @return ArrayList<UsersModel> a list of user object
+	 */
+	public ArrayList<UsersModel> read(HashMap<String, String> filter, int skipNum, int readNum) {
+		String sqlStr = "select * from users";
+		
+		//handle the filter
+		HashMap<String, Object> handledFilter = filterHandle(filter);
+		String filterStr = (String)handledFilter.get("queryStr");
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
+		if(filterStr.length() > 0)
+			sqlStr   += " where " + filterStr;
+		
 		sqlStr		 += " order by name" +
-				        " limit " + limit;
+				        " limit ?,?";
 		
 		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>();
 		
 		try {
+			//prepare query
 			con = conPool.getConnection();
-			stat = con.createStatement();
-			rs = stat.executeQuery(sqlStr);
-						
+			pst = con.prepareStatement(sqlStr);
+			
+			int idx = 1;
+			for(Object param : paramList) {
+				pst.setObject(idx, param);
+				++idx;
+			}
+			pst.setInt(idx, skipNum);
+			++idx;
+			pst.setInt(idx, readNum);
+			++idx;
+			
+			rs = pst.executeQuery();
+			
+			//read
 			while(rs.next()){
 				UsersModel newUser = new UsersModel();
 				newUser.setId(rs.getString("id"));
@@ -115,7 +140,6 @@ public class UsersDao{
 				newUser.setState(rs.getBoolean("state"));
 				tableList.add(newUser);
 			}
-			return tableList;
 		}
 		catch(Exception e) {
 			System.out.println("Exception in read: " + e.toString());
@@ -124,7 +148,7 @@ public class UsersDao{
 			close();
 		}
 		
-		return null;
+		return tableList;
 	}
 	
 	public void update(HashMap<String, Object> newData) {
@@ -189,17 +213,25 @@ public class UsersDao{
 	 */
 	private HashMap<String, Object> filterHandle(HashMap<String, String> filter) {
 		String queryStr = "";
+		ArrayList<Object> paramList = new ArrayList<Object>();
+		HashMap<String, Object> rst = new HashMap<String, Object>();
+		
+		//get filters
+		String id = filter.get("id");
 		String name = filter.get("name");
 		String birthFrom = filter.get("birthFrom");
 		String birthTo = filter.get("birthTo");
 		String occ = filter.get("occ");
 		String state = filter.get("state");
-		ArrayList<Object> paramList = new ArrayList<Object>();
-		HashMap<String, Object> rst = new HashMap<String, Object>();
 		
+		if(id != null) {
+			queryStr += "id = ?";
+			paramList.add(id);
+		}
 		if(name != null) {
-			queryStr += "name like '%?%'";
-			paramList.add(name);
+			if(queryStr.length() != 0) queryStr += " and ";
+			queryStr += "name like ?";
+			paramList.add("%" + name + "%");
 		}
 		if(birthFrom != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
