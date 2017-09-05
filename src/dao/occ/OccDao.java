@@ -25,7 +25,7 @@ public class OccDao {
 	
 	/**
 	 * @param filter {HashMap<String, String>}
-	 * @return total number of rows, and return -1 when the table doesn't exist
+	 * @return {int} total number of rows, and return -1 when the table doesn't exist
 	 */
 	public int getRowNum(HashMap<String, String> filter) {
 		String sqlStr = "select count(id) from " + tableName;
@@ -83,24 +83,39 @@ public class OccDao {
 		}
 	}
 	
-	public ArrayList<OccModel> read(String sel, String where, String limit) {
-		String sqlStr = "select " + sel +
-				        " from " + tableName;
-		if(where != null && where.length() != 0) {
-			sqlStr   += " where " + where;
-		}
+	/**
+	 * 
+	 * @param filter {HashMap<String, String>}
+	 * @return {ArrayList<OccModel>} a list of occupation object
+	 */
+	public ArrayList<OccModel> read(HashMap<String, String> filter) {
+		String sqlStr = "select * from " + tableName;
+		
+		//handle the filter
+		HashMap<String, Object> handledFilter = filterHandle(filter);
+		String filterStr = (String)handledFilter.get("queryStr");
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
+		if(filterStr.length() > 0)
+			sqlStr   += " where " + filterStr;
+		
 		sqlStr		 += " order by name";
-		if(limit != null && limit.length() != 0) {
-			sqlStr   += " limit " + limit;
-		}
 		
 		ArrayList<OccModel> tableList = new ArrayList<OccModel>();
 		
 		try {
+			//prepare query
 			con = conPool.getConnection();
-			stat = con.createStatement();
-			rs = stat.executeQuery(sqlStr);
-						
+			pst = con.prepareStatement(sqlStr);
+			
+			int idx = 1;
+			for(Object param : paramList) {
+				pst.setObject(idx++, param);
+			}
+			
+			rs = pst.executeQuery();
+			
+			//read
 			while(rs.next()){
 				HashMap<String, Object> data = new HashMap<String, Object>();
 				data.put("id", rs.getString("id"));
@@ -108,7 +123,6 @@ public class OccDao {
 				data.put("state", rs.getBoolean("state"));
 				tableList.add(new OccModel(data));
 			}
-			return tableList;
 		}
 		catch(Exception e) {
 			System.out.println("Exception in read: " + e.toString());
@@ -117,7 +131,63 @@ public class OccDao {
 			close();
 		}
 		
-		return null;
+		return tableList;
+	}
+	
+	/**
+	 * 
+	 * @param filter {HashMap<String, String>}
+	 * @param skipNum {int} how many rows to skip
+	 * @param readNum {int} how many rows to read
+	 * @return {ArrayList<OccModel>} a list of occupation object
+	 */
+	public ArrayList<OccModel> read(HashMap<String, String> filter, int skipNum, int readNum) {
+		String sqlStr = "select * from " + tableName;
+		
+		//handle the filter
+		HashMap<String, Object> handledFilter = filterHandle(filter);
+		String filterStr = (String)handledFilter.get("queryStr");
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
+		if(filterStr.length() > 0)
+			sqlStr   += " where " + filterStr;
+		
+		sqlStr		 += " order by name" +
+				        " limit ?,?";
+		
+		ArrayList<OccModel> tableList = new ArrayList<OccModel>();
+		
+		try {
+			//prepare query
+			con = conPool.getConnection();
+			pst = con.prepareStatement(sqlStr);
+			
+			int idx = 1;
+			for(Object param : paramList) {
+				pst.setObject(idx++, param);
+			}
+			pst.setInt(idx++, skipNum);
+			pst.setInt(idx++, readNum);
+			
+			rs = pst.executeQuery();
+			
+			//read
+			while(rs.next()){
+				HashMap<String, Object> data = new HashMap<String, Object>();
+				data.put("id", rs.getString("id"));
+				data.put("name", rs.getString("name"));
+				data.put("state", rs.getBoolean("state"));
+				tableList.add(new OccModel(data));
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Exception in read: " + e.toString());
+		}
+		finally {
+			close();
+		}
+		
+		return tableList;
 	}
 	
 	public void update(HashMap<String, Object> data) {
@@ -190,7 +260,7 @@ public class OccDao {
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "state = ?";
-			paramList.add(state);
+			paramList.add(state.equals("1"));
 		}
 		
 		rst.put("queryStr", queryStr);

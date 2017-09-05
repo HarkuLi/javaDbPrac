@@ -23,35 +23,22 @@ public class OccService {
 	}
 	
 	public OccModel getOcc(String id) {
-		ArrayList<OccModel> occList = dao.read(
-			"*",
-			"id = '" + id + "'",
-			"1"
-		);
+		HashMap<String, String> filter = new HashMap<String, String>();
+		filter.put("id", id);
+		ArrayList<OccModel> occList = dao.read(filter, 0, 1);
 		return occList.get(0);
 	}
 	
 	public ArrayList<OccModel> getList() {
-		return dao.read("*", "state = true", null);
+		HashMap<String, String> filter = new HashMap<String, String>();
+		filter.put("state", "1");
+		return dao.read(filter);
 	}
 	
 	public ArrayList<OccModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
-		String where = null;
 		
-		//paging
-		String limit = Integer.toString(skipNum);
-		limit += "," + Integer.toString(ENTRY_PER_PAGE);
-		
-		//filters
-		String filterStr = filterQueryStr(filter);
-		if(filterStr.length() != 0) where = filterStr;
-		
-		return dao.read(
-			"*",
-			where,
-			limit
-		);
+		return dao.read(filter, skipNum, ENTRY_PER_PAGE);
 	}
 	
 	public int getTotalPage(HashMap<String, String> filter) {
@@ -72,21 +59,5 @@ public class OccService {
 	
 	public void delete(String id) {
 		dao.delete(id);
-	}
-	
-	private String filterQueryStr(HashMap<String, String> filter) {
-		String rst = "";
-		String name = filter.get("name");
-		String state = filter.get("state");
-		
-		if(name != null) {
-			rst += "name like '%" + name + "%'";
-		}
-		if(state != null) {
-			if(rst.length() != 0) rst += " and ";
-			rst += "state = " + state;
-		}
-		
-		return rst;
 	}
 }
