@@ -1,6 +1,5 @@
 package service.user;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -10,7 +9,6 @@ import model.user.UsersModel;
 
 public class UsersService{
 	private final int ENTRY_PER_PAGE = 10;
-	private final String STORE_PATH = System.getProperty("user.home") + "/upload/";
 	private UsersDao dao;
 	private UserIntService UIS;
 	
@@ -86,16 +84,7 @@ public class UsersService{
 	}
 	
 	public void delete(String id) {
-		//delete the photo
-		String photoName = getUser(id).getPhotoName();
-		if(photoName != null) {
-			String path = STORE_PATH + "/" + photoName;
-			File file = new File(path);
-			if(file.exists()) file.delete();
-		}
-		
 		UIS.delInterests(id);
-		
 		dao.delete(id);
 	}
 }
