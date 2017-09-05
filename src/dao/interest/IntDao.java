@@ -83,26 +83,39 @@ public class IntDao {
 		}
 	}
 	
-	public ArrayList<IntModel> read(String sel, String where, String limit) {
-		String sqlStr = "select " + sel +
-				        " from " + tableName;
-		if(where != null && where.length() != 0) {
-			sqlStr   += " where " + where;
-		}
+	/**
+	 * 
+	 * @param filter {HashMap<String, String>}
+	 * @return {ArrayList<IntModel>} a list of interest object
+	 */
+	public ArrayList<IntModel> read(HashMap<String, String> filter) {
+		String sqlStr = "select * from " + tableName;
+		
+		//handle the filter
+		HashMap<String, Object> handledFilter = filterHandle(filter);
+		String filterStr = (String)handledFilter.get("queryStr");
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
+		if(filterStr.length() > 0)
+			sqlStr   += " where " + filterStr;
+		
 		sqlStr		 += " order by name";
-		if(limit != null && limit.length() != 0) {
-			sqlStr   += " limit " + limit;
-		}
 		
 		ArrayList<IntModel> tableList = new ArrayList<IntModel>();
 		
-		con = conPool.getConnection();
-		
 		try {
+			//prepare query
 			con = conPool.getConnection();
-			stat = con.createStatement();
-			rs = stat.executeQuery(sqlStr);
+			pst = con.prepareStatement(sqlStr);
 			
+			int idx = 1;
+			for(Object param : paramList) {
+				pst.setObject(idx++, param);
+			}
+			
+			rs = pst.executeQuery();
+			
+			//read
 			while(rs.next()){
 				IntModel data = new IntModel();
 				data.setId(rs.getString("id"));
@@ -110,7 +123,6 @@ public class IntDao {
 				data.setState(rs.getBoolean("state"));
 				tableList.add(data);
 			}
-			return tableList;
 		}
 		catch(Exception e) {
 			System.out.println("Exception in read: " + e.toString());
@@ -119,7 +131,63 @@ public class IntDao {
 			close();
 		}
 		
-		return null;
+		return tableList;
+	}
+	
+	/**
+	 * 
+	 * @param filter {HashMap<String, String>}
+	 * @param skipNum {int} how many rows to skip
+	 * @param readNum {int} how many rows to read
+	 * @return {ArrayList<IntModel>} a list of interest object
+	 */
+	public ArrayList<IntModel> read(HashMap<String, String> filter, int skipNum, int readNum) {
+		String sqlStr = "select * from " + tableName;
+		
+		//handle the filter
+		HashMap<String, Object> handledFilter = filterHandle(filter);
+		String filterStr = (String)handledFilter.get("queryStr");
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
+		if(filterStr.length() > 0)
+			sqlStr   += " where " + filterStr;
+		
+		sqlStr		 += " order by name" +
+				        " limit ?,?";
+		
+		ArrayList<IntModel> tableList = new ArrayList<IntModel>();
+		
+		try {
+			//prepare query
+			con = conPool.getConnection();
+			pst = con.prepareStatement(sqlStr);
+			
+			int idx = 1;
+			for(Object param : paramList) {
+				pst.setObject(idx++, param);
+			}
+			pst.setInt(idx++, skipNum);
+			pst.setInt(idx++, readNum);
+			
+			rs = pst.executeQuery();
+			
+			//read
+			while(rs.next()){
+				IntModel data = new IntModel();
+				data.setId(rs.getString("id"));
+				data.setName(rs.getString("name"));
+				data.setState(rs.getBoolean("state"));
+				tableList.add(data);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Exception in read: " + e.toString());
+		}
+		finally {
+			close();
+		}
+		
+		return tableList;
 	}
 	
 	public void update(HashMap<String, Object> data) {
