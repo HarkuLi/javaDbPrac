@@ -1,8 +1,10 @@
 package controller.user;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -21,6 +23,7 @@ import service.user.UsersService;
 
 public class UpdateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final String STORE_PATH = System.getProperty("user.home") + "/upload/";
 	
 	/**
 	 * response format:
@@ -60,6 +63,30 @@ public class UpdateUser extends HttpServlet {
 	    	return;
     	}
     	
+    	//update photo
+		if(photo.getSize() != 0) {
+			//delete original photo
+			if(photoName != null) {
+				String path = STORE_PATH + "/" + photoName;
+				File file = new File(path);
+				if(file.exists()) file.delete();
+			}
+			
+			//store new photo
+			photoName = UUID.randomUUID().toString();
+			photoName += "." + photoType;	//filename extension
+			
+			String path = STORE_PATH + photoName;
+			
+			File dir = new File(STORE_PATH);
+			if(!dir.exists()) dir.mkdir();
+			try {
+				photo.write(path);
+			} catch (Exception e) {
+				System.out.println("Exception in storing photo: " + e.toString());
+			}
+		}
+    	
     	//call service function
     	HashMap<String, Object> newData = new HashMap<String, Object>();
     	newData.put("id", id);
@@ -67,8 +94,6 @@ public class UpdateUser extends HttpServlet {
     	newData.put("age", Integer.parseInt(age));
     	newData.put("birth", birth);
     	if(photo.getSize() != 0) {
-    		newData.put("photo", photo);
-    		newData.put("photoType", photoType);
     		newData.put("photoName", photoName);
     	}
     	newData.put("interests", interestList);
