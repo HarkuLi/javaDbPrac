@@ -55,10 +55,7 @@ public class OccService {
 	}
 	
 	public int getTotalPage(HashMap<String, String> filter) {
-		String where = filterQueryStr(filter);
-		int rowNum;
-		
-		rowNum = where.length()==0 ? dao.getRowNum() : dao.getRowNum(where);
+		int rowNum = dao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
