@@ -7,13 +7,14 @@ var processing = false;
 
 var occMap = {other : "other"};	//{occId: name}
 var interestMap = {}; //{interestId: name}
-var filter = {
-		name: "",
-		birthFrom: "",
-		birthTo: "",
-		occ: "",
-		state: ""
-};
+var filterForm = new FormData($(".filter")[0]);
+//var filter = {
+//		name: "",
+//		birthFrom: "",
+//		birthTo: "",
+//		occ: "",
+//		state: ""
+//};
 
 initialization();
 
@@ -50,7 +51,9 @@ $(() => {
     	});
   });
   
-  $("#filter_search").on("click", () => {
+  $("#filter_search").on("click", (event) => {
+  	event.preventDefault();
+  	
   	//if(!isFilterChange()) return;
   	if(processing) return;
   	
@@ -413,10 +416,11 @@ function filterSearch(){
   	return alert(dateFormatMsg);
 		
 	//record new filters
-  for(let prop in filter){
-  	let filterEle = $(".filter").find("[name='" + prop + "']")
-  	filter[prop] = $(filterEle).prop("value");
-  }
+  filterForm = new FormData($(".filter")[0]);
+//  for(let prop in filter){
+//  	let filterEle = $(".filter").find("[name='" + prop + "']")
+//  	filter[prop] = $(filterEle).prop("value");
+//  }
 	
 	//go to page 1
 	currentPage = 1;
@@ -733,15 +737,18 @@ function getList(page){
   };
   
   //filters
-  for(let prop in filter){
-  	if(filter[prop].length)
-  		passedData[prop] = filter[prop];
+  for(let pair of filterForm.entries()){
+  	if(pair[1].length)
+  		passedData[pair[0]] = pair[1];
   }
+//  for(let prop in filter){
+//  	if(filter[prop].length)
+//  		passedData[prop] = filter[prop];
+//  }
   
   return new Promise((resolve, reject) => {
     $.post("user/get_page", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
-      console.log("data: " + JSON.stringify(data));
       resolve(data);
     });
   });
