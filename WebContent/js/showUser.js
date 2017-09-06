@@ -4,7 +4,9 @@
 const route = "/javaDbPrac/";
 var currentPage = 1;
 var processing = false;
+
 var occMap = {other : "other"};	//{occId: name}
+var interestMap = {}; //{interestId: name}
 var filter = {
 		name: "",
 		birthFrom: "",
@@ -13,19 +15,21 @@ var filter = {
 		state: ""
 };
 
+initialization();
+
 ///////////
 // ready //
 ///////////
 $(() => {
-	//initialization
-	renderOccList();
-	renderInterestList();
-	//should initialized after renderOccList(), because it uses occMap
-	selectPage(currentPage);
-	
   ///////////////
   // listeners //
   ///////////////
+	
+	//prevent the scroll of inputs in the table while dragging
+	$("#data_table").on("mousedown", "input", (event) => {
+		event.preventDefault();
+	});
+	
   $("#last_page").on("click", () => {
   	if(processing) return;
   	
@@ -129,13 +133,34 @@ $(() => {
 // functions //
 ///////////////
 
+/**
+ * 
+ * @return {Promise}
+ */
+function initialization(){
+	var promiseList = [];
+	promiseList.push(renderOccList());
+	promiseList.push(renderInterestList());
+	
+	return Promise.all(promiseList)
+		.then(() => {
+			//should initialized after renderOccList() and renderInterestList()
+			//because it uses occMap and interestMap
+			return selectPage(currentPage);
+		});
+}
+
+/**
+ * 
+ * @return {Promise}
+ */
 function renderOccList(){
 	var defaultOcc = {
 		"--" : "",
 		"other" : "other"
 	};
 	
-	getOccList()
+	return getOccList()
 		.then(list => {
 			$(".occ_list").empty();
 			
@@ -158,8 +183,12 @@ function renderOccList(){
 		});
 }
 
+/**
+ * 
+ * @return {Promise}
+ */
 function renderInterestList(){
-	getInterestList()
+	return getInterestList()
 		.then(list => {
 			$("#interest_box").empty();
 			var ul = $("<ul></ul>");
@@ -175,6 +204,9 @@ function renderInterestList(){
 				label.append(ele.name);
 				li.append(label);
 				ul.append(li);
+				
+				//record interests
+				interestMap[ele.id] = ele.name;
 			}
 			$("#interest_box").append(ul);
 		});
@@ -278,11 +310,13 @@ function edit(self){
 				}
 			}
 				//set interest
-			var interestData = $("#interest_box").find("input");
-			for(let ele of interestData){
-				let interestId = $(ele).prop("value");
-				if(data.interest.indexOf(interestId) >= 0){
-					$(ele).prop("checked", true);
+			if(data.interest){
+				var interestData = $("#interest_box").find("input");
+				for(let ele of interestData){
+					let interestId = $(ele).prop("value");
+					if(data.interest.indexOf(interestId) >= 0){
+						$(ele).prop("checked", true);
+					}
 				}
 			}
 			
@@ -416,9 +450,24 @@ function handlePageData(data){
 	var rstData = JSON.parse(JSON.stringify(data));
 	
 	//replace occupation id as name
-	for(let ele of rstData.list){
-		if(!ele.occupation)	ele.occupation = "--";
-		else ele.occupation = occMap[ele.occupation];
+	for(let user of rstData.list){
+		if(!user.occupation)	user.occupation = "--";
+		else user.occupation = occMap[user.occupation];
+	}
+	
+	//replace interest list as string
+	for(let user of rstData.list){
+		if(!user.interest){
+			user.interest = "--";
+			continue;
+		}
+		
+		var interestStr = "";
+		for(let i=0; i<user.interest.length; ++i){
+			interestStr += interestMap[user.interest[i]];
+			if(i != user.interest.length-1)	interestStr += ", ";
+		}
+		user.interest = interestStr;
 	}
 	
 	return rstData;
@@ -464,13 +513,15 @@ function renderData(dataList){
 		age: 3,
 		birth: 10,
 		photoName: 1,
-		occupation:10,
+		occupation: 10,
+		interest: 10,
 		state: 4
 	};
 	
 	const hideList = ["id", "photoName"];
 	const propList = ["id", "photoName", "photo", "name",
-										"age", "birth", "occupation", "state"];
+										"age", "birth", "occupation", "interest",
+										"state"];
 	
 	$("#data_table").css("display", "");
 	
@@ -485,6 +536,7 @@ function renderData(dataList){
 		if(!dataList[idx]){
 			for(let ele of inputList){
 				$(ele).prop("value", "");
+				$(ele).prop("title", "");
 			}
 			$(row).css("display", "none");
 			++idx;
@@ -495,6 +547,7 @@ function renderData(dataList){
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
 			$(ele).prop("value", dataList[idx][prop]);
+			if(prop === "interest") $(ele).prop("title", dataList[idx][prop]);
 		}
 		
 	  //set photo entry
@@ -538,6 +591,7 @@ function renderData(dataList){
 			input.prop("value", data[prop]);
 			input.prop("disabled", true);
 			input.prop("size", sizeMap[prop]);
+			if(prop === "interest") input.prop("title", data[prop]);
 			rowEntry.append(input);
 			dataRow.append(rowEntry);
 		}
@@ -687,6 +741,7 @@ function getList(page){
   return new Promise((resolve, reject) => {
     $.post("user/get_page", passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
+      console.log("data: " + JSON.stringify(data));
       resolve(data);
     });
   });

@@ -50,8 +50,14 @@ public class UsersService{
 	
 	public ArrayList<UsersModel> getPage(int page, HashMap<String, String> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
+		ArrayList<UsersModel> userList = dao.read(filter, skipNum, ENTRY_PER_PAGE);
 		
-		return dao.read(filter, skipNum, ENTRY_PER_PAGE);
+		//set interests of each user
+		for(UsersModel user : userList) {
+			user.setInterest(UIS.getInterests(user.getId()));
+		}
+		
+		return userList;
 	}
 	
 	public int getTotalPage(HashMap<String, String> filter) {

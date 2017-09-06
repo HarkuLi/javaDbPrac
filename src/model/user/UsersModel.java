@@ -46,7 +46,7 @@ public class UsersModel{
 	}
 	
 	public void setInterest(ArrayList<String> _interest) {
-		interest = _interest;
+		if(_interest.size() != 0) interest = _interest;
 	}
 	
 	public void setOccupation(String _occupation) {

@@ -69,6 +69,7 @@
 			<th>age</th>
 			<th>birth</th>
 			<th>occupation</th>
+			<th>interests</th>
 			<th>state</th>
 			<th></th>
 			<th></th>
