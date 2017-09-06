@@ -15,6 +15,5 @@ birth: <input type="date" class="data" name="birth"><br>
 occupation:
 <select class="data occ_list" name="occupation"></select><br>
 interests:
-<div id="interest_box">
-</div>
+<div class="interest_box"></div>
 <input type="submit" value="submit">

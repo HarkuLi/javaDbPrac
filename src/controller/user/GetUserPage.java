@@ -30,7 +30,7 @@ public class GetUserPage extends HttpServlet {
 		UsersService dbService = new UsersService();
 		int totalPage;
 		ArrayList<UsersModel> tableList;
-		HashMap<String, String> filter = new HashMap<String, String>();
+		HashMap<String, Object> filter = new HashMap<String, Object>();
     	HashMap<String, Object> rstMap = new HashMap<String, Object>();
 		JSONObject rstObj;
     	PrintWriter out = res.getWriter();
@@ -42,6 +42,7 @@ public class GetUserPage extends HttpServlet {
     	filter.put("birthTo", req.getParameter("birthTo"));
     	filter.put("occ", req.getParameter("occ"));
     	filter.put("state", req.getParameter("state"));
+    	filter.put("interest[]", req.getParameterValues("interest[]"));
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);

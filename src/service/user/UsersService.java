@@ -40,7 +40,7 @@ public class UsersService{
 	}
 	
 	public UsersModel getUser(String id) {
-		HashMap<String, String> filter = new HashMap<String, String>();
+		HashMap<String, Object> filter = new HashMap<String, Object>();
 		filter.put("id", id);
 		ArrayList<UsersModel> userList = dao.read(filter, 0, 1);
 		UsersModel user = userList.get(0);
@@ -48,7 +48,7 @@ public class UsersService{
 		return user;
 	}
 	
-	public ArrayList<UsersModel> getPage(int page, HashMap<String, String> filter) {
+	public ArrayList<UsersModel> getPage(int page, HashMap<String, Object> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		ArrayList<UsersModel> userList = dao.read(filter, skipNum, ENTRY_PER_PAGE);
 		
@@ -60,7 +60,7 @@ public class UsersService{
 		return userList;
 	}
 	
-	public int getTotalPage(HashMap<String, String> filter) {
+	public int getTotalPage(HashMap<String, Object> filter) {
 		int rowNum = dao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);

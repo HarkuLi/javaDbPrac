@@ -16,12 +16,12 @@
 	<jsp:include page="partial/breadcrumbs.jsp"></jsp:include>
 
 	<!-- filter -->
-	<div class="filter">
+	<form class="filter">
 		<p>Filter:</p>
-		<strong>Name: </strong><input type="text" id="name_filter" name="name"><br>
+		<strong>Name: </strong><input type="text" name="name"><br>
 		<strong>Birth: </strong>
-		From <input type="date" id="birth_from_filter" name="birthFrom">
-		To <input type="date" id="birth_to_filter"  name="birthTo"><br>
+		From <input type="date" name="birthFrom">
+		To <input type="date" name="birthTo"><br>
 		<strong>Occupation: </strong>
 		<select class="occ_list" name="occ"></select><br>
 		<strong>State: </strong>
@@ -30,8 +30,11 @@
 			<option value="1">enable</option>
 			<option value="0">disable</option>
 		</select><br>
+		<strong>interests: </strong>
+		<div class="interest_box"></div>
+		<br>
 		<button id="filter_search">Go</button>
-	</div>
+	</form>
 	<br>
 	
 	<!-- paging -->

@@ -29,7 +29,7 @@ public class UsersDao{
 	 * @param filter {HashMap<String, String>}
 	 * @return {int} total number of rows, and return -1 when the table doesn't exist
 	 */
-	public int getRowNum(HashMap<String, String> filter) {
+	public int getRowNum(HashMap<String, Object> filter) {
 		String sqlStr = "select count(id) from users";
 		
 		//handle the filter
@@ -99,7 +99,7 @@ public class UsersDao{
 	 * @param readNum {int} how many rows to read
 	 * @return {ArrayList<UsersModel>} a list of user object
 	 */
-	public ArrayList<UsersModel> read(HashMap<String, String> filter, int skipNum, int readNum) {
+	public ArrayList<UsersModel> read(HashMap<String, Object> filter, int skipNum, int readNum) {
 		String sqlStr = "select * from users";
 		
 		//handle the filter
@@ -216,18 +216,19 @@ public class UsersDao{
 	 *     paramList: ArrayList<Object>,
 	 *   }
 	 */
-	private HashMap<String, Object> filterHandle(HashMap<String, String> filter) {
+	private HashMap<String, Object> filterHandle(HashMap<String, Object> filter) {
 		String queryStr = "";
 		ArrayList<Object> paramList = new ArrayList<Object>();
 		HashMap<String, Object> rst = new HashMap<String, Object>();
 		
 		//get filters
-		String id = filter.get("id");
-		String name = filter.get("name");
-		String birthFrom = filter.get("birthFrom");
-		String birthTo = filter.get("birthTo");
-		String occ = filter.get("occ");
-		String state = filter.get("state");
+		String id = (String)filter.get("id");
+		String name = (String)filter.get("name");
+		String birthFrom = (String)filter.get("birthFrom");
+		String birthTo = (String)filter.get("birthTo");
+		String occ = (String)filter.get("occ");
+		String state = (String)filter.get("state");
+		String[] interest = (String[])filter.get("interest[]");
 		
 		if(id != null) {
 			queryStr += "id = ?";
@@ -271,6 +272,18 @@ public class UsersDao{
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "state = ?";
 			paramList.add(state.equals("1"));
+		}
+		if(interest != null) {
+			if(queryStr.length() != 0) queryStr += " and ";
+			queryStr += "id in (select userId from userInterest where interest in (";
+			
+			for(int i=0; i<interest.length; ++i) {
+				queryStr += "?";
+				paramList.add(interest[i]);
+				if(i != interest.length-1) queryStr += ", ";
+			}
+			
+			queryStr += "))";
 		}
 		
 		rst.put("queryStr", queryStr);

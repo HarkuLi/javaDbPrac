@@ -8,13 +8,6 @@ var processing = false;
 var occMap = {other : "other"};	//{occId: name}
 var interestMap = {}; //{interestId: name}
 var filterForm = new FormData($(".filter")[0]);
-//var filter = {
-//		name: "",
-//		birthFrom: "",
-//		birthTo: "",
-//		occ: "",
-//		state: ""
-//};
 
 initialization();
 
@@ -193,7 +186,7 @@ function renderOccList(){
 function renderInterestList(){
 	return getInterestList()
 		.then(list => {
-			$("#interest_box").empty();
+			$(".interest_box").empty();
 			var ul = $("<ul></ul>");
 			for(let ele of list){
 				let li = $("<li></li>");
@@ -211,7 +204,7 @@ function renderInterestList(){
 				//record interests
 				interestMap[ele.id] = ele.name;
 			}
-			$("#interest_box").append(ul);
+			$(".interest_box").append(ul);
 		});
 }
 
@@ -314,7 +307,7 @@ function edit(self){
 			}
 				//set interest
 			if(data.interest){
-				var interestData = $("#interest_box").find("input");
+				var interestData = $("#popup_form").children(".interest_box").find("input");
 				for(let ele of interestData){
 					let interestId = $(ele).prop("value");
 					if(data.interest.indexOf(interestId) >= 0){
@@ -417,10 +410,6 @@ function filterSearch(){
 		
 	//record new filters
   filterForm = new FormData($(".filter")[0]);
-//  for(let prop in filter){
-//  	let filterEle = $(".filter").find("[name='" + prop + "']")
-//  	filter[prop] = $(filterEle).prop("value");
-//  }
 	
 	//go to page 1
 	currentPage = 1;
@@ -738,13 +727,17 @@ function getList(page){
   
   //filters
   for(let pair of filterForm.entries()){
-  	if(pair[1].length)
-  		passedData[pair[0]] = pair[1];
+  	let key = pair[0];
+  	let val = filterForm.getAll(pair[0]);
+  	
+  	if(key === "interest[]"){
+  		passedData[key] = val;
+  	}
+  	else{
+  		if(!val[0].length) continue;
+  		passedData[key] = val[0];
+  	}	
   }
-//  for(let prop in filter){
-//  	if(filter[prop].length)
-//  		passedData[prop] = filter[prop];
-//  }
   
   return new Promise((resolve, reject) => {
     $.post("user/get_page", passedData, (data, status) => {
