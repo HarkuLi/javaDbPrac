@@ -57,8 +57,9 @@ td input{
 	text-align: right;
 }
 
-.close_btn{
+.icon_btn{
 	cursor: pointer;
+	vertical-align: middle;
 }
 
 .container{
@@ -110,7 +111,17 @@ ul{
 }
 
 .filter .interest_box{
+	display: none;
 	width: 500px;
+}
+
+.interest_filter_des{
+	display: inline-block;
+	vertical-align: middle;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 300px;
 }
 
 

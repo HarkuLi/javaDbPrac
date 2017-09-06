@@ -44,6 +44,12 @@ $(() => {
     	});
   });
   
+  $(".filter").on("click", "#interest_expand", () => {
+  	var iconName = $("#interest_expand").text();
+  	if(iconName === "expand_more") interestFilterMore();
+  	else interestFilterLess();
+  });
+  
   $("#filter_search").on("click", (event) => {
   	event.preventDefault();
   	
@@ -128,6 +134,33 @@ $(() => {
 ///////////////
 // functions //
 ///////////////
+
+function interestFilterLess(){
+	//render the interest filter description 
+	var filterForm = new FormData($(".filter")[0]);
+	var interestList = filterForm.getAll("interest[]");
+	var interestDes = "";
+	for(let i=0; i<interestList.length; ++i){
+		interestDes += interestMap[interestList[i]];
+		if(i != interestList.length-1)	interestDes += ", ";
+	}
+	$(".interest_filter_des").text(interestStr);
+	$(".interest_filter_des").css("display", "");
+	
+	//wrap the interest filter block
+	$("#interest_expand").text("expand_more");
+	$(".filter").children(".interest_box").css("display", "");
+}
+
+function interestFilterMore(){
+	//hide the interest filter description 
+	$(".interest_filter_des").css("display", "none");
+	$(".interest_filter_des").text("");
+	
+	//expand the interest filter block
+	$("#interest_expand").text("expand_less");
+	$(".filter").children(".interest_box").css("display", "block");
+}
 
 /**
  * 

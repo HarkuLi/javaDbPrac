@@ -31,8 +31,9 @@
 			<option value="0">disable</option>
 		</select><br>
 		<strong>interests: </strong>
+		<span class="interest_filter_des"></span>
+		<i class="material-icons icon_btn" id="interest_expand">expand_more</i><br>	
 		<div class="interest_box"></div>
-		<br>
 		<button id="filter_search">Go</button>
 	</form>
 	<br>
@@ -53,7 +54,7 @@
 		<div class="popup_window">
 			<!-- close button -->
 			<div class="txt_right">
-				<i class="material-icons close_btn">clear</i>
+				<i class="material-icons close_btn icon_btn">clear</i>
 			</div>
 			<!-- form for new user -->
 			<div class="container">
