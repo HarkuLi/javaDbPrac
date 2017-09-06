@@ -51,7 +51,7 @@ $(() => {
   });
   
   $("#filter_search").on("click", () => {
-  	if(!isFilterChange()) return;
+  	//if(!isFilterChange()) return;
   	if(processing) return;
   	
   	processing = true;
