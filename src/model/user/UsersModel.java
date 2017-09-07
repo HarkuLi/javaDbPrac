@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class UsersModel{
 	private String id;
+	private String account;
+	//the hashed password
+	private String password;
 	private String name;
 	private int age;
 	private Date birth;
@@ -16,6 +19,8 @@ public class UsersModel{
 	
 	public UsersModel() {
 		id = null;
+		account = null;
+		password = null;
 		name = null;
 		age = 0;
 		birth = null;
@@ -27,6 +32,14 @@ public class UsersModel{
 	
 	public void setId(String _id) {
 		id = _id;
+	}
+	
+	public void setAccount(String _account) {
+		account = _account;
+	}
+	
+	public void setPassword(String _password) {
+		password = _password;
 	}
 	
 	public void setName(String _name) {
@@ -61,6 +74,14 @@ public class UsersModel{
 		return id;
 	}
 	
+	public String getAccount() {
+		return account;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -87,5 +108,10 @@ public class UsersModel{
 	
 	public boolean getState() {
 		return state;
+	}
+	
+	public void eraseSecretInfo() {
+		account = null;
+		password = null;
 	}
 }
