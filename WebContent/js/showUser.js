@@ -2,6 +2,7 @@
  * 
  */
 const route = "/javaDbPrac/";
+const acceptPhotoType = ["image/jpeg", "image/png", "image/gif"];
 var currentPage = 1;
 var processing = false;
 
@@ -63,11 +64,11 @@ $(() => {
     	});
   });
   
-  $("#popup_form").on("click", "#user_create", function(event){
+  $("#popup_form_new").on("click", "#user_create", function(event){
   	event.preventDefault();
   	
   	if(processing) return;
-  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+  	if(!isFillAll($("#popup_form_new"))) return alert("You have some fields not filled.");
   	
   	processing = true;
   	newUser()
@@ -80,7 +81,7 @@ $(() => {
   	//set pop up window
   	$(".mask").css("display", "flex");
   	$(".mask").prop("id", "new_block");
-  	$("#popup_form").children(":submit").prop("id", "user_create");
+  	$("#popup_form_new").css("display", "block");
   });
   
   $(".close_btn").on("click", function(){
@@ -116,11 +117,11 @@ $(() => {
   		});
   });
   
-  $("#popup_form").on("click", "#user_modify", function(event){
+  $("#popup_form_edit").on("click", "#user_modify", function(event){
   	event.preventDefault();
   	
   	if(processing) return;
-  	if(!isFillAll($("#popup_form"))) return alert("You have some fields not filled.");
+  	if(!isFillAll($("#popup_form_edit"))) return alert("You have some fields not filled.");
   	
   	var self = this;
   	processing = true;
@@ -243,10 +244,10 @@ function renderInterestList(){
 
 function closePopup(){
 	$("#current_photo").prop("src", "/javaDbPrac/user/photo");
-	clrFields($("#popup_form"));
+	clrFields($(".popup_window").find("form"));
+	$(".popup_window").find("form").css("display", "");
 	$(".mask").prop("id", "");
 	$(".mask").css("display", "");
-	$("#popup_form").children(":submit").prop("id", "");
 }
 
 /**
@@ -272,12 +273,11 @@ function delRow(self){
  * @return {Promise}
  */
 function save(self){
-	const acceptFileType = ["image/jpeg", "image/png", "image/gif"];
-	var passedData = new FormData($("#popup_form")[0]);
-	var photo = $("#photo").prop("files")[0];
+	var passedData = new FormData($("#popup_form_edit")[0]);
+	var photo = $("#popup_form_edit").children("[name='photo']").prop("files")[0];
 	
 	if(photo){
-		if(acceptFileType.indexOf(photo.type)===-1)
+		if(acceptPhotoType.indexOf(photo.type)===-1)
 			return alert("Unaccepted file type.");
 		let type = photo.type.split("/")[1];
 		passedData.append("photoType", type);
@@ -309,7 +309,7 @@ function save(self){
 function edit(self){
 	//set pop up window
 	$(".mask").prop("id", "edit_block");
-	$("#popup_form").children(":submit").prop("id", "user_modify");
+	$("#popup_form_edit").css("display", "block");
 	
 	var dataRow = $(self).parent().parent();
 	var id = $(dataRow).find(".id").children().prop("value");
@@ -323,7 +323,7 @@ function edit(self){
 			
 			//set pop up form
 				//set non-checked type data
-			var txtData = $("#popup_form").children(".data");
+			var txtData = $("#popup_form_edit").find(".data");
 			for(let ele of txtData){
 				let propName = $(ele).prop("name");
 				if(checkTypeList.indexOf(propName) !== -1) continue;
@@ -331,7 +331,7 @@ function edit(self){
 			}
 				//set state
 			var state = data.state ? "1" : "0";
-			let stateList = $("#popup_form").find("[name='state']");
+			let stateList = $("#popup_form_edit").find("[name='state']");
 			for(let ele of stateList){
 				if($(ele).prop("value") === state){
 					$(ele).prop("checked", true);
@@ -340,7 +340,7 @@ function edit(self){
 			}
 				//set interest
 			if(data.interest){
-				var interestData = $("#popup_form").children(".interest_box").find("input");
+				var interestData = $("#popup_form_edit").children(".interest_box").find("input");
 				for(let ele of interestData){
 					let interestId = $(ele).prop("value");
 					if(data.interest.indexOf(interestId) >= 0){
@@ -355,10 +355,12 @@ function edit(self){
 }
 
 /**
- * @param form {Object} jquery element
+ * @param formList {Object} jquery element
  */
-function clrFields(form){
-	$(form)[0].reset();
+function clrFields(formList){
+	for(let form of formList){
+		$(form)[0].reset();
+	}
 }
 
 /**
@@ -380,7 +382,7 @@ function isChecked(checkEleList){
 function isFillAll(form){
 	const exceptList = ["id", "photo", "photoName", "interest[]", "state"];
 	
-	var inputList = $(form).children(".data");
+	var inputList = $(form).find(".data");
 	
 	for(let ele of inputList){
 		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
@@ -388,7 +390,7 @@ function isFillAll(form){
 	}
 	
 	//check state field
-	if(!isChecked($("#popup_form").find("[name='state']"))) return false;
+	if(!isChecked($(form).find("[name='state']"))) return false;
 	
 	return true;
 }
@@ -398,12 +400,11 @@ function isFillAll(form){
  * @return {Promise}
  */
 function newUser(){
-	const acceptFileType = ["image/jpeg", "image/png", "image/gif"];
-	var passedData = new FormData($("#popup_form")[0]);
-	var photo = $("#photo").prop("files")[0];
+	var passedData = new FormData($("#popup_form_new")[0]);
+	var photo = $("#popup_form_new").children("[name='photo']").prop("files")[0];
 	
 	if(photo){
-		if(acceptFileType.indexOf(photo.type)===-1){
+		if(acceptPhotoType.indexOf(photo.type)===-1){
 			alert("Unaccepted file type.");
 			return Promise.resolve(false);
 		}

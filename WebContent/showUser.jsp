@@ -8,6 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/global.css">
+	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/user.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<title>user</title>
 </head>
@@ -58,8 +59,11 @@
 			</div>
 			<!-- form for new user -->
 			<div class="container">
-				<form id="popup_form" class="center_block" enctype="multipart/form-data">
-					<jsp:include page="partial/user/detail.jsp"></jsp:include>
+				<form id="popup_form_new" class="center_block" enctype="multipart/form-data">
+					<jsp:include page="partial/user/detail_new.jsp"></jsp:include>
+				</form>
+				<form id="popup_form_edit" class="center_block" enctype="multipart/form-data">
+					<jsp:include page="partial/user/detail_edit.jsp"></jsp:include>
 				</form>
 			</div>
 		</div>

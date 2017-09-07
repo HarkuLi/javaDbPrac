@@ -110,19 +110,5 @@ ul{
 	margin: 0 5px;
 }
 
-.filter .interest_box{
-	display: none;
-	width: 500px;
-}
-
-.interest_filter_des{
-	display: inline-block;
-	vertical-align: middle;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	max-width: 300px;
-}
-
 
 

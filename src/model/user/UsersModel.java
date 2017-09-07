@@ -111,7 +111,6 @@ public class UsersModel{
 	}
 	
 	public void eraseSecretInfo() {
-		account = null;
 		password = null;
 	}
 }

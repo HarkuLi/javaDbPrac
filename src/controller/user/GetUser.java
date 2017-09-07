@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import model.user.UsersModel;
 import service.user.UsersService;
 
 public class GetUser extends HttpServlet {
@@ -29,7 +30,10 @@ public class GetUser extends HttpServlet {
     	//get passed parameters
     	String id = req.getParameter("id");
     	
-    	rstObj = new JSONObject(dbService.getUser(id));
+    	UsersModel user = dbService.getUser(id);
+    	user.eraseSecretInfo();
+    	
+    	rstObj = new JSONObject(user);
     	
     	res.setContentType("application/json");
     	out.println(rstObj);
