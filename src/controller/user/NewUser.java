@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import service.user.UsersService;
 
@@ -33,14 +34,16 @@ public class NewUser extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
     	throws ServletException, IOException {
-    	
-		UsersService dbService = new UsersService();
-    	HashMap<String, String> rstMap = new HashMap<String, String>();
+		HashMap<String, String> rstMap = new HashMap<String, String>();
 		JSONObject rstObj;
+		UsersService dbService = new UsersService();
     	PrintWriter out = res.getWriter();
     	String fileName = null;
     	
     	//get passed parameters
+//    	String account = req.getParameter("account");
+//    	String password = req.getParameter("password");
+//    	String passwordCheck = req.getParameter("passwordCheck");
     	String name = req.getParameter("name");
     	String age = req.getParameter("age");
     	String birth = req.getParameter("birth");
@@ -49,32 +52,23 @@ public class NewUser extends HttpServlet {
     	String[] interestList = req.getParameterValues("interest[]");
     	String occupation = req.getParameter("occupation");
     	String state = req.getParameter("state");
-    	 	
+    	
+    	//test
+//    	password = BCrypt.hashpw(password, BCrypt.gensalt());
+    	
     	//check data
-    	String pattern = "^\\d+$";
-    	Pattern r = Pattern.compile(pattern);
-    	Matcher m = r.matcher(age);
-    	if(!m.find()) {
-	    	rstMap.put("errMsg", "Wrong input for age.");
-	    	rstObj = new JSONObject(rstMap);
-	    	res.setContentType("application/json");
-	    	out.println(rstObj);
-	    	return;
+    	String errMsg = checkData(age);
+    	if(errMsg != null) {
+    		rstMap.put("errMsg", errMsg);
+        	rstObj = new JSONObject(rstMap);
+        	res.setContentType("application/json");
+        	out.println(rstObj);
+        	return;
     	}
     	
     	//store photo
 		if(photo.getSize() != 0) {
-			fileName = UUID.randomUUID().toString();
-			fileName += "." + photoType;	//filename extension
-			String path = STORE_PATH + fileName;
-			
-			File dir = new File(STORE_PATH);
-			if(!dir.exists()) dir.mkdir();
-			try {
-				photo.write(path);
-			} catch (Exception e) {
-				System.out.println("Exception in storing photo: " + e.toString());
-			}
+			fileName = storePhoto(photo, photoType);
 		}
     	
     	//call service function
@@ -90,4 +84,31 @@ public class NewUser extends HttpServlet {
     	newData.put("state", state.equals("1"));
     	dbService.createUser(newData);
     }
+	
+	private String checkData(String age) {
+    	String pattern = "^\\d+$";
+    	Pattern r = Pattern.compile(pattern);
+    	Matcher m = r.matcher(age);
+    	if(!m.find()) {
+	    	return "Wrong input for age.";
+    	}
+    	
+    	return null;
+	}
+	
+	private String storePhoto(Part photo, String photoType) {
+		String fileName = UUID.randomUUID().toString();
+		fileName += "." + photoType;	//filename extension
+		String path = STORE_PATH + fileName;
+		
+		File dir = new File(STORE_PATH);
+		if(!dir.exists()) dir.mkdir();
+		try {
+			photo.write(path);
+		} catch (Exception e) {
+			System.out.println("Exception in storing photo: " + e.toString());
+		}
+		
+		return fileName;
+	}
 }
