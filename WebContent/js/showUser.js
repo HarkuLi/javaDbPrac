@@ -3,12 +3,16 @@
  */
 const route = "/javaDbPrac/";
 const acceptPhotoType = ["image/jpeg", "image/png", "image/gif"];
+const checkTypeList = ["state", "interest[]"];
 var currentPage = 1;
 var processing = false;
 
 var occMap = {other : "other"};	//{occId: name}
 var interestMap = {}; //{interestId: name}
 var filterForm = new FormData($(".filter")[0]);
+//store jquery elements of opened forms
+var openedFormList = [];
+var editingUser;
 
 initialization();
 
@@ -78,14 +82,11 @@ $(() => {
   });
   
   $("#new_btn").on("click", () => {
-  	//set pop up window
-  	$(".mask").css("display", "flex");
-  	$(".mask").prop("id", "new_block");
-  	$("#popup_form_new").css("display", "block");
+  	switchForm($("#popup_form_new"));
   });
   
   $(".close_btn").on("click", function(){
-  	closePopup();
+  	closeForm();
   });
   
   $("#data_table").on("click", ".edit", function(){
@@ -96,6 +97,8 @@ $(() => {
   	$("body").css("cursor", "progress");
   	edit(self)
   		.then(() => {
+  			//show edit form
+  			switchForm($("#popup_form_edit"));
     		$("body").css("cursor", "");
     		processing = false;
     	});
@@ -130,11 +133,71 @@ $(() => {
     		processing = false;
     	});
   });
+  
+  $("#change_password").on("click", (event) => {
+  	event.preventDefault();
+  	
+  	editPw();
+  	switchForm($("#popup_form_chpw"));
+  });
+  
+  $("#popup_form_chpw").on("click", ":submit", () => {
+  	event.preventDefault();
+  	
+  });
 });
 
 ///////////////
 // functions //
 ///////////////
+
+function editPw(){
+	var inputList = $("#popup_form_chpw").find("[name]");
+	
+	//set the form
+	for(let ele of inputList){
+		let prop = $(ele).prop("name");
+		$(ele).prop("value", editingUser[prop]);
+	}
+}
+
+/**
+ * close the current form and show the last form
+ * close the pop up window when there is no form in the opened form list
+ */
+function closeForm(){
+	//close the current form
+	var currentForm = openedFormList.pop();
+	$(currentForm).css("display", "");
+	clrFields($(currentForm));
+	
+	//close the pop up window if there is no form in the opened form list
+	if(!openedFormList.length){
+		closePopup();
+		return;
+	}
+	
+	//show the last form
+	var lastForm = openedFormList[openedFormList.length-1];
+	$(lastForm).css("display", "block");
+}
+
+/**
+ * hide the original form and show the designated form
+ * @param form {Object} jquery form element
+ */
+function switchForm(form){
+	//show the pop up window
+	if(!openedFormList.length) $(".mask").css("display", "flex");
+	
+	//hide the original form
+	var currentForm = openedFormList[openedFormList.length-1];
+	if(currentForm) $(currentForm).css("display", "");
+	
+	//show the designated form
+	openedFormList.push(form);
+	$(form).css("display", "block");
+}
 
 function interestFilterLess(){
 	//render the interest filter description 
@@ -244,10 +307,9 @@ function renderInterestList(){
 
 function closePopup(){
 	$("#current_photo").prop("src", "/javaDbPrac/user/photo");
-	clrFields($(".popup_window").find("form"));
 	$(".popup_window").find("form").css("display", "");
-	$(".mask").prop("id", "");
 	$(".mask").css("display", "");
+	editingUser = null;
 }
 
 /**
@@ -297,7 +359,7 @@ function save(self){
   		return selectPage(currentPage);
   	})
   	.then(() => {
-  		closePopup();
+  		closeForm();
   	});
 }
 
@@ -307,16 +369,13 @@ function save(self){
  * @return {Promise}
  */
 function edit(self){
-	//set pop up window
-	$(".mask").prop("id", "edit_block");
-	$("#popup_form_edit").css("display", "block");
-	
 	var dataRow = $(self).parent().parent();
 	var id = $(dataRow).find(".id").children().prop("value");
 	
 	return getUser(id)
 		.then(data => {
-			const checkTypeList = ["state", "interest[]"];
+			//record the editing user
+			editingUser = data;
 			
 			//set current photo
 			$("#current_photo").prop("src", route + "/user/photo?n=" + data.photoName);
@@ -348,9 +407,6 @@ function edit(self){
 					}
 				}
 			}
-			
-			//show pop up window
-			$(".mask").css("display", "flex");
 		});
 }
 
@@ -359,6 +415,14 @@ function edit(self){
  */
 function clrFields(formList){
 	for(let form of formList){
+		
+		let inputList = $(form).find("[name]");
+		for(let ele of inputList){
+			let propName = $(ele).prop("name");
+			if(checkTypeList.indexOf(propName) !== -1) continue;
+			$(ele).prop("value", "");
+		}
+		
 		$(form)[0].reset();
 	}
 }
@@ -422,7 +486,7 @@ function newUser(){
 		})
 		.then(rst => {
 			if(!rst) return;
-			closePopup();
+			closeForm();
 		});
 }
 

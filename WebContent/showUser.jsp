@@ -33,7 +33,7 @@
 		</select><br>
 		<strong>interests: </strong>
 		<span class="interest_filter_des"></span>
-		<i class="material-icons icon_btn" id="interest_expand">expand_more</i><br>	
+		<i class="material-icons icon_btn" id="interest_expand">expand_more</i><br>
 		<div class="interest_box"></div>
 		<button id="filter_search">Go</button>
 	</form>
@@ -57,13 +57,16 @@
 			<div class="txt_right">
 				<i class="material-icons close_btn icon_btn">clear</i>
 			</div>
-			<!-- form for new user -->
+			<!-- pop up content -->
 			<div class="container">
 				<form id="popup_form_new" class="center_block" enctype="multipart/form-data">
 					<jsp:include page="partial/user/detail_new.jsp"></jsp:include>
 				</form>
 				<form id="popup_form_edit" class="center_block" enctype="multipart/form-data">
 					<jsp:include page="partial/user/detail_edit.jsp"></jsp:include>
+				</form>
+				<form id="popup_form_chpw" class="center_block">
+					<jsp:include page="partial/user/change_password.jsp"></jsp:include>
 				</form>
 			</div>
 		</div>

@@ -13,7 +13,7 @@ state:
 account: <input type="text" class="data" name ="account" disabled><br>
 </label>
 <label>
-password: <a href="">change</a><br>
+password: <a href="" id="change_password">change</a><br>
 </label>
 <label>
 name: <input type="text" class="data" name="name"><br>
