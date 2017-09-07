@@ -64,8 +64,8 @@ public class UsersDao{
 	}
 	
 	public void create(HashMap<String, Object> newData) {
-		String sqlStr = "insert into users (id, name, age, birth, photo_name, occupation, state)";
-		sqlStr += " values (?, ?, ?, ?, ?, ?, ?)";
+		String sqlStr = "insert into users (id, account, password, name, age, birth, photo_name, occupation, state)";
+		sqlStr += " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			DateFormat sdf = new SimpleDateFormat(datePattern);
@@ -75,13 +75,16 @@ public class UsersDao{
 			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
-			pst.setString(1, (String)newData.get("id"));
-			pst.setString(2, (String)newData.get("name"));
-			pst.setInt(3, (int)newData.get("age"));
-			pst.setDate(4, birthDate);
-			pst.setString(5, (String)newData.get("photoName"));
-			pst.setString(6, (String)newData.get("occupation"));
-			pst.setBoolean(7, (boolean)newData.get("state"));
+			int idx = 1;
+			pst.setString (idx++, (String)newData.get("id"));
+			pst.setString (idx++, (String)newData.get("account"));
+			pst.setString (idx++, (String)newData.get("password"));
+			pst.setString (idx++, (String)newData.get("name"));
+			pst.setInt    (idx++, (int)newData.get("age"));
+			pst.setDate   (idx++, birthDate);
+			pst.setString (idx++, (String)newData.get("photoName"));
+			pst.setString (idx++, (String)newData.get("occupation"));
+			pst.setBoolean(idx++, (boolean)newData.get("state"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -132,13 +135,15 @@ public class UsersDao{
 			//read
 			while(rs.next()){
 				UsersModel newUser = new UsersModel();
-				newUser.setId(rs.getString("id"));
-				newUser.setName(rs.getString("name"));
-				newUser.setAge(rs.getInt("age"));
-				newUser.setBirth(rs.getDate("birth"));
-				newUser.setPhotoName(rs.getString("photo_name"));
+				newUser.setId        (rs.getString("id"));
+				newUser.setAccount   (rs.getString("account"));
+				newUser.setPassword  (rs.getString("password"));
+				newUser.setName      (rs.getString("name"));
+				newUser.setAge       (rs.getInt("age"));
+				newUser.setBirth     (rs.getDate("birth"));
+				newUser.setPhotoName (rs.getString("photo_name"));
 				newUser.setOccupation(rs.getString("occupation"));
-				newUser.setState(rs.getBoolean("state"));
+				newUser.setState     (rs.getBoolean("state"));
 				tableList.add(newUser);
 			}
 		}
@@ -223,6 +228,7 @@ public class UsersDao{
 		
 		//get filters
 		String id = (String)filter.get("id");
+		String account = (String)filter.get("account");
 		String name = (String)filter.get("name");
 		String birthFrom = (String)filter.get("birthFrom");
 		String birthTo = (String)filter.get("birthTo");
@@ -233,6 +239,11 @@ public class UsersDao{
 		if(id != null) {
 			queryStr += "id = ?";
 			paramList.add(id);
+		}
+		if(account != null) {
+			if(queryStr.length() != 0) queryStr += " and ";
+			queryStr += "account = ?";
+			paramList.add(account);
 		}
 		if(name != null) {
 			if(queryStr.length() != 0) queryStr += " and ";

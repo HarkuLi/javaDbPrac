@@ -24,7 +24,10 @@ import service.user.UsersService;
 
 public class NewUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String STORE_PATH = System.getProperty("user.home") + "/upload/";
+	private static final String STORE_PATH = System.getProperty("user.home") + "/upload/";
+	//workload for bcrypt
+	private static final int workload = 12;
+	private final UsersService dbService = new UsersService();
 	
 	/**
 	 * response format:
@@ -36,14 +39,13 @@ public class NewUser extends HttpServlet {
     	throws ServletException, IOException {
 		HashMap<String, String> rstMap = new HashMap<String, String>();
 		JSONObject rstObj;
-		UsersService dbService = new UsersService();
     	PrintWriter out = res.getWriter();
     	String fileName = null;
     	
     	//get passed parameters
-//    	String account = req.getParameter("account");
-//    	String password = req.getParameter("password");
-//    	String passwordCheck = req.getParameter("passwordCheck");
+    	String account = req.getParameter("account");
+    	String password = req.getParameter("password");
+    	String passwordCheck = req.getParameter("passwordCheck");
     	String name = req.getParameter("name");
     	String age = req.getParameter("age");
     	String birth = req.getParameter("birth");
@@ -57,7 +59,7 @@ public class NewUser extends HttpServlet {
 //    	password = BCrypt.hashpw(password, BCrypt.gensalt());
     	
     	//check data
-    	String errMsg = checkData(age);
+    	String errMsg = checkData(age, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
         	rstObj = new JSONObject(rstMap);
@@ -65,6 +67,9 @@ public class NewUser extends HttpServlet {
         	out.println(rstObj);
         	return;
     	}
+    	
+    	//hash the password
+    	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
     	
     	//store photo
 		if(photo.getSize() != 0) {
@@ -74,6 +79,8 @@ public class NewUser extends HttpServlet {
     	//call service function
     	HashMap<String, Object> newData = new HashMap<String, Object>();
     	newData.put("name", name);
+    	newData.put("account", account);
+    	newData.put("password", password);
     	newData.put("age", Integer.parseInt(age));
     	newData.put("birth", birth);
     	if(photo.getSize() != 0) {
@@ -85,12 +92,23 @@ public class NewUser extends HttpServlet {
     	dbService.createUser(newData);
     }
 	
-	private String checkData(String age) {
-    	String pattern = "^\\d+$";
+	private String checkData(String age, String account, String password, String passwordCheck) {
+    	//check age
+		String pattern = "^\\d+$";
     	Pattern r = Pattern.compile(pattern);
     	Matcher m = r.matcher(age);
     	if(!m.find()) {
 	    	return "Wrong input for age.";
+    	}
+    	
+    	//check account name
+    	if(dbService.isAccExist(account)) {
+    		return "The account name already exists.";
+    	}
+    	
+    	//check whether the password is equal to the checked password
+    	if(!passwordCheck.equals(password)) {
+    		return "The checked password doesn't match.";
     	}
     	
     	return null;

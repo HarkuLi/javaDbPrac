@@ -144,7 +144,7 @@ function interestFilterLess(){
 		interestDes += interestMap[interestList[i]];
 		if(i != interestList.length-1)	interestDes += ", ";
 	}
-	$(".interest_filter_des").text(interestStr);
+	$(".interest_filter_des").text(interestDes);
 	$(".interest_filter_des").css("display", "");
 	
 	//wrap the interest filter block

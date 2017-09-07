@@ -48,6 +48,16 @@ public class UsersService{
 		return user;
 	}
 	
+	public boolean isAccExist(String account) {
+		HashMap<String, Object> filter = new HashMap<String, Object>();
+		filter.put("account", account);
+		
+		ArrayList<UsersModel> userList = dao.read(filter, 0, 1);
+		if(userList.size() > 0) return true;
+		
+		return false;
+	}
+	
 	public ArrayList<UsersModel> getPage(int page, HashMap<String, Object> filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		ArrayList<UsersModel> userList = dao.read(filter, skipNum, ENTRY_PER_PAGE);

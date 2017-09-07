@@ -9,6 +9,9 @@ state:
 <label>
 	<input type="radio" class="data" name="state" value="0">disable<br>
 </label>
+account: <input type="text" class="data" name ="account"><br>
+password: <input type="password" class="data" name="password"><br>
+check password: <input type="password" class="data" name="passwordCheck"><br>
 name: <input type="text" class="data" name="name"><br>
 age: <input type="text" class="data" name="age"><br>
 birth: <input type="date" class="data" name="birth"><br>
