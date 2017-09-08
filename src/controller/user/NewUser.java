@@ -51,7 +51,7 @@ public class NewUser extends HttpServlet {
     	String birth = req.getParameter("birth");
     	Part photo = req.getPart("photo");
     	String photoType = req.getParameter("photoType");
-    	String[] interestList = req.getParameterValues("interest[]");
+    	String[] interest = req.getParameterValues("interest[]");
     	String occupation = req.getParameter("occupation");
     	String state = req.getParameter("state");
     	
@@ -86,7 +86,7 @@ public class NewUser extends HttpServlet {
     	if(photo.getSize() != 0) {
     		newData.put("photoName", fileName);
     	}
-    	newData.put("interests", interestList);
+    	newData.put("interest", interest);
     	newData.put("occupation", occupation);
     	newData.put("state", state.equals("1"));
     	dbService.createUser(newData);

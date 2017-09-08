@@ -25,7 +25,7 @@ public class UsersService{
 	 * 		 	age: int,
 	 *       	birth: String,
 	 *       	photoName: String,    //not required
-	 *       	interests: String[],
+	 *       	interest: String[],
 	 * 			occupation: String,
 	 * 			state: Boolean
 	 *      }
@@ -34,7 +34,7 @@ public class UsersService{
 		String id = UUID.randomUUID().toString();
 		newData.put("id", id);
 		
-		UIS.saveInterests(id, (String[])newData.get("interests"));
+		UIS.saveInterests(id, (String[])newData.get("interest"));
 		
 		dao.create(newData);
 	}
@@ -87,16 +87,17 @@ public class UsersService{
 	 * 			age: int,
 	 * 			birth: String,
 	 * 			photoName: String,
-	 * 			interests: String[],
+	 * 			interest: String[],
 	 * 			occupation: String,
 	 * 			state: Boolean
 	 * 		}
 	 */
 	public void update(HashMap<String, Object> newData) {
-		String[] interestList = (String[])newData.get("interests");
+		String[] interestList = (String[])newData.get("interest");
 		String userId = (String) newData.get("id");
 		UIS.updateInterests(userId, interestList);
 		
+		newData.remove("interest");
 		dao.update(newData);
 	}
 	

@@ -51,7 +51,7 @@ public class UpdateUser extends HttpServlet {
     	Part photo = req.getPart("photo");
     	String photoType = req.getParameter("photoType");
     	String photoName = req.getParameter("photoName");
-    	String[] interestList = req.getParameterValues("interest[]");
+    	String[] interest = req.getParameterValues("interest[]");
     	String occupation = req.getParameter("occupation");
     	String state = req.getParameter("state");
     	
@@ -111,7 +111,7 @@ public class UpdateUser extends HttpServlet {
     	if(photo.getSize() != 0) {
     		newData.put("photoName", photoName);
     	}
-    	newData.put("interests", interestList);
+    	newData.put("interest", interest);
     	newData.put("occupation", occupation);
     	newData.put("state", state.equals("1"));
     	dbService.update(newData);

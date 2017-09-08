@@ -64,7 +64,7 @@ public class UsersDao{
 	}
 	
 	public void create(HashMap<String, Object> newData) {
-		String sqlStr = "insert into users (id, account, password, name, age, birth, photo_name, occupation, state)";
+		String sqlStr = "insert into users (id, account, password, name, age, birth, photoName, occupation, state)";
 		sqlStr += " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
@@ -141,7 +141,7 @@ public class UsersDao{
 				newUser.setName      (rs.getString("name"));
 				newUser.setAge       (rs.getInt("age"));
 				newUser.setBirth     (rs.getDate("birth"));
-				newUser.setPhotoName (rs.getString("photo_name"));
+				newUser.setPhotoName (rs.getString("photoName"));
 				newUser.setOccupation(rs.getString("occupation"));
 				newUser.setState     (rs.getBoolean("state"));
 				tableList.add(newUser);
@@ -254,7 +254,7 @@ public class UsersDao{
 		String birthTo = (String)filter.get("birthTo");
 		String occ = (String)filter.get("occ");
 		String state = (String)filter.get("state");
-		String[] interest = (String[])filter.get("interest[]");
+		String[] interest = (String[])filter.get("interest");
 		
 		if(id != null) {
 			queryStr += "id = ?";
