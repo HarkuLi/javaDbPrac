@@ -81,11 +81,12 @@ public class UsersService{
 	 * 
 	 * @param newData {HashMap<String, Object>}
 	 * 		{
-	 * 			id: String,
+	 * 			id: String,	//required
+	 * 			password: String,
 	 * 			name: String,
 	 * 			age: int,
 	 * 			birth: String,
-	 * 			photoName: String,    //not required
+	 * 			photoName: String,
 	 * 			interests: String[],
 	 * 			occupation: String,
 	 * 			state: Boolean

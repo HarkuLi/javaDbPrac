@@ -65,7 +65,7 @@
 				<form id="popup_form_edit" class="center_block" enctype="multipart/form-data">
 					<jsp:include page="partial/user/detail_edit.jsp"></jsp:include>
 				</form>
-				<form id="popup_form_chpw" class="center_block">
+				<form id="popup_form_chpw" class="center_block" enctype="multipart/form-data">
 					<jsp:include page="partial/user/change_password.jsp"></jsp:include>
 				</form>
 			</div>

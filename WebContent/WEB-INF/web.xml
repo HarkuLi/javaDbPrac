@@ -35,6 +35,10 @@
     <servlet-name>userPhoto</servlet-name>
     <servlet-class>controller.user.UserPhoto</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>changePw</servlet-name>
+    <servlet-class>controller.user.ChangePassword</servlet-class>
+  </servlet>
   <!-- occupation page -->
   <servlet>
     <servlet-name>showOcc</servlet-name>
@@ -123,6 +127,10 @@
   <servlet-mapping>
     <servlet-name>userPhoto</servlet-name>
     <url-pattern>/user/photo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>changePw</servlet-name>
+    <url-pattern>/user/change_password</url-pattern>
   </servlet-mapping>
   <!-- occupation page -->
   <servlet-mapping>

@@ -144,6 +144,16 @@ $(() => {
   $("#popup_form_chpw").on("click", ":submit", () => {
   	event.preventDefault();
   	
+  	var passedData = new FormData($("#popup_form_chpw")[0]);
+  	updatePassword(passedData)
+  		.then(data => {
+    		if(data.errMsg){
+    			alert(data.errMsg);
+    			return;
+    		}
+    		alert("Change password successfully");
+    		closeForm();
+    	});
   });
 });
 
@@ -848,7 +858,7 @@ function getList(page){
 /**
  * 
  * @param id {String}
- * @return {Objcet} user data of the id
+ * @return {Promise} user data of the id
  */
 function getUser(id){
 	return new Promise((resolve, reject) => {
@@ -859,6 +869,31 @@ function getUser(id){
   });
 }
 
+/**
+ * 
+ * @param passedData {Object}
+ * 			{
+ * 				id: String,
+ *				password: String,
+ *				passwordCheck: String
+ * 			}
+ * @return {Promise} if error, return: {errMsg: String}
+ */
+function updatePassword(passedData){
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			url: "user/change_password",
+			type: "POST",
+			data: passedData,
+			processData: false,
+			contentType: false,
+			success: (data, status) => {
+        if(status !== "success") return reject("post status: " + status);
+        resolve(data);
+      }
+		});
+	});
+}
 
 
 
