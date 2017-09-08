@@ -144,16 +144,18 @@ $(() => {
   $("#popup_form_chpw").on("click", ":submit", () => {
   	event.preventDefault();
   	
-  	var passedData = new FormData($("#popup_form_chpw")[0]);
-  	updatePassword(passedData)
-  		.then(data => {
-    		if(data.errMsg){
-    			alert(data.errMsg);
-    			return;
-    		}
-    		alert("Change password successfully");
-    		closeForm();
-    	});
+  	if(processing) return;
+  	if(!isFillAll($("#popup_form_chpw"))) return alert("You have some fields not filled.");
+  	
+  	processing = true;
+  	changePw()
+  		.then(rst => {
+  			if(rst){
+    			alert("Change password successfully");
+    			closeForm();
+  			}
+  			processing = false;
+  		});
   });
 });
 
@@ -161,10 +163,42 @@ $(() => {
 // functions //
 ///////////////
 
+/**
+ * 
+ * @return {Promise} return true if success
+ */
+function changePw(){
+	var passedData = new FormData($("#popup_form_chpw")[0]);
+	return updatePassword(passedData)
+		.then(data => {
+  		if(data.errMsg){
+  			alert(data.errMsg);
+  			return false;
+  		}
+  		return getUser(editingUser.id);
+		})
+  	.then(data => {
+  		if(!data)	return false;
+  		
+			//record the editing user
+			editingUser = data;
+			
+			//update the account shown in the edit form of the user
+			$("#popup_form_edit").find("[name='account']").prop("value", data.account);
+  		
+			return true;
+  	});
+}
+
 function editPw(){
 	var inputList = $("#popup_form_chpw").find("[name]");
 	
 	//set the form
+		//determine whether account input is disabled
+	var accountEle = $("#popup_form_chpw").find("[name='account']");
+	if(!editingUser.account) accountEle.prop("disabled", false);
+	else accountEle.prop("disabled", true);
+		//set values
 	for(let ele of inputList){
 		let prop = $(ele).prop("name");
 		$(ele).prop("value", editingUser[prop]);
@@ -456,7 +490,7 @@ function isChecked(checkEleList){
 function isFillAll(form){
 	const exceptList = ["id", "photo", "photoName", "interest[]", "state"];
 	
-	var inputList = $(form).find(".data");
+	var inputList = $(form).find("[name]");
 	
 	for(let ele of inputList){
 		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
@@ -464,7 +498,9 @@ function isFillAll(form){
 	}
 	
 	//check state field
-	if(!isChecked($(form).find("[name='state']"))) return false;
+	if($(form).find("[name='state']").length){
+		if(!isChecked($(form).find("[name='state']"))) return false;
+	}
 	
 	return true;
 }
@@ -877,7 +913,10 @@ function getUser(id){
  *				password: String,
  *				passwordCheck: String
  * 			}
- * @return {Promise} if error, return: {errMsg: String}
+ * @return {Promise}
+ * 			{
+ * 				errMsg: String,		//if error
+ * 			}
  */
 function updatePassword(passedData){
 	return new Promise((resolve, reject) => {
