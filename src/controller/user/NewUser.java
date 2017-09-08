@@ -3,6 +3,9 @@ package controller.user;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -25,6 +28,7 @@ import service.user.UsersService;
 public class NewUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String STORE_PATH = System.getProperty("user.home") + "/upload/";
+	private static final String datePattern = "yyyy-MM-dd";
 	//workload for bcrypt
 	private static final int workload = 12;
 	private final UsersService dbService = new UsersService();
@@ -55,9 +59,6 @@ public class NewUser extends HttpServlet {
     	String occupation = req.getParameter("occupation");
     	String state = req.getParameter("state");
     	
-    	//test
-//    	password = BCrypt.hashpw(password, BCrypt.gensalt());
-    	
     	//check data
     	String errMsg = checkData(age, account, password, passwordCheck);
     	if(errMsg != null) {
@@ -82,7 +83,17 @@ public class NewUser extends HttpServlet {
     	newData.put("account", account);
     	newData.put("password", password);
     	newData.put("age", Integer.parseInt(age));
-    	newData.put("birth", birth);
+    	
+    	try {
+			DateFormat sdf = new SimpleDateFormat(datePattern);
+			//note: the type Date here is java.sql.date
+			//      but sdf.parse(String) returns java.util.date
+	    	Date birthDate = new Date(sdf.parse(birth).getTime());
+			newData.put("birth", birthDate);
+		} catch (Exception e) {
+			System.out.println("Exception in NewUser: " + e.toString());
+		}
+    	
     	if(photo.getSize() != 0) {
     		newData.put("photoName", fileName);
     	}

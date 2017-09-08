@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,7 +17,6 @@ public class UsersDao{
 	private Statement stat;
 	private ResultSet rs;
 	private PreparedStatement pst;
-	private final String datePattern = "yyyy-MM-dd";
 
 	public UsersDao() {
 		conPool = new ConnectionPool();
@@ -68,11 +65,6 @@ public class UsersDao{
 		sqlStr += " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
-			DateFormat sdf = new SimpleDateFormat(datePattern);
-			//note: the type Date here is java.sql.date
-			//      but sdf.parse(String) returns java.util.date
-			Date birthDate = new Date(sdf.parse((String)newData.get("birth")).getTime());
-			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
 			int idx = 1;
@@ -81,7 +73,7 @@ public class UsersDao{
 			pst.setString (idx++, (String)newData.get("password"));
 			pst.setString (idx++, (String)newData.get("name"));
 			pst.setInt    (idx++, (int)newData.get("age"));
-			pst.setDate   (idx++, birthDate);
+			pst.setDate   (idx++, (Date)newData.get("birth"));
 			pst.setString (idx++, (String)newData.get("photoName"));
 			pst.setString (idx++, (String)newData.get("occupation"));
 			pst.setBoolean(idx++, (boolean)newData.get("state"));
@@ -250,10 +242,10 @@ public class UsersDao{
 		String id = (String)filter.get("id");
 		String account = (String)filter.get("account");
 		String name = (String)filter.get("name");
-		String birthFrom = (String)filter.get("birthFrom");
-		String birthTo = (String)filter.get("birthTo");
+		Date birthFrom = (Date)filter.get("birthFrom");
+		Date birthTo = (Date)filter.get("birthTo");
 		String occ = (String)filter.get("occ");
-		String state = (String)filter.get("state");
+		Object state = filter.get("state");	//boolean
 		String[] interest = (String[])filter.get("interest");
 		
 		if(id != null) {
@@ -273,26 +265,12 @@ public class UsersDao{
 		if(birthFrom != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "birth >= ?";
-			
-			try {
-				DateFormat sdf = new SimpleDateFormat(datePattern);
-				Date birthFromDate = new Date(sdf.parse(birthFrom).getTime());
-				paramList.add(birthFromDate);
-			} catch(Exception e) {
-				System.out.println("Exception in filterHandle: " + e.toString());
-			}
+			paramList.add(birthFrom);
 		}
 		if(birthTo != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "birth <= ?";
-			
-			try {
-				DateFormat sdf = new SimpleDateFormat(datePattern);
-				Date birthToDate = new Date(sdf.parse(birthTo).getTime());
-				paramList.add(birthToDate);
-			} catch(Exception e) {
-				System.out.println("Exception in filterHandle: " + e.toString());
-			}
+			paramList.add(birthTo);
 		}
 		if(occ != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
@@ -302,7 +280,7 @@ public class UsersDao{
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "state = ?";
-			paramList.add(state.equals("1"));
+			paramList.add((boolean)state);
 		}
 		if(interest != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
