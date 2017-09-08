@@ -157,33 +157,28 @@ public class UsersDao{
 		return tableList;
 	}
 	
-	public void update(HashMap<String, Object> newData) {
-		String sqlStr = "update users" +
-						" set name = ?, age = ?, birth = ?, occupation = ?, state = ?";
-		String photoName = (String) newData.get("photoName");
-		if(photoName != null) {
-			sqlStr   += ", photo_name = ?";
-		}
+	public void update(HashMap<String, Object> setData) {
+		String sqlStr = "update users";
+		
+		//handle the data to set
+		HashMap<String, Object> handledNewData = setDataHandle(setData);
+		String setDataStr = (String)handledNewData.get("queryStr");
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> paramList = (ArrayList<Object>)handledNewData.get("paramList");
+		if(setDataStr.length() == 0) return;	//new data is null
+		sqlStr += " set " + setDataStr;
 		sqlStr       += " where id = ?";
 		
 		try {
-			DateFormat sdf = new SimpleDateFormat(datePattern);
-			//note: the type Date here is java.sql.date
-			//      but sdf.parse(String) returns java.util.date
-			Date birthDate = new Date(sdf.parse((String)newData.get("birth")).getTime());
-			
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
+			
 			int idx = 1;
-			pst.setString (idx++, (String)newData.get("name"));
-			pst.setInt    (idx++, (int)newData.get("age"));
-			pst.setDate   (idx++, birthDate);
-			pst.setString (idx++, (String)newData.get("occupation"));
-			pst.setBoolean(idx++, (boolean)newData.get("state"));
-			if(photoName != null) {
-				pst.setString(idx++, photoName);
+			for(Object param : paramList) {
+				pst.setObject(idx++, param);
 			}
-			pst.setString (idx++, (String)newData.get("id"));
+			pst.setString(idx++, (String)setData.get("id"));
+			
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -214,7 +209,32 @@ public class UsersDao{
 	
 	/**
 	 * 
-	 * @param filter {HashMap<String, String>}
+	 * @param setData {HashMap<String, Object>}
+	 * @return {HashMap<String, Object>}
+	 *   {
+	 *     queryStr: String
+	 *     paramList: ArrayList<Object>,
+	 *   }
+	 */
+	private HashMap<String, Object> setDataHandle(HashMap<String, Object> setData) {
+		String queryStr = "";
+		ArrayList<Object> paramList = new ArrayList<Object>();
+		HashMap<String, Object> rst = new HashMap<String, Object>();
+		
+		for(String key : setData.keySet()) {
+			if(queryStr.length() != 0) queryStr += ", ";
+			queryStr += key + " = ?";
+			paramList.add(setData.get(key));
+		}
+		
+		rst.put("queryStr", queryStr);
+		rst.put("paramList", paramList);
+		return rst;
+	}
+	
+	/**
+	 * 
+	 * @param filter {HashMap<String, Object>}
 	 * @return {HashMap<String, Object>}
 	 *   {
 	 *     queryStr: String
