@@ -1,7 +1,6 @@
 package controller.occ;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,12 +13,6 @@ public class ShowOcc extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 		throws ServletException, IOException {
-		
-		//for breadcrumbs
-		ArrayList<String> pathList = new ArrayList<String>();
-		pathList.add("javaDbPrac");
-		pathList.add("occ");
-		req.setAttribute("pathList", pathList);
 		
 		RequestDispatcher rd = req.getRequestDispatcher("/occupation.jsp");
 		rd.forward(req, res);
