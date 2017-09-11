@@ -10,13 +10,11 @@
 	<title>user</title>
 </head>
 <body>
-	<!-- breadcrumbs -->
-	<div class="container">
-		<jsp:include page="partial/breadcrumbs.jsp"></jsp:include>
-	</div>
+	<!-- navigation bar -->
+	<jsp:include page="partial/navbar.jsp"></jsp:include>
 
 	<!-- filter -->
-	<div class="container">
+	<div class="container first_block">
 		<form class="center-block filter">
 			<fieldset>
 				<legend>Filter</legend>

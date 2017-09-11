@@ -89,7 +89,7 @@ td input{
 	margin: 0 auto;
 }
 
-ul{
+.interest_box ul{
 	-webkit-column-count: 2;
 	-moz-column-count: 2;
 	column-count: 2;
@@ -109,6 +109,10 @@ ul{
 
 .filter{
 	width: 500px;
+}
+
+.first_block{
+	margin-top: 70px;
 }
 
 
