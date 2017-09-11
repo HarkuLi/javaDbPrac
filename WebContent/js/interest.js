@@ -8,6 +8,8 @@ var filter = {
 	state: ""
 };
 
+initialization();
+
 ///////////
 // ready //
 ///////////
@@ -119,6 +121,17 @@ $(() => {
 ///////////////
 // functions //
 ///////////////
+
+function initialization(){
+	setNavBar();
+}
+
+/**
+ * make the link of current page in the navigation bar active
+ */
+function setNavBar(){
+	$("#nav_interest").prop("class", "active");
+}
 
 /**
  * 
