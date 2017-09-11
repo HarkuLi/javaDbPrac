@@ -8,6 +8,8 @@ var filter = {
 	state: ""
 };
 
+initialization();
+
 ///////////
 // ready //
 ///////////
@@ -120,6 +122,17 @@ $(() => {
 ///////////////
 // functions //
 ///////////////
+
+function initialization(){
+	setNavBar();
+}
+
+/**
+ * make the link of current page in the navigation bar active
+ */
+function setNavBar(){
+	$("#nav_occ").prop("class", "active");
+}
 
 function closePopup(){
 	clrFields($("#popup_form"));
