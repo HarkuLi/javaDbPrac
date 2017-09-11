@@ -1,34 +1,40 @@
-table, td, th{
-	/*border-collapse: collapse;*/
-	border: 1px solid black;
+/* modify field style of bootstrap */
+fieldset{
+	border: 1px solid silver;
+	padding: 10px;
 }
 
-td {
-	padding: 0px 5px;
+legend{
+	border: 0;
+	width: inherit;
+	margin: 0;
+	text-align: center;
+}
+/* modify field style of bootstrap */
+
+/* modify table style of bootstrap */
+.table > tbody > tr > td{
+	vertical-align: middle;
 }
 
-.txt_center{
+th, td{
 	text-align: center;
 }
 
-.paging_row{
-	display: inline-block;
-	margin-right: 10px;
-}
-
 td input{
-	background-color: white;
+	background-color: rgba(0, 0, 0, 0);
 	border: none;
 	text-align: center;
 	text-overflow: ellipsis;
 	cursor: default;
 }
+/* modify table style of bootstrap */
 
-.id{
-	display: none;
+.paging_row{
+	display: inline-block;
 }
 
-.hidden_data{
+.id{
 	display: none;
 }
 
@@ -53,23 +59,14 @@ td input{
 	overflow: auto;
 }
 
-.txt_right{
-	text-align: right;
-}
-
 .icon_btn{
 	cursor: pointer;
 	vertical-align: middle;
 }
 
-.container{
+.popup_content{
 	display: flex;
 	height: 450px;
-}
-
-.center_block{
-	display: block;
-	margin: 0 auto;
 }
 
 .mid_img{
@@ -85,7 +82,7 @@ td input{
 	margin: 5px 0px;
 }
 
-.popup_window .container{
+.popup_window .popup_content{
 	overflow: auto;
 	height: 450px;
 	width: 495px;
@@ -108,6 +105,10 @@ ul{
 .breadcrumbs a{
 	text-decoration: none;
 	margin: 0 5px;
+}
+
+.filter{
+	width: 500px;
 }
 
 

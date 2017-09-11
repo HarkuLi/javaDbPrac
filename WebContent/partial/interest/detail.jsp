@@ -3,4 +3,4 @@ name: <input type="text" class="data" name="name"><br>
 state:
 <input type="radio" class="data" name="state" value="1"> enable
 <input type="radio" class="data" name="state" value="0"> disable<br>
-<input type="submit" value="submit">
+<input type="submit" value="submit" class="btn btn-default btn-sm">

@@ -417,14 +417,14 @@ function renderData(dataList){
 		
 		rowEntry = $("<td></td>");
 		btn = $("<button></button>");
-		btn.prop("class", "edit");
+		btn.prop("class", "btn btn-info btn-sm edit");
 		btn.text("edit");
 		rowEntry.append(btn);
 		dataRow.append(rowEntry);
 		
 		rowEntry = $("<td></td>");
 		btn = $("<button></button>");
-		btn.prop("class", "delete");
+		btn.prop("class", "btn btn-danger btn-sm delete");
 		btn.text("delete");
 		rowEntry.append(btn);
 		dataRow.append(rowEntry);

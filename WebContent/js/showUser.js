@@ -257,7 +257,7 @@ function interestFilterLess(){
 	
 	//wrap the interest filter block
 	$("#interest_expand").text("expand_more");
-	$(".filter").children(".interest_box").css("display", "");
+	$(".filter").find(".interest_box").css("display", "");
 }
 
 function interestFilterMore(){
@@ -267,7 +267,7 @@ function interestFilterMore(){
 	
 	//expand the interest filter block
 	$("#interest_expand").text("expand_less");
-	$(".filter").children(".interest_box").css("display", "block");
+	$(".filter").find(".interest_box").css("display", "block");
 }
 
 /**
@@ -284,68 +284,6 @@ function initialization(){
 			//should initialized after renderOccList() and renderInterestList()
 			//because it uses occMap and interestMap
 			return selectPage(currentPage);
-		});
-}
-
-/**
- * 
- * @return {Promise}
- */
-function renderOccList(){
-	var defaultOcc = {
-		"--" : "",
-		"other" : "other"
-	};
-	
-	return getOccList()
-		.then(list => {
-			$(".occ_list").empty();
-			
-			for(let prop in defaultOcc){
-				let option = $("<option></option>");
-				option.prop("value", defaultOcc[prop]);
-				option.append(prop);
-				$(".occ_list").append(option);
-			}
-			
-			for(let ele of list){
-				option = $("<option></option>");
-				option.prop("value", ele.id);
-				option.append(ele.name);
-				$(".occ_list").append(option);
-				
-				//record occupations
-				occMap[ele.id] = ele.name;
-			}
-		});
-}
-
-/**
- * 
- * @return {Promise}
- */
-function renderInterestList(){
-	return getInterestList()
-		.then(list => {
-			$(".interest_box").empty();
-			var ul = $("<ul></ul>");
-			for(let ele of list){
-				let li = $("<li></li>");
-				let label = $("<label></label>");
-				let input = $("<input></input>");
-				input.prop("class", "data");
-				input.prop("type", "checkbox");
-				input.prop("name", "interest[]");
-				input.prop("value", ele.id);
-				label.append(input);
-				label.append(ele.name);
-				li.append(label);
-				ul.append(li);
-				
-				//record interests
-				interestMap[ele.id] = ele.name;
-			}
-			$(".interest_box").append(ul);
 		});
 }
 
@@ -633,6 +571,81 @@ function selectPage(page){
 }
 
 /**
+ * 
+ * @param totalPage {Number} total page of data
+ */
+function pageNumDisp(totalPage){
+	if(currentPage > totalPage)	currentPage = totalPage;
+	$(".paging_row > input").val(currentPage);
+}
+
+  //////////////////////
+  // render functions //
+  //////////////////////
+
+/**
+ * 
+ * @return {Promise}
+ */
+function renderOccList(){
+	var defaultOcc = {
+		"--" : "",
+		"other" : "other"
+	};
+	
+	return getOccList()
+		.then(list => {
+			$(".occ_list").empty();
+			
+			for(let prop in defaultOcc){
+				let option = $("<option></option>");
+				option.prop("value", defaultOcc[prop]);
+				option.append(prop);
+				$(".occ_list").append(option);
+			}
+			
+			for(let ele of list){
+				option = $("<option></option>");
+				option.prop("value", ele.id);
+				option.append(ele.name);
+				$(".occ_list").append(option);
+				
+				//record occupations
+				occMap[ele.id] = ele.name;
+			}
+		});
+}
+
+/**
+ * 
+ * @return {Promise}
+ */
+function renderInterestList(){
+	return getInterestList()
+		.then(list => {
+			$(".interest_box").empty();
+			var ul = $("<ul></ul>");
+			for(let ele of list){
+				let li = $("<li></li>");
+				let label = $("<label></label>");
+				let input = $("<input></input>");
+				input.prop("class", "data");
+				input.prop("type", "checkbox");
+				input.prop("name", "interest[]");
+				input.prop("value", ele.id);
+				label.append(input);
+				label.append(ele.name);
+				li.append(label);
+				ul.append(li);
+				
+				//record interests
+				interestMap[ele.id] = ele.name;
+			}
+			$(".interest_box").append(ul);
+		});
+}
+
+/**
  * change the values of existing row elements
  * hide and clean the values of the redundant rows
  * add new row elements if existing row elements are not enough
@@ -721,7 +734,7 @@ function renderData(dataList){
 			}
 			
 			//text entry
-			if(hideList.indexOf(prop) >= 0) rowEntry.prop("class", "hidden_data");
+			if(hideList.indexOf(prop) >= 0) rowEntry.prop("class", "hidden");
 			if(prop === "id")	rowEntry.prop("class", "id");
 			input = $("<input>");
 			input.prop("name", prop);
@@ -735,29 +748,20 @@ function renderData(dataList){
 		
 		rowEntry = $("<td></td>");
 		btn = $("<button></button>");
-		btn.prop("class", "edit");
+		btn.prop("class", "btn btn-info btn-sm edit");
 		btn.text("edit");
 		rowEntry.append(btn);
 		dataRow.append(rowEntry);
 		
 		rowEntry = $("<td></td>");
 		btn = $("<button></button>");
-		btn.prop("class", "delete");
+		btn.prop("class", "btn btn-danger btn-sm delete");
 		btn.text("delete");
 		rowEntry.append(btn);
 		dataRow.append(rowEntry);
 		
 		$("#data_table").append(dataRow);
 	}
-}
-
-/**
- * 
- * @param totalPage {Number} total page of data
- */
-function pageNumDisp(totalPage){
-	if(currentPage > totalPage)	currentPage = totalPage;
-	$(".paging_row > input").val(currentPage);
 }
 
   ////////////////////
