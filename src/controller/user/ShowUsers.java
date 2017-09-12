@@ -12,7 +12,7 @@ public class ShowUsers extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
     	throws ServletException, IOException {
 		
-    	RequestDispatcher rd = req.getRequestDispatcher("/showUser.jsp");
+    	RequestDispatcher rd = req.getRequestDispatcher("/user.jsp");
     	rd.forward(req, res);
     }
 }
