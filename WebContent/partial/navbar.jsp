@@ -14,6 +14,9 @@
 				<li id="nav_occ"><a href="/javaDbPrac/occ">occupation</a></li>
 				<li id="nav_interest"><a href="/javaDbPrac/interest">interest</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li id="nav_sign_in"><a href="/javaDbPrac/sign_in"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+			</ul>
 		</div>
 	</div>
 </nav>

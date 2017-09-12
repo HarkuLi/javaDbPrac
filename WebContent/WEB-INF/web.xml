@@ -97,6 +97,11 @@
   	<servlet-name>getIntList</servlet-name>
     <servlet-class>controller.interest.GetIntList</servlet-class>
   </servlet>
+  <!-- sign in page -->
+  <servlet>
+  	<servlet-name>signInPage</servlet-name>
+    <servlet-class>controller.signIn.ShowSignIn</servlet-class>
+  </servlet>
 
 <!-- route -->
   <!-- user page -->
@@ -189,6 +194,11 @@
   <servlet-mapping>
     <servlet-name>getIntList</servlet-name>
     <url-pattern>/interest/get_list</url-pattern>
+  </servlet-mapping>
+  <!-- sign in page -->
+  <servlet-mapping>
+    <servlet-name>signInPage</servlet-name>
+    <url-pattern>/sign_in</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->
