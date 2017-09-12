@@ -21,6 +21,7 @@ import javax.servlet.http.Part;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
+import service.user.UserAccService;
 import service.user.UsersService;
 
 @MultipartConfig
@@ -32,6 +33,7 @@ public class NewUser extends HttpServlet {
 	//workload for bcrypt
 	private static final int workload = 12;
 	private final UsersService dbService = new UsersService();
+	private final UserAccService UAS = new UserAccService();
 	
 	/**
 	 * response format:
@@ -113,7 +115,7 @@ public class NewUser extends HttpServlet {
     	}
     	
     	//check account name
-    	if(dbService.isAccExist(account)) {
+    	if(UAS.isAccExist(account)) {
     		return "The account name already exists.";
     	}
     	

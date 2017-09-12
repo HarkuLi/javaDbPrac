@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
-import model.user.UsersModel;
-import service.user.UsersService;
+import service.user.UserAccService;
 
 @MultipartConfig
 
@@ -29,7 +28,7 @@ public class ChangePassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//workload for bcrypt
 	private static final int workload = 12;
-	private final UsersService dbService = new UsersService();
+	private final UserAccService UAS = new UserAccService();
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
     	throws ServletException, IOException {
@@ -45,8 +44,8 @@ public class ChangePassword extends HttpServlet {
     	String passwordCheck = req.getParameter("passwordCheck");
     	
     	//check data
-    	UsersModel originalUser = dbService.getUser(id);
-    	String errMsg = checkData(originalUser, account, password, passwordCheck);
+    	HashMap<String, Object> originalAcc = UAS.getAccById(id);
+    	String errMsg = checkData(originalAcc, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
         	rstObj = new JSONObject(rstMap);
@@ -59,17 +58,17 @@ public class ChangePassword extends HttpServlet {
     	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
     	
     	//call service to update the password
-    	HashMap<String, Object> newData = new HashMap<String, Object>();
-    	newData.put("id", id);
-    	if(originalUser.getAccount() == null)
-    		newData.put("account", account);
-    	newData.put("password", password);
-    	dbService.update(newData);
+    	HashMap<String, Object> setData = new HashMap<String, Object>();
+    	setData.put("userId", id);
+    	if(originalAcc.get("account") == null)
+    		setData.put("account", account);
+    	setData.put("password", password);
+    	UAS.updateAcc(setData);
     }
 	
-	private String checkData(UsersModel originalUser, String account, String password, String passwordCheck) {
+	private String checkData(HashMap<String, Object> originalAcc, String account, String password, String passwordCheck) {
 		//check account name
-    	if(originalUser.getAccount() == null && dbService.isAccExist(account)) {
+    	if(originalAcc.get("account") == null && UAS.isAccExist(account)) {
     		return "The account name already exists.";
     	}
     	

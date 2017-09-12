@@ -61,22 +61,19 @@ public class UsersDao{
 	}
 	
 	public void create(HashMap<String, Object> newData) {
-		String sqlStr = "insert into users (id, account, password, name, age, birth, photoName, occupation, state)";
-		sqlStr += " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sqlStr = "insert into users (id, name, age, birth, photoName, occupation)";
+		sqlStr += " values (?, ?, ?, ?, ?, ?)";
 		
 		try {
 			con = conPool.getConnection();
 			pst = con.prepareStatement(sqlStr);
 			int idx = 1;
 			pst.setString (idx++, (String)newData.get("id"));
-			pst.setString (idx++, (String)newData.get("account"));
-			pst.setString (idx++, (String)newData.get("password"));
 			pst.setString (idx++, (String)newData.get("name"));
 			pst.setInt    (idx++, (int)newData.get("age"));
 			pst.setDate   (idx++, (Date)newData.get("birth"));
 			pst.setString (idx++, (String)newData.get("photoName"));
 			pst.setString (idx++, (String)newData.get("occupation"));
-			pst.setBoolean(idx++, (boolean)newData.get("state"));
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
@@ -128,14 +125,11 @@ public class UsersDao{
 			while(rs.next()){
 				UsersModel newUser = new UsersModel();
 				newUser.setId        (rs.getString("id"));
-				newUser.setAccount   (rs.getString("account"));
-				newUser.setPassword  (rs.getString("password"));
 				newUser.setName      (rs.getString("name"));
 				newUser.setAge       (rs.getInt("age"));
 				newUser.setBirth     (rs.getDate("birth"));
 				newUser.setPhotoName (rs.getString("photoName"));
 				newUser.setOccupation(rs.getString("occupation"));
-				newUser.setState     (rs.getBoolean("state"));
 				tableList.add(newUser);
 			}
 		}
@@ -153,13 +147,15 @@ public class UsersDao{
 		String sqlStr = "update users";
 		
 		//handle the data to set
+		String id = (String)setData.get("id");
+		setData.remove("id");
 		HashMap<String, Object> handledNewData = setDataHandle(setData);
 		String setDataStr = (String)handledNewData.get("queryStr");
 		@SuppressWarnings("unchecked")
 		ArrayList<Object> paramList = (ArrayList<Object>)handledNewData.get("paramList");
 		if(setDataStr.length() == 0) return;	//new data is null
 		sqlStr += " set " + setDataStr;
-		sqlStr       += " where id = ?";
+		sqlStr += " where id = ?";
 		
 		try {
 			con = conPool.getConnection();
@@ -169,7 +165,7 @@ public class UsersDao{
 			for(Object param : paramList) {
 				pst.setObject(idx++, param);
 			}
-			pst.setString(idx++, (String)setData.get("id"));
+			pst.setString(idx++, id);
 			
 			pst.executeUpdate();
 		}
@@ -240,7 +236,6 @@ public class UsersDao{
 		
 		//get filters
 		String id = (String)filter.get("id");
-		String account = (String)filter.get("account");
 		String name = (String)filter.get("name");
 		Date birthFrom = (Date)filter.get("birthFrom");
 		Date birthTo = (Date)filter.get("birthTo");
@@ -251,11 +246,6 @@ public class UsersDao{
 		if(id != null) {
 			queryStr += "id = ?";
 			paramList.add(id);
-		}
-		if(account != null) {
-			if(queryStr.length() != 0) queryStr += " and ";
-			queryStr += "account = ?";
-			paramList.add(account);
 		}
 		if(name != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
@@ -279,7 +269,7 @@ public class UsersDao{
 		}
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
-			queryStr += "state = ?";
+			queryStr += "id in (select userId from userAccount where state = ?)";
 			paramList.add((boolean)state);
 		}
 		if(interest != null) {
