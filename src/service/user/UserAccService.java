@@ -27,9 +27,24 @@ public class UserAccService {
 	}
 	
 	/**
+	 * 
+	 * @param account {String}
+	 * @return {HashMap<String, Object>} {userId: String, account: String, password: String, state: boolean}, null if not found
+	 */
+	public HashMap<String, Object> getAcc(String account) {
+		HashMap<String, Object> filter = new HashMap<String, Object>();
+		filter.put("account", account);
+		
+		ArrayList<HashMap<String, Object>> accList = dao.read(filter);
+		
+		if(accList.isEmpty()) return null;
+		return accList.get(0);
+	}
+	
+	/**
 	 * return the user account
 	 * @param userId {String}
-	 * @return {HashMap<String, Object>} {account: String, password: String, state: boolean}, null if not found
+	 * @return {HashMap<String, Object>} {userId: String, account: String, password: String, state: boolean}, null if not found
 	 */
 	public HashMap<String, Object> getAccById(String userId) {
 		HashMap<String, Object> filter = new HashMap<String, Object>();

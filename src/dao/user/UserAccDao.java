@@ -76,6 +76,7 @@ public class UserAccDao {
 						
 			while(rs.next()){
 				HashMap<String, Object> acc = new HashMap<String, Object>();
+				acc.put("userId", rs.getString("userId"));
 				acc.put("account", rs.getString("account"));
 				acc.put("password", rs.getString("password"));
 				acc.put("state", rs.getBoolean("state"));

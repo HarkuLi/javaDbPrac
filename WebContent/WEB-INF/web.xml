@@ -102,6 +102,10 @@
   	<servlet-name>signInPage</servlet-name>
     <servlet-class>controller.signIn.ShowSignIn</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>signInAction</servlet-name>
+    <servlet-class>controller.signIn.SignInAction</servlet-class>
+  </servlet>
 
 <!-- route -->
   <!-- user page -->
@@ -199,6 +203,10 @@
   <servlet-mapping>
     <servlet-name>signInPage</servlet-name>
     <url-pattern>/sign_in</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>signInAction</servlet-name>
+    <url-pattern>/sign_in/action</url-pattern>
   </servlet-mapping>
 
 <!-- connection pool -->
