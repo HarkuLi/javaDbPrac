@@ -100,11 +100,16 @@
   <!-- sign in route -->
   <servlet>
   	<servlet-name>signInPage</servlet-name>
-    <servlet-class>controller.signIn.ShowSignIn</servlet-class>
+    <servlet-class>controller.sign.ShowSignIn</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>signInAction</servlet-name>
-    <servlet-class>controller.signIn.SignInAction</servlet-class>
+    <servlet-class>controller.sign.SignInAction</servlet-class>
+  </servlet>
+  <!-- sign out route -->
+  <servlet>
+  	<servlet-name>signOut</servlet-name>
+    <servlet-class>controller.sign.SignOut</servlet-class>
   </servlet>
 
 <!-- route -->
@@ -207,6 +212,11 @@
   <servlet-mapping>
     <servlet-name>signInAction</servlet-name>
     <url-pattern>/sign_in/action</url-pattern>
+  </servlet-mapping>
+  <!-- sign in route -->
+  <servlet-mapping>
+    <servlet-name>signOut</servlet-name>
+    <url-pattern>/sign_out</url-pattern>
   </servlet-mapping>
 
 <!-- filter controller -->
