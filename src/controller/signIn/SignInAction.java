@@ -59,7 +59,8 @@ public class SignInAction extends HttpServlet {
     	//set cookie if passing checks
     	if(token != null) {
 			Cookie cookie = new Cookie("LOGIN_INFO", token);
-			cookie.setMaxAge(60 * 60 * 24 * 7);
+			cookie.setMaxAge(UserAccService.EXPIRE_TIME_SEC);
+			cookie.setPath("/javaDbPrac");
 			res.addCookie(cookie);
     	}
     	
