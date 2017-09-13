@@ -15,7 +15,7 @@
 	<!-- sign in form -->
 	<div class="container first_block">
 		<div class="panel panel-success center-block">
-			<form class="form-horizontal">
+			<form class="form-horizontal" id="sign_in_form" enctype="multipart/form-data">
 				<div class="form-group">
 					<label class="control-label col-md-3" for="account">Account:</label>
 					<div class="col-md-9">
@@ -28,6 +28,7 @@
 						<input type="password" class="form-control" name="password" id="password">
 					</div>
 				</div>
+				<p class="err_msg"></p>
 				<button type="submit" class="btn btn-success center-block">Sign in</button>
 			</form>
 		</div>
@@ -35,5 +36,7 @@
 			<span>No account? <a href="#">Create an account</a></span>
 		</div>
 	</div>
+	
+	<script src="/javaDbPrac/js/sign_in.js"></script>
 </body>
 </html>

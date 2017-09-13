@@ -2,3 +2,7 @@
 	padding: 20px;
 	width: 400px;
 }
+
+.err_msg{
+	color: #ff3333;
+}
