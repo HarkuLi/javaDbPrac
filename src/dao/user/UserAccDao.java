@@ -80,6 +80,8 @@ public class UserAccDao {
 				acc.put("account", rs.getString("account"));
 				acc.put("password", rs.getString("password"));
 				acc.put("state", rs.getBoolean("state"));
+				acc.put("signInTime", rs.getLong("signInTime"));
+				acc.put("token", rs.getString("token"));
 				rstList.add(acc);
 			}
 		}

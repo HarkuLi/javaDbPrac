@@ -6,7 +6,7 @@
   </welcome-file-list>
   
 <!-- servlet -->
-  <!-- user page -->
+  <!-- user route -->
   <servlet>
     <servlet-name>showUser</servlet-name>
     <servlet-class>controller.user.ShowUsers</servlet-class>
@@ -39,7 +39,7 @@
   	<servlet-name>changePw</servlet-name>
     <servlet-class>controller.user.ChangePassword</servlet-class>
   </servlet>
-  <!-- occupation page -->
+  <!-- occupation route -->
   <servlet>
     <servlet-name>showOcc</servlet-name>
     <servlet-class>controller.occ.ShowOcc</servlet-class>
@@ -68,7 +68,7 @@
   	<servlet-name>getOccList</servlet-name>
     <servlet-class>controller.occ.GetOccList</servlet-class>
   </servlet>
-  <!-- interest page -->
+  <!-- interest route -->
   <servlet>
     <servlet-name>showInt</servlet-name>
     <servlet-class>controller.interest.ShowInt</servlet-class>
@@ -97,7 +97,7 @@
   	<servlet-name>getIntList</servlet-name>
     <servlet-class>controller.interest.GetIntList</servlet-class>
   </servlet>
-  <!-- sign in page -->
+  <!-- sign in route -->
   <servlet>
   	<servlet-name>signInPage</servlet-name>
     <servlet-class>controller.signIn.ShowSignIn</servlet-class>
@@ -108,7 +108,7 @@
   </servlet>
 
 <!-- route -->
-  <!-- user page -->
+  <!-- user route -->
   <servlet-mapping>
     <servlet-name>showUser</servlet-name>
     <url-pattern>/user</url-pattern>
@@ -141,7 +141,7 @@
     <servlet-name>changePw</servlet-name>
     <url-pattern>/user/change_password</url-pattern>
   </servlet-mapping>
-  <!-- occupation page -->
+  <!-- occupation route -->
   <servlet-mapping>
     <servlet-name>showOcc</servlet-name>
     <url-pattern>/occ</url-pattern>
@@ -170,7 +170,7 @@
     <servlet-name>getOccList</servlet-name>
     <url-pattern>/occ/get_list</url-pattern>
   </servlet-mapping>
-  <!-- interest page -->
+  <!-- interest route -->
   <servlet-mapping>
     <servlet-name>showInt</servlet-name>
     <url-pattern>/interest</url-pattern>
@@ -199,7 +199,7 @@
     <servlet-name>getIntList</servlet-name>
     <url-pattern>/interest/get_list</url-pattern>
   </servlet-mapping>
-  <!-- sign in page -->
+  <!-- sign in route -->
   <servlet-mapping>
     <servlet-name>signInPage</servlet-name>
     <url-pattern>/sign_in</url-pattern>
@@ -208,6 +208,28 @@
     <servlet-name>signInAction</servlet-name>
     <url-pattern>/sign_in/action</url-pattern>
   </servlet-mapping>
+
+<!-- filter controller -->
+<filter>
+	<filter-name>signInFilter</filter-name>
+	<filter-class>controller.filter.SignInFilter</filter-class>
+</filter>
+
+<!-- filter mapping -->
+<filter-mapping>
+	<filter-name>signInFilter</filter-name>
+	<url-pattern>/user/*</url-pattern>
+</filter-mapping>
+<filter-mapping>
+	<filter-name>signInFilter</filter-name>
+	<url-pattern>/occ/*</url-pattern>
+</filter-mapping>
+<filter-mapping>
+	<filter-name>signInFilter</filter-name>
+	<url-pattern>/interest/*</url-pattern>
+</filter-mapping>
+
+
 
 <!-- connection pool -->
   <resource-ref>
