@@ -41,6 +41,7 @@ function initialization(){
 */
 function setNavBar(){
 	$("#nav_sign_in").prop("class", "active");
+	$("#nav_sign_out").prop("class", "hidden");
 }
 
   ////////////////////

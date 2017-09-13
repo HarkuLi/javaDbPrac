@@ -15,7 +15,8 @@
 				<li id="nav_interest"><a href="/javaDbPrac/interest">interest</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li id="nav_sign_in"><a href="/javaDbPrac/sign_in"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+				<li id="nav_sign_in" class="hidden"><a href="/javaDbPrac/sign_in"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+				<li id="nav_sign_out"><a href="/javaDbPrac/sign_out"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
 			</ul>
 		</div>
 	</div>
