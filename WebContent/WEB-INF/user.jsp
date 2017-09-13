@@ -5,13 +5,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<jsp:include page="partial/head.jsp"></jsp:include>
+	<jsp:include page="../partial/head.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/user.css">	
 	<title>user</title>
 </head>
 <body>
 	<!-- navigation bar -->
-	<jsp:include page="partial/navbar.jsp"></jsp:include>
+	<jsp:include page="../partial/navbar.jsp"></jsp:include>
 
 	<!-- filter -->
 	<div class="container first_block">
@@ -63,13 +63,13 @@
 			<!-- pop up content -->
 			<div class="popup_content">
 				<form id="popup_form_new" class="center-block" enctype="multipart/form-data">
-					<jsp:include page="partial/user/detail_new.jsp"></jsp:include>
+					<jsp:include page="../partial/user/detail_new.jsp"></jsp:include>
 				</form>
 				<form id="popup_form_edit" class="center-block" enctype="multipart/form-data">
-					<jsp:include page="partial/user/detail_edit.jsp"></jsp:include>
+					<jsp:include page="../partial/user/detail_edit.jsp"></jsp:include>
 				</form>
 				<form id="popup_form_chpw" class="center-block" enctype="multipart/form-data">
-					<jsp:include page="partial/user/change_password.jsp"></jsp:include>
+					<jsp:include page="../partial/user/change_password.jsp"></jsp:include>
 				</form>
 			</div>
 		</div>

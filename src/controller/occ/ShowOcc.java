@@ -14,7 +14,7 @@ public class ShowOcc extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 		throws ServletException, IOException {
 		
-		RequestDispatcher rd = req.getRequestDispatcher("/occupation.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/occupation.jsp");
 		rd.forward(req, res);
 	}
 }

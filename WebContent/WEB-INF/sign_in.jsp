@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<jsp:include page="partial/head.jsp"></jsp:include>
+	<jsp:include page="../partial/head.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/sign_in.css">	
 	<title>Sign in</title>
 </head>
 <body>
 	<!-- navigation bar -->
-	<jsp:include page="partial/navbar.jsp"></jsp:include>
+	<jsp:include page="../partial/navbar.jsp"></jsp:include>
 	
 	<!-- sign in form -->
 	<div class="container first_block">

@@ -14,7 +14,7 @@ public class ShowSignIn extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 		throws ServletException, IOException {
 		
-		RequestDispatcher rd = req.getRequestDispatcher("/sign_in.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/sign_in.jsp");
 		rd.forward(req, res);
 	}
 }
