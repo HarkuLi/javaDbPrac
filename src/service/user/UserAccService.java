@@ -75,6 +75,29 @@ public class UserAccService {
 	}
 	
 	/**
+	 * return the user account
+	 * @param token {String}
+	 * @return {HashMap<String, Object>} null if not found
+	 * 		{
+	 * 			userId: String,
+	 * 			account: String,
+	 * 			password: String,
+	 * 			state: boolean,
+	 * 			signInTime: long,
+	 * 			token: String
+	 * 		}
+	 */
+	public HashMap<String, Object> getAccByToken(String token) {
+		HashMap<String, Object> filter = new HashMap<String, Object>();
+		filter.put("token", token);
+		
+		ArrayList<HashMap<String, Object>> accList = dao.read(filter);
+		
+		if(accList.isEmpty()) return null;
+		return accList.get(0);
+	}
+	
+	/**
 	 * check whether the token is valid
 	 * @param token {String}
 	 * @return {boolean} 

@@ -32,6 +32,10 @@
     <servlet-class>controller.user.GetUser</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>getUserByToken</servlet-name>
+    <servlet-class>controller.user.GetUserByToken</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>userPhoto</servlet-name>
     <servlet-class>controller.user.UserPhoto</servlet-class>
   </servlet>
@@ -137,6 +141,10 @@
   <servlet-mapping>
     <servlet-name>getUser</servlet-name>
     <url-pattern>/user/get_one</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>getUserByToken</servlet-name>
+    <url-pattern>/user/get_by_token</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>userPhoto</servlet-name>
