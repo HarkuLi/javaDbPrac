@@ -141,7 +141,7 @@ $(() => {
   	switchForm($("#popup_form_chpw"));
   });
   
-  $("#popup_form_chpw").on("click", ":submit", () => {
+  $("#popup_form_chpw").on("click", "[type='submit']", () => {
   	event.preventDefault();
   	
   	if(processing) return;

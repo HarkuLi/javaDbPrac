@@ -1,15 +1,20 @@
 <input type="hidden" class="data" name="id">
-<label>
-account: <input type="text" class="data" name ="account" disabled>
-</label>
-<br>
-<label>
-new password: <input type="password" class="data" name="password">
-</label>
-<br>
-<label>
-	check password: <input type="password" class="data" name="passwordCheck">
-</label>
-<br>
-
-<input type="submit" value="submit" class="btn btn-default btn-sm">
+<div class="form-group">
+	<label class="control-label col-md-5">Account:</label>
+	<div class="col-md-7">
+		<input type="text" class="data form-control" name="account" disabled>
+	</div>
+</div>
+<div class="form-group">
+	<label class="control-label col-md-5">New Password:</label>
+	<div class="col-md-7">
+		<input type="password" class="data form-control" name="password">
+	</div>
+</div>
+<div class="form-group">
+	<label class="control-label col-md-5">Check Password:</label>
+	<div class="col-md-7">
+		<input type="password" class="data form-control" name="passwordCheck">
+	</div>
+</div>
+<button type="submit" class="btn btn-default btn-sm center-block">submit</button>

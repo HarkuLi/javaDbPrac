@@ -59,7 +59,7 @@
 	<div class="col-md-offset-1 interest_box"></div>
 </div>
 
-<input type="submit" value="submit" id="user_modify" class="btn btn-default btn-sm">
+<button type="submit" id="user_modify" class="btn btn-default btn-sm center-block">submit</button>
 
 
 
