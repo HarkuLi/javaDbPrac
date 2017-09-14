@@ -3,48 +3,61 @@
 <input type="file" class="data" name="photo"><br>
 <input type="hidden" class="data" name="photoName">
 
-<strong>state:</strong>
-<label>
-	<input type="radio" class="data" name="state" value="1" checked>enable
-</label>
-<label>
-	<input type="radio" class="data" name="state" value="0">disable
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">State:</label>
+	<div class="radio col-md-offset-1 col-md-4">
+		<label><input type="radio" class="data" name="state" value="1"> enable</label>
+	</div>
+	<div class="radio col-md-5">
+		<label><input type="radio" class="data" name="state" value="0"> disable</label>
+	</div>
+</div>
 
-<label>
-account: <input type="text" class="data" name ="account" disabled>
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">Account:</label>
+	<div class="col-md-offset-1 col-md-9">
+		<input type="text" class="data form-control" name="account" disabled>
+	</div>
+</div>
 
-<label>
-password: <a href="" id="change_password">change</a>
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">Password:</label>
+	<label class="control-label col-md-offset-1 col-md-3"><a href="" id="change_password">change</a></label>
+</div>
 
-<label>
-name: <input type="text" class="data" name="name">
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">Name:</label>
+	<div class="col-md-offset-1 col-md-9">
+		<input type="text" class="data form-control" name="name">
+	</div>
+</div>
 
-<label>
-age: <input type="text" class="data" name="age">
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">Age:</label>
+	<div class="col-md-offset-1 col-md-9">
+		<input type="text" class="data form-control" name="age">
+	</div>
+</div>
 
-<label>
-birth: <input type="date" class="data" name="birth">
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">Birth:</label>
+	<div class="col-md-offset-1 col-md-9">
+		<input type="date" class="data form-control" name="birth">
+	</div>
+</div>
 
-<label>
-occupation:
-<select class="data occ_list" name="occupation"></select>
-</label>
-<br>
+<div class="form-group">
+	<label class="control-label col-md-2">Occupation:</label>
+	<div class="col-md-offset-2 col-md-8">
+		<select class="data occ_list form-control" name="occupation"></select>
+	</div>
+</div>
 
-<strong>interests:</strong><br><br>
-<div class="interest_box"></div>
+<div class="form-group">
+	<label class="control-label col-md-2">Interests:</label>
+	<br><br>
+	<div class="col-md-offset-1 interest_box"></div>
+</div>
 
 <input type="submit" value="submit" id="user_modify" class="btn btn-default btn-sm">
 

@@ -381,7 +381,7 @@ function edit(self){
 			}
 				//set interest
 			if(data.interest){
-				var interestData = $("#popup_form_edit").children(".interest_box").find("input");
+				var interestData = $("#popup_form_edit").find(".interest_box").find("input");
 				for(let ele of interestData){
 					let interestId = $(ele).prop("value");
 					if(data.interest.indexOf(interestId) >= 0){
@@ -449,7 +449,7 @@ function isFillAll(form){
  */
 function newUser(){
 	var passedData = new FormData($("#popup_form_new")[0]);
-	var photo = $("#popup_form_new").children("[name='photo']").prop("files")[0];
+	var photo = $("#popup_form_new").find("[name='photo']").prop("files")[0];
 	
 	if(photo){
 		if(acceptPhotoType.indexOf(photo.type)===-1){
