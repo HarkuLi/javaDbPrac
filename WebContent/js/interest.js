@@ -186,7 +186,7 @@ function edit(self){
 			
 			//set pop up form
 				//set text type
-			var inputList = $("#popup_form").children(".data");
+			var inputList = $("#popup_form").find(".data");
 			for(let ele of inputList){
 				let propName = $(ele).prop("name");
 				if(checkTypeList.indexOf(propName) !== -1) continue;
@@ -195,7 +195,7 @@ function edit(self){
 				//set checked type
 			for(let name of checkTypeList){
 				let val = data[name] ? "1" : "0";
-				let checkList = $("#popup_form").children("[name='"+ name +"']");
+				let checkList = $("#popup_form").find("[name='"+ name +"']");
 				for(let ele of checkList){
 					if($(ele).prop("value") === val){
 						$(ele).prop("checked", true);
@@ -254,7 +254,7 @@ function checkedVal(checkEleList){
 function isFillAll(form){
 	const exceptList = ["id", "state"];
 	
-	var inputList = $(form).children(".data");
+	var inputList = $(form).find(".data");
 	
 	for(let ele of inputList){
 		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
@@ -262,7 +262,7 @@ function isFillAll(form){
 	}
 	
 	//check state field
-	if(!checkedVal($("#popup_form").children("[name='state']"))) return false;
+	if(!checkedVal($("#popup_form").find("[name='state']"))) return false;
 	
 	return true;
 }
@@ -271,7 +271,7 @@ function isFillAll(form){
  * @param form {Object} jquery element
  */
 function clrFields(form){
-	var inputList = $(form).children(".data");
+	var inputList = $(form).find(".data");
 	
 	for(let ele of inputList){
 		if($(ele).prop("name") === "state"){

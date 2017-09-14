@@ -75,6 +75,10 @@ td input{
 	max-width: 500px;
 }
 
+.popup_window form{
+	padding: 0 35px;
+}
+
 .popup_window input, .filter input{
 	margin: 5px;
 }
