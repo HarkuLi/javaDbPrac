@@ -14,26 +14,52 @@
 	<jsp:include page="../partial/navbar.jsp"></jsp:include>
 
 	<!-- filter -->
-	<div class="container first_block">
-		<form class="center-block filter">
+	<div class="container filter first_block">
+		<form class="form-horizontal">
 			<fieldset>
 				<legend>Filter</legend>
-				<strong>Name: </strong><input type="text" name="name"><br>
-				<strong>Birth: </strong>
-				From <input type="date" name="birthFrom">
-				To <input type="date" name="birthTo"><br>
-				<strong>Occupation: </strong>
-				<select class="occ_list" name="occ"></select><br>
-				<strong>State: </strong>
-				<select name="state">
-					<option value="">--</option>
-					<option value="1">enable</option>
-					<option value="0">disable</option>
-				</select><br>
-				<strong>interests: </strong>
-				<span class="interest_filter_des"></span>
-				<i class="material-icons icon_btn" id="interest_expand">expand_more</i><br>
-				<div class="interest_box"></div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Name:</label>
+					<div class="col-md-10">
+						<input type="text" name="name" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Birth:</label>
+					<label class="control-label col-md-1">From</label>
+					<div class="col-md-4">
+						<input type="date" name="birthFrom" class="form-control">
+					</div>
+					<label class="control-label col-md-1">To</label>
+					<div class="col-md-4">
+						<input type="date" name="birthTo" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Occupation:</label>
+					<div class="col-md-10">
+						<select class="form-control occ_list" name="occ"></select>
+					</div>	
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">State:</label>
+					<div class="col-md-10">
+						<select name="state" class="form-control">
+							<option value="">--</option>
+							<option value="1">enable</option>
+							<option value="0">disable</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">Interests:</label>
+					<div class="col-md-10">
+						<span class="glyphicon glyphicon-chevron-down icon_btn" id="interest_expand"></span>
+						<span class="interest_filter_des"></span>
+					</div>
+					<br><br>
+					<div class="interest_box center-block"></div>
+				</div>
 				<button id="filter_search" class="btn btn-default btn-sm center-block">Go</button>
 			</fieldset>
 		</form>

@@ -1,7 +1,7 @@
 /* modify field style of bootstrap */
 fieldset{
 	border: 1px solid silver;
-	padding: 10px;
+	padding: 20px;
 }
 
 legend{
@@ -47,6 +47,7 @@ td input{
 	left: 0px;
 	display: none;
 	align-items: center;
+	z-index: 1100;
 }
 
 .popup_window{
@@ -61,7 +62,7 @@ td input{
 
 .icon_btn{
 	cursor: pointer;
-	vertical-align: middle;
+	line-height: 30px;
 }
 
 .popup_content{
@@ -108,7 +109,7 @@ td input{
 }
 
 .filter{
-	width: 500px;
+	width: 600px;
 }
 
 .first_block{

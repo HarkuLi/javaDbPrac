@@ -9,7 +9,7 @@ var processing = false;
 
 var occMap = {other : "other"};	//{occId: name}
 var interestMap = {}; //{interestId: name}
-var filterForm = new FormData($(".filter")[0]);
+var filterForm = new FormData($(".filter").find("form")[0]);
 //store jquery elements of opened forms
 var openedFormList = [];
 var editingUser;
@@ -50,8 +50,8 @@ $(() => {
   });
   
   $(".filter").on("click", "#interest_expand", () => {
-  	var iconName = $("#interest_expand").text();
-  	if(iconName === "expand_more") interestFilterMore();
+  	var iconClass = $("#interest_expand").prop("class");
+  	if(iconClass.indexOf("chevron-down") >= 0) interestFilterMore();
   	else interestFilterLess();
   });
   
@@ -245,8 +245,8 @@ function switchForm(form){
 
 function interestFilterLess(){
 	//render the interest filter description 
-	var filterForm = new FormData($(".filter")[0]);
-	var interestList = filterForm.getAll("interest[]");
+	var tmpFilterForm = new FormData($(".filter").find("form")[0]);
+	var interestList = tmpFilterForm.getAll("interest[]");
 	var interestDes = "";
 	for(let i=0; i<interestList.length; ++i){
 		interestDes += interestMap[interestList[i]];
@@ -256,7 +256,7 @@ function interestFilterLess(){
 	$(".interest_filter_des").css("display", "");
 	
 	//wrap the interest filter block
-	$("#interest_expand").text("expand_more");
+	$("#interest_expand").prop("class", "glyphicon glyphicon-chevron-down icon_btn");
 	$(".filter").find(".interest_box").css("display", "");
 }
 
@@ -266,7 +266,7 @@ function interestFilterMore(){
 	$(".interest_filter_des").text("");
 	
 	//expand the interest filter block
-	$("#interest_expand").text("expand_less");
+	$("#interest_expand").prop("class", "glyphicon glyphicon-chevron-up icon_btn");
 	$(".filter").find(".interest_box").css("display", "block");
 }
 
@@ -491,7 +491,7 @@ function filterSearch(){
   	return alert(dateFormatMsg);
 		
 	//record new filters
-  filterForm = new FormData($(".filter")[0]);
+  filterForm = new FormData($(".filter").children("form")[0]);
 	
 	//go to page 1
 	currentPage = 1;
