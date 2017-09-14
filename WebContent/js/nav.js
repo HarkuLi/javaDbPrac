@@ -6,7 +6,7 @@
 $(() => {
 	var pageList = getPageList();
 	var pageName = getPageName(pageList);	//match with navList
-
+	
 	setNavView(pageName);
 });
 
@@ -50,15 +50,44 @@ function getPageName(pageList){
 }
 
 /**
- * set the link of current page active, and hide buttons not required
- * @param {String} pageName 
+ * set the link of current page active, text, and hide buttons not required
+ * @param {String} pageName
+ * @return {Promise} return true if success
  */
 function setNavView(pageName){
-	if(!pageName) return;
-
-	if(pageName === "sign_in"){
-		$("#nav_sign_out").prop("class", "hidden");
+	if(pageName){
+  	$(`#nav_${pageName}`).prop("class", "active");
+  	
+  	if(pageName === "sign_in"){
+  		$("#nav_sign_out").prop("class", "hidden");
+  		return Promise.resolve(true);
+  	}
 	}
 	
-	$(`#nav_${pageName}`).prop("class", "active");
+	return getUserInfo()
+		.then(user => {
+			console.log(JSON.stringify(user));
+			var userStr = user.name + " (" + user.account + ")";
+			$("#nav_user_name").children().text(userStr);
+			return true;
+		});
 }
+
+////////////////////
+// ajax functions //
+////////////////////
+
+/**
+ * 
+ * @return {Promise} return the user correspond to the token
+ */
+function getUserInfo(){
+	return new Promise((resolve, reject) => {
+    $.post("user/get_by_token", (data, status) => {
+      if(status !== "success") return reject("post status: " + status);
+      resolve(data);
+    });
+  });
+}
+
+
