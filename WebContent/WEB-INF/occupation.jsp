@@ -14,17 +14,28 @@
 
 	<!-- filter -->
 	<div class="container filter first_block">
-		<fieldset>
-			<legend>Filter</legend>
-			<strong>Name: </strong><input type="text" name="name"><br>
-			<strong>State: </strong>
-			<select name="state">
-				<option value="">--</option>
-				<option value="1">enable</option>
-				<option value="0">disable</option>
-			</select><br>
-			<button id="filter_search" class="btn btn-default btn-sm center-block">Go</button>
-		</fieldset>
+		<form class="form-horizontal">
+			<fieldset>
+				<legend>Filter</legend>
+				<div class="form-group">
+					<label class="control-label col-md-2">Name:</label>
+					<div class="col-md-10">
+						<input type="text" name="name" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-2">State:</label>
+					<div class="col-md-10">
+						<select name="state" class="form-control">
+							<option value="">--</option>
+							<option value="1">enable</option>
+							<option value="0">disable</option>
+						</select>
+					</div>
+				</div>
+				<button id="filter_search" class="btn btn-default btn-sm center-block">Go</button>
+			</fieldset>
+		</form>
 	</div>
 	<br>
 	
