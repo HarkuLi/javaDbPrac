@@ -21,3 +21,5 @@
 		</div>
 	</div>
 </nav>
+
+<script src="/javaDbPrac/js/nav.js"></script>

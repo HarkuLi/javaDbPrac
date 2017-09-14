@@ -164,13 +164,6 @@ $(() => {
 ///////////////
 
 /**
- * make the link of current page in the navigation bar active
- */
-function setNavBar(){
-	$("#nav_user").prop("class", "active");
-}
-
-/**
  * 
  * @return {Promise} return true if success
  */
@@ -281,9 +274,7 @@ function interestFilterMore(){
  * 
  * @return {Promise}
  */
-function initialization(){
-	setNavBar();
-	
+function initialization(){	
 	var promiseList = [];
 	promiseList.push(renderOccList());
 	promiseList.push(renderInterestList());

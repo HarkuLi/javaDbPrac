@@ -1,9 +1,8 @@
 
-initialization();
-
 ///////////
 // ready //
 ///////////
+
 $(() => {
 	///////////////
   // listeners //
@@ -30,18 +29,6 @@ function signIn(){
 			}
 			$("#sign_in_form").children(".err_msg").text("Incorrect account or password.");
 		});
-}
-
-function initialization(){
-	setNavBar();
-}
-
-/**
-* make the link of current page in the navigation bar active
-*/
-function setNavBar(){
-	$("#nav_sign_in").prop("class", "active");
-	$("#nav_sign_out").prop("class", "hidden");
 }
 
   ////////////////////
