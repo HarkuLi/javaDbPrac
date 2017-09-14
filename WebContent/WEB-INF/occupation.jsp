@@ -60,11 +60,9 @@
 				<i class="material-icons close_btn icon_btn">clear</i>
 			</div>
 			<!-- form for new occupation -->
-			<div class="text-center">
-				<form id="popup_form">
-					<jsp:include page="../partial/occ/detail.jsp"></jsp:include>
-				</form>
-			</div>
+			<form id="popup_form" class="form-horizontal text-center">
+				<jsp:include page="../partial/occ/detail.jsp"></jsp:include>
+			</form>
 		</div>
 	</div>
 	
