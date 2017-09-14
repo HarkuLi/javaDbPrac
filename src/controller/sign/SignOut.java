@@ -16,6 +16,7 @@ public class SignOut extends HttpServlet {
 		
 		Cookie cookie = new Cookie("LOGIN_INFO", "");
 		cookie.setMaxAge(0);
+		cookie.setPath("/javaDbPrac");
 		res.addCookie(cookie);
 		res.sendRedirect("/javaDbPrac/sign_in");
 	}
