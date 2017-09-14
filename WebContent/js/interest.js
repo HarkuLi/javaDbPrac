@@ -37,7 +37,9 @@ $(() => {
     	});
   });
   
-  $("#filter_search").on("click", () => {
+  $("#filter_search").on("click", (event) => {
+  	event.preventDefault();
+  	
   	if(processing) return;
   	if(!isFilterChange()) return;
   	
