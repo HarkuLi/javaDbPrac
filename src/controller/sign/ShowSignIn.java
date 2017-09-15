@@ -20,7 +20,7 @@ public class ShowSignIn extends HttpServlet {
 		
 		UserAccService UAS = new UserAccService();
 		
-		//check token redirect to user page if signed in
+		//check token, and redirect to user page if signed in
 		HashMap<String, String> cookie = cookieHandle(req.getCookies());
 		if(cookie != null && UAS.checkToken(cookie.get("LOGIN_INFO"))) {
 			res.sendRedirect("/javaDbPrac/user");
