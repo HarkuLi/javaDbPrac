@@ -659,6 +659,7 @@ function renderData(dataList){
 	
 	const sizeMap = {
 		id: 3,
+		account: 10,
 		name: 15,
 		age: 3,
 		birth: 10,
@@ -669,9 +670,9 @@ function renderData(dataList){
 	};
 	
 	const hideList = ["id", "photoName"];
-	const propList = ["id", "photoName", "photo", "name",
-										"age", "birth", "occupation", "interest",
-										"state"];
+	const propList = ["id", "photoName", "photo", "account",
+										"name", "age", "birth", "occupation",
+										"interest", "state"];
 	
 	$("#data_table").css("display", "");
 	
@@ -696,7 +697,7 @@ function renderData(dataList){
 		//set input entries
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
-			$(ele).prop("value", dataList[idx][prop]);
+			$(ele).prop("value", dataList[idx][prop] || "--");
 			if(prop === "interest") $(ele).prop("title", dataList[idx][prop]);
 		}
 		
@@ -738,7 +739,7 @@ function renderData(dataList){
 			if(prop === "id")	rowEntry.prop("class", "id");
 			input = $("<input>");
 			input.prop("name", prop);
-			input.prop("value", data[prop]);
+			input.prop("value", data[prop] || "--");
 			input.prop("disabled", true);
 			input.prop("size", sizeMap[prop]);
 			if(prop === "interest") input.prop("title", data[prop]);

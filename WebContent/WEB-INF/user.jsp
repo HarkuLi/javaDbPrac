@@ -64,6 +64,7 @@
 		<table id="data_table" class="table table-hover">
 			<tr>
 				<th>photo</th>
+				<th>account</th>
 				<th>name</th>
 				<th>age</th>
 				<th>birth</th>
