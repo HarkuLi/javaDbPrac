@@ -124,5 +124,8 @@ td input{
 	height: 30px;
 }
 
+input[type=file] {
+	width: 200px;
+}
 
 

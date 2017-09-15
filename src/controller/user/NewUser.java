@@ -60,6 +60,7 @@ public class NewUser extends HttpServlet {
     	String[] interest = req.getParameterValues("interest[]");
     	String occupation = req.getParameter("occupation");
     	String state = req.getParameter("state");
+    	if(state == null) state = "1";
     	
     	//check data
     	String errMsg = checkData(age, account, password, passwordCheck);

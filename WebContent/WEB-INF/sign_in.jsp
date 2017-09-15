@@ -33,7 +33,7 @@
 			</form>
 		</div>
 		<div class="panel panel-success center-block text-center">
-			<span>No account? <a href="#">Create an account</a></span>
+			<span>No account? <a href="/javaDbPrac/sign_up">Create an account</a></span>
 		</div>
 	</div>
 	

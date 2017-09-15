@@ -774,7 +774,7 @@ function renderData(dataList){
  */
 function getOccList(){
 	return new Promise((resolve, reject) => {
-		$.get("occ/get_list", (data, status) => {
+		$.get("public/get_occ_list", (data, status) => {
 			if(status !== "success") return reject("get status: " + status);
 			resolve(data.list);
 		});
@@ -787,7 +787,7 @@ function getOccList(){
  */
 function getInterestList(){
 	return new Promise((resolve, reject) => {
-		$.get("interest/get_list", (data, status) => {
+		$.get("public/get_interest_list", (data, status) => {
 			if(status !== "success") return reject("get status: " + status);
 			resolve(data.list);
 		});

@@ -60,13 +60,19 @@ function setNavView(pageName){
   	
   	if(pageName === "sign_in"){
   		$("#nav_sign_out").prop("class", "hidden");
+  		$("#nav_sign_up").prop("class", "");
+  		return Promise.resolve(true);
+  	}
+  	if(pageName === "sign_up"){
+  		$("#nav_sign_out").prop("class", "hidden");
+  		$("#nav_sign_in").prop("class", "");
   		return Promise.resolve(true);
   	}
 	}
 	
 	return getUserInfo()
 		.then(user => {
-			console.log(JSON.stringify(user));
+			if(!user.name) return false;
 			var userStr = user.name + " (" + user.account + ")";
 			$("#nav_user_name").children().text(userStr);
 			return true;

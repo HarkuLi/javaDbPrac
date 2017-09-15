@@ -6,6 +6,15 @@
   </welcome-file-list>
   
 <!-- servlet -->
+  <!-- public route -->
+  <servlet>
+  	<servlet-name>getOccList</servlet-name>
+    <servlet-class>controller.occ.GetOccList</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>getIntList</servlet-name>
+    <servlet-class>controller.interest.GetIntList</servlet-class>
+  </servlet>
   <!-- user route -->
   <servlet>
     <servlet-name>showUser</servlet-name>
@@ -68,10 +77,6 @@
     <servlet-name>getOcc</servlet-name>
     <servlet-class>controller.occ.GetOcc</servlet-class>
   </servlet>
-  <servlet>
-  	<servlet-name>getOccList</servlet-name>
-    <servlet-class>controller.occ.GetOccList</servlet-class>
-  </servlet>
   <!-- interest route -->
   <servlet>
     <servlet-name>showInt</servlet-name>
@@ -97,10 +102,6 @@
     <servlet-name>getInt</servlet-name>
     <servlet-class>controller.interest.GetInt</servlet-class>
   </servlet>
-  <servlet>
-  	<servlet-name>getIntList</servlet-name>
-    <servlet-class>controller.interest.GetIntList</servlet-class>
-  </servlet>
   <!-- sign in route -->
   <servlet>
   	<servlet-name>signInPage</servlet-name>
@@ -115,8 +116,26 @@
   	<servlet-name>signOut</servlet-name>
     <servlet-class>controller.sign.SignOut</servlet-class>
   </servlet>
+  <!-- sign up route -->
+  <servlet>
+  	<servlet-name>signUpPage</servlet-name>
+    <servlet-class>controller.sign.ShowSignUp</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>signUpAction</servlet-name>
+    <servlet-class>controller.user.NewUser</servlet-class>
+  </servlet>
 
 <!-- route -->
+  <!-- public route -->
+  <servlet-mapping>
+    <servlet-name>getOccList</servlet-name>
+    <url-pattern>/public/get_occ_list</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>getIntList</servlet-name>
+    <url-pattern>/public/get_interest_list</url-pattern>
+  </servlet-mapping>
   <!-- user route -->
   <servlet-mapping>
     <servlet-name>showUser</servlet-name>
@@ -179,10 +198,6 @@
     <servlet-name>getOcc</servlet-name>
     <url-pattern>/occ/get_one</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>getOccList</servlet-name>
-    <url-pattern>/occ/get_list</url-pattern>
-  </servlet-mapping>
   <!-- interest route -->
   <servlet-mapping>
     <servlet-name>showInt</servlet-name>
@@ -208,10 +223,6 @@
     <servlet-name>getInt</servlet-name>
     <url-pattern>/interest/get_one</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>getIntList</servlet-name>
-    <url-pattern>/interest/get_list</url-pattern>
-  </servlet-mapping>
   <!-- sign in route -->
   <servlet-mapping>
     <servlet-name>signInPage</servlet-name>
@@ -225,6 +236,15 @@
   <servlet-mapping>
     <servlet-name>signOut</servlet-name>
     <url-pattern>/sign_out</url-pattern>
+  </servlet-mapping>
+  <!-- sign up route -->
+  <servlet-mapping>
+    <servlet-name>signUpPage</servlet-name>
+    <url-pattern>/sign_up</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>signUpAction</servlet-name>
+    <url-pattern>/sign_up/action</url-pattern>
   </servlet-mapping>
 
 <!-- filter controller -->
