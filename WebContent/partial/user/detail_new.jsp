@@ -51,7 +51,7 @@
 <div class="form-group">
 	<label class="control-label col-md-2">Birth:</label>
 	<div class="col-md-offset-1 col-md-9">
-		<input type="date" class="data form-control" name="birth">
+		<input type="text" class="data form-control date" name="birth">
 	</div>
 </div>
 

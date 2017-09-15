@@ -13,7 +13,7 @@
 	<jsp:include page="../partial/navbar.jsp"></jsp:include>
 
 	<!-- filter -->
-	<div class="container filter first_block">
+	<div class="container filter">
 		<form class="form-horizontal">
 			<fieldset>
 				<legend>Filter</legend>

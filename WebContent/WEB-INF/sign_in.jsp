@@ -13,7 +13,7 @@
 	<jsp:include page="../partial/navbar.jsp"></jsp:include>
 	
 	<!-- sign in form -->
-	<div class="container first_block">
+	<div class="container">
 		<div class="panel panel-success center-block">
 			<form class="form-horizontal" id="sign_in_form" enctype="multipart/form-data">
 				<div class="form-group">

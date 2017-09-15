@@ -4,15 +4,16 @@
 		<input type="text" name="name" class="form-control">
 	</div>
 </div>
+
 <div class="form-group">
 	<label class="control-label col-md-2">Birth:</label>
 	<label class="control-label col-md-1">From</label>
 	<div class="col-md-4">
-		<input type="date" name="birthFrom" class="form-control">
+		<input type="text" name="birthFrom" class="form-control date">
 	</div>
 	<label class="control-label col-md-1">To</label>
 	<div class="col-md-4">
-		<input type="date" name="birthTo" class="form-control">
+		<input type="text" name="birthTo" class="form-control date">
 	</div>
 </div>
 <div class="form-group">

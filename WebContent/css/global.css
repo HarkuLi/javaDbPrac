@@ -1,3 +1,7 @@
+body{
+	padding-top: 70px;
+}
+
 /* modify field style of bootstrap */
 fieldset{
 	border: 1px solid silver;
@@ -79,7 +83,7 @@ td input{
 	padding: 0 35px;
 }
 
-.popup_window input, .filter input{
+.interest_box input{
 	margin: 5px;
 }
 
@@ -114,10 +118,6 @@ td input{
 
 .filter{
 	width: 600px;
-}
-
-.first_block{
-	margin-top: 70px;
 }
 
 .blank_block{
