@@ -69,11 +69,6 @@ td input{
 	line-height: 30px;
 }
 
-.popup_content{
-	display: flex;
-	height: 450px;
-}
-
 .mid_img{
 	max-height: 200px;
 	max-width: 500px;

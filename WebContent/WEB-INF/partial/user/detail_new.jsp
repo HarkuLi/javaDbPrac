@@ -1,5 +1,6 @@
 <input type="hidden" class="data" name="id">
 <img src="/javaDbPrac/default.png" class="mid_img center-block">
+<br>
 <input type="file" class="data center-block" name="photo"><br>
 <input type="hidden" class="data" name="photoName">
 

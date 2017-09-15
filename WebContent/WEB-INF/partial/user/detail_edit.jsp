@@ -1,6 +1,7 @@
 <input type="hidden" class="data" name="id">
 <img src="/javaDbPrac/user/photo" id="current_photo" class="mid_img center-block">
-<input type="file" class="data" name="photo"><br>
+<br>
+<input type="file" class="data center-block" name="photo"><br>
 <input type="hidden" class="data" name="photoName">
 
 <div class="form-group">
@@ -22,7 +23,7 @@
 
 <div class="form-group">
 	<label class="control-label col-md-2">Password:</label>
-	<label class="control-label col-md-offset-1 col-md-3"><a href="" id="change_password">change</a></label>
+	<label class="control-label col-md-offset-1 col-md-2"><a href="" id="change_password">change</a></label>
 </div>
 
 <div class="form-group">
@@ -56,7 +57,7 @@
 <div class="form-group">
 	<label class="control-label col-md-2">Interests:</label>
 	<br><br>
-	<div class="col-md-offset-1 interest_box"></div>
+	<div class="col-md-offset-2 interest_box"></div>
 </div>
 
 <button type="submit" id="user_modify" class="btn btn-default btn-sm center-block">submit</button>
