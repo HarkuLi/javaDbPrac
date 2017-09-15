@@ -94,6 +94,7 @@ public class NewUser extends HttpServlet {
 			newData.put("birth", birthDate);
 		} catch (Exception e) {
 			System.out.println("Exception in NewUser: " + e.toString());
+			return;
 		}
     	
     	if(photo.getSize() != 0) {
