@@ -5,12 +5,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<jsp:include page="../partial/head.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
 	<title>interest</title>
 </head>
 <body>
 	<!-- navigation bar -->
-	<jsp:include page="../partial/navbar.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/partial/navbar.jsp"></jsp:include>
 
 	<!-- filter -->
 	<div class="container filter">
@@ -61,7 +61,7 @@
 			</div>
 			<!-- form for new occupation -->
 			<form id="popup_form" class="form-horizontal text-center">
-				<jsp:include page="../partial/interest/detail.jsp"></jsp:include>
+				<jsp:include page="/WEB-INF/partial/interest/detail.jsp"></jsp:include>
 			</form>
 		</div>
 	</div>
