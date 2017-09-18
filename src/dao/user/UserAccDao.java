@@ -7,9 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import service.ConnectionPool;
 
 public class UserAccDao {
+	private static Logger log = LoggerFactory.getLogger(UserAccDao.class);
 	private ConnectionPool conPool;
 	private Connection con;
 	private Statement stat;
@@ -36,7 +40,7 @@ public class UserAccDao {
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
-			System.out.println("Exception in create: " + e.toString());
+			log.error("In create: {}", e.toString());
 		}
 		finally {
 			close();
@@ -86,7 +90,7 @@ public class UserAccDao {
 			}
 		}
 		catch(Exception e) {
-			System.out.println("Exception in read: " + e.toString());
+			log.error("In read: {}", e.toString());
 		}
 		finally {
 			close();
@@ -122,7 +126,7 @@ public class UserAccDao {
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
-			System.out.println("Exception in update: " + e.toString());
+			log.error("In update: {}", e.toString());
 		}
 		finally {
 			close();
@@ -140,7 +144,7 @@ public class UserAccDao {
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
-			System.out.println("Exception in delete: " + e.toString());
+			log.error("In delete: {}", e.toString());
 		}
 		finally {
 			close();
@@ -219,7 +223,7 @@ public class UserAccDao {
 			}
 		}
 		catch(Exception e) {
-			System.out.println("Exception in close: " + e.toString());
+			log.error("In close: {}", e.toString());
 		}
 	}
 }

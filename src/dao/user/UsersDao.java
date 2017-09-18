@@ -8,10 +8,14 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import model.user.UsersModel;
 import service.ConnectionPool;
 
 public class UsersDao{
+	private static Logger log = LoggerFactory.getLogger(UsersDao.class);
 	private ConnectionPool conPool;
 	private Connection con;
 	private Statement stat;
@@ -51,7 +55,7 @@ public class UsersDao{
 			while(rs.next()) return rs.getInt(1);
 		}
 		catch(Exception e) {
-			System.out.println("Exception in getRowNum: " + e.toString());
+			log.error("In getRowNum: {}", e.toString());
 		}
 		finally {
 			close();
@@ -77,7 +81,7 @@ public class UsersDao{
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
-			System.out.println("Exception in create: " + e.toString());
+			log.error("In create: {}", e.toString());
 		}
 		finally {
 			close();
@@ -134,7 +138,7 @@ public class UsersDao{
 			}
 		}
 		catch(Exception e) {
-			System.out.println("Exception in read: " + e.toString());
+			log.error("In read: {}", e.toString());
 		}
 		finally {
 			close();
@@ -170,7 +174,7 @@ public class UsersDao{
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
-			System.out.println("Exception in update: " + e.toString());
+			log.error("In update: {}", e.toString());
 		}
 		finally {
 			close();
@@ -188,7 +192,7 @@ public class UsersDao{
 			pst.executeUpdate();
 		}
 		catch(Exception e) {
-			System.out.println("Exception in delete: " + e.toString());
+			log.error("In delete: {}", e.toString());
 		}
 		finally {
 			close();
@@ -311,7 +315,7 @@ public class UsersDao{
 			}
 		}
 		catch(Exception e) {
-			System.out.println("Exception in close: " + e.toString());
+			log.error("In close: {}", e.toString());
 		}
 	}
 }
