@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import model.user.UsersModel;
 import service.user.UsersService;
@@ -20,7 +22,8 @@ import service.user.UsersService;
 public class GetUserPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String datePattern = "yyyy-MM-dd";
-
+	private static Logger log = LoggerFactory.getLogger(GetUserPage.class);
+	
 	/**
 	 * response format:
 	 * {
@@ -63,7 +66,7 @@ public class GetUserPage extends HttpServlet {
 		    	filter.put("birthTo", birthToDate);
 			}
 		} catch (Exception e) {
-			System.out.println("Exception in GetUserPage: " + e.toString());
+			log.error(e.toString());
 		}
     	filter.put("occ", occ);
     	if(state != null)

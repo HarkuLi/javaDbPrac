@@ -20,6 +20,8 @@ import javax.servlet.http.Part;
 
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import service.user.UserAccService;
 import service.user.UsersService;
@@ -32,6 +34,7 @@ public class NewUser extends HttpServlet {
 	private static final String datePattern = "yyyy-MM-dd";
 	//workload for bcrypt
 	private static final int workload = 12;
+	private static Logger log = LoggerFactory.getLogger(NewUser.class);
 	private final UsersService dbService = new UsersService();
 	private final UserAccService UAS = new UserAccService();
 	
@@ -94,7 +97,7 @@ public class NewUser extends HttpServlet {
 	    	Date birthDate = new Date(sdf.parse(birth).getTime());
 			newData.put("birth", birthDate);
 		} catch (Exception e) {
-			System.out.println("Exception in NewUser: " + e.toString());
+			log.error(e.toString());
 			return;
 		}
     	

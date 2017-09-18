@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import service.user.UsersService;
 
@@ -28,6 +30,7 @@ public class UpdateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String STORE_PATH = System.getProperty("user.home") + "/upload/";
 	private static final String datePattern = "yyyy-MM-dd";
+	private static Logger log = LoggerFactory.getLogger(UpdateUser.class);
 	
 	/**
 	 * response format:
@@ -87,7 +90,7 @@ public class UpdateUser extends HttpServlet {
 			try {
 				photo.write(path);
 			} catch (Exception e) {
-				System.out.println("Exception in storing photo: " + e.toString());
+				log.error(e.toString());
 			}
 		}
     	
@@ -105,7 +108,7 @@ public class UpdateUser extends HttpServlet {
 			birthDate = new Date(sdf.parse(birth).getTime());
 			newData.put("birth", birthDate);
 		} catch (Exception e) {
-			System.out.println("Exception in UpdateUser: " + e.toString());
+			log.error(e.toString());
 			return;
 		}
     	
