@@ -7,8 +7,12 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ConnectionPool {
-	//static for reuses
+	private static Logger log = LoggerFactory.getLogger(ConnectionPool.class);
+	//static for reuse
 	private static DataSource datasource;
 	
 	public ConnectionPool() {
@@ -19,7 +23,7 @@ public class ConnectionPool {
 			datasource = (DataSource) ctx.lookup("java:/comp/env/jdbc/db1");
 			ctx.close();
 		} catch (Exception e) {
-			System.out.println("Exception in connection: " + e.toString());
+			log.error("In constructor: {}", e.toString());
 		}
 //		PoolProperties p = new PoolProperties();
 //		p.setUrl("jdbc:mysql://127.0.0.1/db1?useSSL=false");
@@ -54,7 +58,7 @@ public class ConnectionPool {
 			return con;
 		}
 		catch(Exception e) {
-			System.out.println("Exception in connection: " + e.toString());
+			log.error("In getConnection: {}", e.toString());
 		}
 		return null;
 	}
