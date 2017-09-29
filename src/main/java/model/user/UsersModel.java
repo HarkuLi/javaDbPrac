@@ -1,6 +1,5 @@
 package model.user;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class UsersModel{
@@ -10,7 +9,7 @@ public class UsersModel{
 	private String password;
 	private String name;
 	private int age;
-	private Date birth;
+	private String birth;
 	private String photoName;
 	//a list of interest id
 	private ArrayList<String> interest;
@@ -50,7 +49,7 @@ public class UsersModel{
 		age = _age;
 	}
 	
-	public void setBirth(Date _birth) {
+	public void setBirth(String _birth) {
 		birth = _birth;
 	}
 	
@@ -90,7 +89,7 @@ public class UsersModel{
 		return age;
 	}
 	
-	public Date getBirth() {
+	public String getBirth() {
 		return birth;
 	}
 	

@@ -1,18 +1,16 @@
 package controller.user;
 
-import java.io.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-
-public class ShowUsers extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
-    	throws ServletException, IOException {
-		
-    	RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/views/user.jsp");
-    	rd.forward(req, res);
-    }
+@Controller
+@RequestMapping("/user")
+public class ShowUsers {
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public String get(ModelMap model) {
+		System.out.println("spring controller");
+		return "user";
+	}
 }

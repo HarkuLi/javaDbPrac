@@ -1,4 +1,6 @@
 
+var URLBase = URLBase || "/javaDbPrac";
+
 ///////////
 // ready //
 ///////////
@@ -89,7 +91,7 @@ function setNavView(pageName){
  */
 function getUserInfo(){
 	return new Promise((resolve, reject) => {
-    $.post("user/get_by_token", (data, status) => {
+    $.post(`${URLBase}/user/get_by_token`, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });

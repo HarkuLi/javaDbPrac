@@ -1,7 +1,7 @@
 /**
  * 
  */
-const route = "/javaDbPrac/";
+var URLBase = URLBase || "/javaDbPrac";
 const acceptPhotoType = ["image/jpeg", "image/png", "image/gif"];
 const checkTypeList = ["state", "interest[]"];
 var currentPage = 1;
@@ -288,7 +288,7 @@ function initialization(){
 }
 
 function closePopup(){
-	$("#current_photo").prop("src", route + "user/photo");
+	$("#current_photo").prop("src", URLBase + "/user/photo");
 	$(".popup_window").find("form").css("display", "");
 	$(".mask").css("display", "");
 	editingUser = null;
@@ -360,7 +360,7 @@ function edit(self){
 			editingUser = data;
 			
 			//set current photo
-			$("#current_photo").prop("src", route + "/user/photo?n=" + data.photoName);
+			$("#current_photo").prop("src", URLBase + "/user/photo?n=" + data.photoName);
 			
 			//set pop up form
 				//set non-checked type data
@@ -697,13 +697,17 @@ function renderData(dataList){
 		//set input entries
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
+			if(prop === "state"){
+				dataList[idx][prop] ? $(ele).prop("value", "enable") : $(ele).prop("value", "disable");
+				continue;
+			}
 			$(ele).prop("value", dataList[idx][prop] || "--");
 			if(prop === "interest") $(ele).prop("title", dataList[idx][prop]);
 		}
 		
 	  //set photo entry
 		let photo = $(row).find("img");
-		$(photo).prop("src", route + "user/photo?n=" + dataList[idx].photoName);
+		$(photo).prop("src", URLBase + "/user/photo?n=" + dataList[idx].photoName);
 		
 		$(row).css("display", "");
 		++idx;
@@ -726,7 +730,7 @@ function renderData(dataList){
 			//photo entry
 			if(prop === "photo"){
 				let img = $("<img>");
-				img.prop("src", route + "user/photo?n=" + data.photoName);
+				img.prop("src", URLBase + "/user/photo?n=" + data.photoName);
 				img.prop("height", "40")
 				img.prop("width", "40")
 				rowEntry.append(img);
@@ -739,7 +743,12 @@ function renderData(dataList){
 			if(prop === "id")	rowEntry.prop("class", "id");
 			input = $("<input>");
 			input.prop("name", prop);
-			input.prop("value", data[prop] || "--");
+			if(prop === "state"){
+				data[prop] ? input.prop("value", "enable") : input.prop("value", "disable");
+			}
+			else{
+				input.prop("value", data[prop] || "--");
+			}
 			input.prop("disabled", true);
 			input.prop("size", sizeMap[prop]);
 			if(prop === "interest") input.prop("title", data[prop]);
@@ -775,7 +784,7 @@ function renderData(dataList){
  */
 function getOccList(){
 	return new Promise((resolve, reject) => {
-		$.get("public/get_occ_list", (data, status) => {
+		$.get(`${URLBase}/public/get_occ_list`, (data, status) => {
 			if(status !== "success") return reject("get status: " + status);
 			resolve(data.list);
 		});
@@ -788,7 +797,7 @@ function getOccList(){
  */
 function getInterestList(){
 	return new Promise((resolve, reject) => {
-		$.get("public/get_interest_list", (data, status) => {
+		$.get(`${URLBase}/public/get_interest_list`, (data, status) => {
 			if(status !== "success") return reject("get status: " + status);
 			resolve(data.list);
 		});
@@ -802,7 +811,7 @@ function getInterestList(){
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post("user/del", {id}, (data, status) => {
+		$.post(`${URLBase}/user/del`, {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -825,7 +834,7 @@ function doDel(id){
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
 		$.ajax({
-			url: "user/update",
+			url: `${URLBase}/user/update`,
 			type: "POST",
 			data: passedData,
 			processData: false,
@@ -853,7 +862,7 @@ function doUpdate(passedData){
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
 		$.ajax({
-			url: "user/new",
+			url: `${URLBase}/user/new`,
 			type: "POST",
 			data: passedData,
 			processData: false,
@@ -889,7 +898,7 @@ function getList(page){
   }
   
   return new Promise((resolve, reject) => {
-    $.post("user/get_page", passedData, (data, status) => {
+    $.post(`${URLBase}/user/get_page`, passedData, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -903,7 +912,7 @@ function getList(page){
  */
 function getUser(id){
 	return new Promise((resolve, reject) => {
-    $.post("user/get_one", {id}, (data, status) => {
+    $.post(`${URLBase}/user/get_one`, {id}, (data, status) => {
       if(status !== "success") return reject("post status: " + status);
       resolve(data);
     });
@@ -926,7 +935,7 @@ function getUser(id){
 function updatePassword(passedData){
 	return new Promise((resolve, reject) => {
 		$.ajax({
-			url: "user/change_password",
+			url: `${URLBase}/user/change_password`,
 			type: "POST",
 			data: passedData,
 			processData: false,

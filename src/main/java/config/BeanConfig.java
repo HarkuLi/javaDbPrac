@@ -1,4 +1,4 @@
-package bean;
+package config;
 
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -15,7 +15,7 @@ import service.user.UserIntService;
 import service.user.UsersService;
 
 @Configuration
-public class Config {
+public class BeanConfig {
 	@Bean
 	//@Scope("singleton") //default
 	public DriverManagerDataSource dataSource() {

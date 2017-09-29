@@ -1,24 +1,17 @@
 package controller.user;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import bean.Config;
+import config.BeanConfig;
 import service.user.UserAccService;
-
-@MultipartConfig
 
 /**
  * 
@@ -27,36 +20,33 @@ import service.user.UserAccService;
  * 			errMsg: String		//if error
  * 		}
  */
-public class ChangePassword extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@RestController
+@RequestMapping("/user")
+public class ChangePassword {
 	//workload for bcrypt
 	private static final int workload = 12;
 	
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	private final UserAccService UAS = ctx.getBean(UserAccService.class);
 	
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-    	throws ServletException, IOException {
-    	
-		HashMap<String, String> rstMap = new HashMap<String, String>();
-		JSONObject rstObj;
-    	PrintWriter out = res.getWriter();
+	@RequestMapping(value = "/change_password", method = RequestMethod.POST, produces = "application/json")
+	public HashMap<String, String> post(
+		@RequestParam String id,
+		@RequestParam(required = false) String account,
+		@RequestParam String password,
+		@RequestParam String passwordCheck) {
 		
-    	//get passed parameters
-    	String id = req.getParameter("id");
-    	String account = req.getParameter("account");
-    	String password = req.getParameter("password");
-    	String passwordCheck = req.getParameter("passwordCheck");
-    	
-    	//check data
+		System.out.println("change password controller");
+		System.out.println("id: " + id);
+		
+		HashMap<String, String> rstMap = new HashMap<String, String>();
+		
+		//check data
     	HashMap<String, Object> originalAcc = UAS.getAccById(id);
     	String errMsg = checkData(originalAcc, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
-        	rstObj = new JSONObject(rstMap);
-        	res.setContentType("application/json");
-        	out.println(rstObj);
-        	return;
+        	return rstMap;
     	}
     	
     	//hash the password
@@ -69,7 +59,11 @@ public class ChangePassword extends HttpServlet {
     		setData.put("account", account);
     	setData.put("password", password);
     	UAS.updateAcc(setData);
-    }
+		
+    	System.out.println("update a password successfully");
+    	
+		return null;
+	}
 	
 	private String checkData(HashMap<String, Object> originalAcc, String account, String password, String passwordCheck) {
 		//check account name

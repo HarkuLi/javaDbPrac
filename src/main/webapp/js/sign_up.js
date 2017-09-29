@@ -1,6 +1,7 @@
 /**
  * 
  */
+var URLBase = URLBase || "/javaDbPrac";
 const acceptPhotoType = ["image/jpeg", "image/png", "image/gif"];
 const checkTypeList = ["state", "interest[]"];
 var processing = false;
@@ -175,7 +176,7 @@ function renderInterestList(){
  */
 function getOccList(){
 	return new Promise((resolve, reject) => {
-		$.get("public/get_occ_list", (data, status) => {
+		$.get(`${URLBase}/public/get_occ_list`, (data, status) => {
 			if(status !== "success") return reject("get status: " + status);
 			resolve(data.list);
 		});
@@ -188,7 +189,7 @@ function getOccList(){
  */
 function getInterestList(){
 	return new Promise((resolve, reject) => {
-		$.get("public/get_interest_list", (data, status) => {
+		$.get(`${URLBase}/public/get_interest_list`, (data, status) => {
 			if(status !== "success") return reject("get status: " + status);
 			resolve(data.list);
 		});
@@ -216,7 +217,7 @@ function getInterestList(){
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
 		$.ajax({
-			url: "sign_up/action",
+			url: `${URLBase}/sign_up/action`,
 			type: "POST",
 			data: passedData,
 			processData: false,

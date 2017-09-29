@@ -10,7 +10,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav">
-				<li id="nav_user"><a href="/javaDbPrac/user">user</a></li>
+				<li id="nav_user"><a href="/javaDbPrac/user/page">user</a></li>
 				<li id="nav_occ"><a href="/javaDbPrac/occ">occupation</a></li>
 				<li id="nav_interest"><a href="/javaDbPrac/interest">interest</a></li>
 			</ul>

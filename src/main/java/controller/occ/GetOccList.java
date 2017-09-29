@@ -14,13 +14,13 @@ import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import bean.Config;
+import config.BeanConfig;
 import model.occ.OccModel;
 import service.occ.OccService;
 
 public class GetOccList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 
 	/**
 	 * response: {list: Array<Object>} occupation list

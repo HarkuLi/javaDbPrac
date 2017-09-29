@@ -1,45 +1,33 @@
 package controller.user;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import bean.Config;
+import config.BeanConfig;
 import model.user.UsersModel;
 import service.user.UsersService;
 
-public class GetUser extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+@RestController
+@RequestMapping("/user")
+public class GetUser {
+	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 
 	/**
 	 * response: user data
 	 */
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-    	throws ServletException, IOException {
-    	
+	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
+	public UsersModel post(@RequestParam String id) {
+		System.out.println("spring controller");
+		
 		UsersService dbService = ctx.getBean(UsersService.class);
-    	//HashMap<String, Object> rstMap = new HashMap<String, Object>();
-		JSONObject rstObj;
-    	PrintWriter out = res.getWriter();
-    	
-    	//get passed parameters
-    	String id = req.getParameter("id");
-    	
-    	UsersModel user = dbService.getUser(id);
+		
+		UsersModel user = dbService.getUser(id);
     	user.eraseSecretInfo();
     	
-    	rstObj = new JSONObject(user);
-    	
-    	res.setContentType("application/json");
-    	out.println(rstObj);
-    }
+    	return user;
+	}
 }

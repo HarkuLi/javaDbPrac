@@ -1,32 +1,30 @@
 package controller.user;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.json.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import bean.Config;
+import config.BeanConfig;
 import model.user.UsersModel;
 import service.user.UsersService;
 
-public class GetUserPage extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@RestController
+@RequestMapping("/user")
+public class GetUserPage{
 	private static final String datePattern = "yyyy-MM-dd";
 	private static Logger log = LoggerFactory.getLogger(GetUserPage.class);
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
+	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	
 	/**
 	 * response format:
@@ -35,27 +33,23 @@ public class GetUserPage extends HttpServlet {
 	 *   totalPage: Number
 	 * }
 	 */
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-    	throws ServletException, IOException {
-    	
+	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
+	public HashMap<String, Object> post(
+		@RequestParam int page,
+		@RequestParam(required=false) String name,
+		@RequestParam(required=false) String birthFrom,
+		@RequestParam(required=false) String birthTo,
+		@RequestParam(required=false) String occ,
+		@RequestParam(required=false) String state,
+		@RequestParam(value = "interest[]", required=false) String[] interest) {
+		
 		UsersService dbService = ctx.getBean(UsersService.class);
 		int totalPage;
 		ArrayList<UsersModel> tableList;
 		HashMap<String, Object> filter = new HashMap<String, Object>();
-    	HashMap<String, Object> rstMap = new HashMap<String, Object>();
-		JSONObject rstObj;
-    	PrintWriter out = res.getWriter();
-    	
-    	//get passed parameters
-    	int page = Integer.parseInt(req.getParameter("page"));
-    	String name = req.getParameter("name");
-    	String birthFrom = req.getParameter("birthFrom");
-    	String birthTo = req.getParameter("birthTo");
-    	String occ = req.getParameter("occ");
-    	String state = req.getParameter("state");
-    	String[] interest = req.getParameterValues("interest[]");
-    	
-    	//set filter
+		HashMap<String, Object> rstMap = new HashMap<String, Object>();
+		
+		//set filter
     	filter.put("name", name);
     	try {
 			DateFormat sdf = new SimpleDateFormat(datePattern);
@@ -75,22 +69,20 @@ public class GetUserPage extends HttpServlet {
     	filter.put("occ", occ);
     	if(state != null)
     		filter.put("state", state.equals("1"));
-    	filter.put("interest", interest);    	
+    	filter.put("interest", interest);
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
+		//set result
 		if(page > 0) {
 			tableList = dbService.getPage(page, filter);
 			rstMap.put("list", tableList);
 		}
+		rstMap.put("totalPage", totalPage);
 		
-    	rstMap.put("totalPage", totalPage);
-    	rstObj = new JSONObject(rstMap);
-    	
-    	res.setContentType("application/json");
-    	out.println(rstObj);
-    }
+		return rstMap;
+	}
 }

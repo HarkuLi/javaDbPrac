@@ -1,4 +1,6 @@
 
+var URLBase = URLBase || "/javaDbPrac";
+
 ///////////
 // ready //
 ///////////
@@ -24,7 +26,7 @@ function signIn(){
 	return signInAction(passedData)
 		.then(data => {
 			if(data.result){
-				window.location.replace("user");
+				window.location.replace(`${URLBase}/user/page`);
 				return;
 			}
 			$("#sign_in_form").children(".err_msg").text("Incorrect account or password.");
@@ -42,7 +44,7 @@ function signIn(){
 function signInAction(passedData){
 	return new Promise((resolve, reject) => {
 		$.ajax({
-			url: "sign_in/action",
+			url: `${URLBase}/sign_in/action`,
 			type: "POST",
 			data: passedData,
 			processData: false,

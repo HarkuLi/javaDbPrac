@@ -1,4 +1,6 @@
 
+var URLBase = URLBase || "/javaDbPrac";
+
 ///////////
 // ready //
 ///////////
