@@ -31,7 +31,7 @@ public class SignInFilter implements Filter {
 		HttpServletRequest httpReq = (HttpServletRequest) req;
 		HttpServletResponse httpRes = (HttpServletResponse) res;
 		
-		final String signInRoute = "/javaDbPrac/sign_in";
+		final String signInRoute = "/javaDbPrac/sign_in/page";
 		UserAccService UAS = ctx.getBean(UserAccService.class);
 		
 		

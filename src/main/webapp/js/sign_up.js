@@ -30,7 +30,7 @@ $(() => {
   		.then(rst => {
   			if(rst){
 					alert("Create account successfully. Now, use your new account to sign in.");
-					window.location.replace("sign_in");
+					window.location.replace(`${URLBase}/sign_in/page`);
 				}
   			processing = false;
   		});

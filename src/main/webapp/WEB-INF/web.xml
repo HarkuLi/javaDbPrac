@@ -65,29 +65,6 @@
     <servlet-name>getInt</servlet-name>
     <servlet-class>controller.interest.GetInt</servlet-class>
   </servlet>
-  <!-- sign in route -->
-  <servlet>
-  	<servlet-name>signInPage</servlet-name>
-    <servlet-class>controller.sign.ShowSignIn</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>signInAction</servlet-name>
-    <servlet-class>controller.sign.SignInAction</servlet-class>
-  </servlet>
-  <!-- sign out route -->
-  <servlet>
-  	<servlet-name>signOut</servlet-name>
-    <servlet-class>controller.sign.SignOut</servlet-class>
-  </servlet>
-  <!-- sign up route -->
-  <servlet>
-  	<servlet-name>signUpPage</servlet-name>
-    <servlet-class>controller.sign.ShowSignUp</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>signUpAction</servlet-name>
-    <servlet-class>controller.user.NewUser</servlet-class>
-  </servlet>
 
 <!-- route -->
   <!-- public route -->
@@ -148,29 +125,6 @@
   <servlet-mapping>
     <servlet-name>getInt</servlet-name>
     <url-pattern>/interest/get_one</url-pattern>
-  </servlet-mapping>
-  <!-- sign in route -->
-  <servlet-mapping>
-    <servlet-name>signInPage</servlet-name>
-    <url-pattern>/sign_in</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>signInAction</servlet-name>
-    <url-pattern>/sign_in/action</url-pattern>
-  </servlet-mapping>
-  <!-- sign in route -->
-  <servlet-mapping>
-    <servlet-name>signOut</servlet-name>
-    <url-pattern>/sign_out</url-pattern>
-  </servlet-mapping>
-  <!-- sign up route -->
-  <servlet-mapping>
-    <servlet-name>signUpPage</servlet-name>
-    <url-pattern>/sign_up</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>signUpAction</servlet-name>
-    <url-pattern>/sign_up/action</url-pattern>
   </servlet-mapping>
 
   <!-- filter controller -->
