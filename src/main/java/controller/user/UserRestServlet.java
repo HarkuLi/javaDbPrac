@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -39,7 +36,6 @@ import service.user.UsersService;
 @RequestMapping("/user")
 public class UserRestServlet {
 	private static final String STORE_PATH = System.getProperty("user.home") + "/upload/";
-	private static final String datePattern = "yyyy-MM-dd";
 	private static Logger log = LoggerFactory.getLogger(UserRestServlet.class);
 	//workload for bcrypt
 	private static final int workload = 12;
@@ -133,19 +129,7 @@ public class UserRestServlet {
     	newData.put("id", id);
     	newData.put("name", name);
     	newData.put("age", Integer.parseInt(age));
-    	
-		try {
-			DateFormat sdf = new SimpleDateFormat(datePattern);
-			//note: the type Date here is java.sql.date
-			//      but sdf.parse(String) returns java.util.date
-	    	Date birthDate;
-			birthDate = new Date(sdf.parse(birth).getTime());
-			newData.put("birth", birthDate);
-		} catch (Exception e) {
-			log.error(e.toString());
-			return null;
-		}
-    	
+		newData.put("birth", birth);
     	if(photo.getSize() != 0) {
     		newData.put("photoName", photoName);
     	}
@@ -157,76 +141,8 @@ public class UserRestServlet {
     	return null;
 	}
 	
-	/**
-	 * response format:
-	 * {
-	 *   errMsg: String
-	 * }
-	 */
-	@RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-	public HashMap<String, String> NewUser(
-		@RequestParam String account, 
-		@RequestParam String password,
-		@RequestParam String passwordCheck,
-		@RequestParam String name,
-		@RequestParam String age,
-		@RequestParam String birth,
-		@RequestParam(required = false) MultipartFile photo,
-		@RequestParam(required = false) String photoType,
-		@RequestParam(value = "interest[]", required = false) String[] interest,
-		@RequestParam String occupation,
-		@RequestParam String state) {
-		
-		System.out.println("new user controller");
-		
-		HashMap<String, String> rstMap = new HashMap<String, String>();
-		String fileName = null;
-		
-		if(state == null) state = "1";
-		
-		//check data
-    	String errMsg = checkData(age, account, password, passwordCheck);
-    	if(errMsg != null) {
-    		rstMap.put("errMsg", errMsg);
-        	return rstMap;
-    	}
-		
-    	//hash the password
-    	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
-    	
-    	//store photo
-		if(photo.getSize() != 0) {
-			fileName = storePhoto(photo, photoType);
-		}
-    	
-    	//call service function
-    	HashMap<String, Object> newData = new HashMap<String, Object>();
-    	newData.put("name", name);
-    	newData.put("account", account);
-    	newData.put("password", password);
-    	newData.put("age", Integer.parseInt(age));
-    	
-    	try {
-			DateFormat sdf = new SimpleDateFormat(datePattern);
-			//note: the type Date here is java.sql.date
-			//      but sdf.parse(String) returns java.util.date
-	    	Date birthDate = new Date(sdf.parse(birth).getTime());
-			newData.put("birth", birthDate);
-		} catch (Exception e) {
-			log.error(e.toString());
-			return null;
-		}
-    	
-    	if(photo.getSize() != 0) {
-    		newData.put("photoName", fileName);
-    	}
-    	newData.put("interest", interest);
-    	newData.put("occupation", occupation);
-    	newData.put("state", state.equals("1"));
-    	dbService.createUser(newData);
-    	
-    	return null;
-	}
+	//@RequestMapping(value = {"/sign_up/action", "/user/new"}, method = RequestMethod.POST, produces = "application/json")
+	//in the SignRestServlet.java
 	
 	/**
 	 * response format:
@@ -252,21 +168,8 @@ public class UserRestServlet {
 		
 		//set filter
     	filter.put("name", name);
-    	try {
-			DateFormat sdf = new SimpleDateFormat(datePattern);
-			//note: the type Date here is java.sql.date
-			//      but sdf.parse(String) returns java.util.date
-			if(birthFrom != null) {
-		    	Date birthFromDate = new Date(sdf.parse(birthFrom).getTime());
-		    	filter.put("birthFrom", birthFromDate);
-			}
-			if(birthTo != null) {
-				Date birthToDate = new Date(sdf.parse(birthTo).getTime());
-		    	filter.put("birthTo", birthToDate);
-			}
-		} catch (Exception e) {
-			log.error(e.toString());
-		}
+    	filter.put("birthFrom", birthFrom);
+    	filter.put("birthTo", birthTo);
     	filter.put("occ", occ);
     	if(state != null)
     		filter.put("state", state.equals("1"));
@@ -377,44 +280,5 @@ public class UserRestServlet {
     	}
     	
     	return null;
-	}
-	
-	private String checkData(String age, String account, String password, String passwordCheck) {
-    	//check age
-		String pattern = "^\\d+$";
-    	Pattern r = Pattern.compile(pattern);
-    	Matcher m = r.matcher(age);
-    	if(!m.find()) {
-	    	return "Wrong input for age.";
-    	}
-    	
-    	//check account name
-    	if(UAS.isAccExist(account)) {
-    		return "The account name already exists.";
-    	}
-    	
-    	//check whether the password is equal to the checked password
-    	if(!passwordCheck.equals(password)) {
-    		return "The checked password doesn't match.";
-    	}
-    	
-    	return null;
-	}
-	
-	private String storePhoto(MultipartFile photo, String photoType) {
-		String fileName = UUID.randomUUID().toString();
-		fileName += "." + photoType;	//filename extension
-		String path = STORE_PATH + fileName;
-		
-		File dir = new File(STORE_PATH);
-		if(!dir.exists()) dir.mkdir();
-		try {
-			dir = new File(path);
-			photo.transferTo(dir);
-		} catch (Exception e) {
-			System.out.println("Exception in storing photo: " + e.toString());
-		}
-		
-		return fileName;
 	}
 }

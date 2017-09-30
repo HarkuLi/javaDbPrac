@@ -142,8 +142,8 @@ public class UsersDao{
 		//get filters
 		String id = (String)filter.get("id");
 		String name = (String)filter.get("name");
-		Date birthFrom = (Date)filter.get("birthFrom");
-		Date birthTo = (Date)filter.get("birthTo");
+		String birthFrom = (String)filter.get("birthFrom");
+		String birthTo = (String)filter.get("birthTo");
 		String occ = (String)filter.get("occ");
 		Object state = filter.get("state");	//boolean
 		String[] interest = (String[])filter.get("interest");
