@@ -15,31 +15,6 @@
   	<servlet-name>getIntList</servlet-name>
     <servlet-class>controller.interest.GetIntList</servlet-class>
   </servlet>
-  <!-- occupation route -->
-  <servlet>
-    <servlet-name>showOcc</servlet-name>
-    <servlet-class>controller.occ.ShowOcc</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>occPage</servlet-name>
-    <servlet-class>controller.occ.GetOccPage</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>newOcc</servlet-name>
-    <servlet-class>controller.occ.NewOcc</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>updateOcc</servlet-name>
-    <servlet-class>controller.occ.UpdateOcc</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>delOcc</servlet-name>
-    <servlet-class>controller.occ.DeleteOcc</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>getOcc</servlet-name>
-    <servlet-class>controller.occ.GetOcc</servlet-class>
-  </servlet>
   <!-- interest route -->
   <servlet>
     <servlet-name>showInt</servlet-name>
@@ -69,37 +44,8 @@
 <!-- route -->
   <!-- public route -->
   <servlet-mapping>
-    <servlet-name>getOccList</servlet-name>
-    <url-pattern>/public/get_occ_list</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>getIntList</servlet-name>
     <url-pattern>/public/get_interest_list</url-pattern>
-  </servlet-mapping>
-  <!-- occupation route -->
-  <servlet-mapping>
-    <servlet-name>showOcc</servlet-name>
-    <url-pattern>/occ</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>occPage</servlet-name>
-    <url-pattern>/occ/get_page</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>newOcc</servlet-name>
-    <url-pattern>/occ/new</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>updateOcc</servlet-name>
-    <url-pattern>/occ/update</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>delOcc</servlet-name>
-    <url-pattern>/occ/del</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>getOcc</servlet-name>
-    <url-pattern>/occ/get_one</url-pattern>
   </servlet-mapping>
   <!-- interest route -->
   <servlet-mapping>
