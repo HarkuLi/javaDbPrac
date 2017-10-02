@@ -32,50 +32,6 @@ public class SignRestServlet {
 	private final UsersService dbService = ctx.getBean(UsersService.class);
 	
 	/**
-	 * response: {result: boolean}
-	 */
-	@RequestMapping(value = "/sign_in/action", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, Object> SignInAction(
-		@RequestParam String account,
-		@RequestParam String password,
-		HttpServletResponse res) {
-		
-		Map<String, Object> resMap = new HashMap<String, Object>();
-		String token = null;
-    	boolean rst = false;
-    	
-    	//check whether the account exists
-    	HashMap<String, Object> acc = UAS.getAcc(account);
-    	if(acc != null && (Boolean)acc.get("state")) {
-    		//check password
-    		if(BCrypt.checkpw(password, (String)acc.get("password"))){
-    			//set token
-    			long signInTime = System.currentTimeMillis();
-    			token = genToken();
-    			//store the sign in info.
-    			HashMap<String, Object> setData = new HashMap<String, Object>();
-    			setData.put("userId", (String)acc.get("userId"));
-    			setData.put("signInTime", signInTime);
-    			setData.put("token", token);
-    			UAS.updateAcc(setData);
-    			
-    			rst = true;
-    		}
-    	}
-    	
-    	//set cookie if passing checks
-    	if(token != null) {
-			Cookie cookie = new Cookie("LOGIN_INFO", token);
-			cookie.setMaxAge(UserAccService.EXPIRE_TIME_SEC);
-			cookie.setPath("/javaDbPrac");
-			res.addCookie(cookie);
-    	}
-    	
-    	resMap.put("result", rst);
-    	return resMap;
-	}
-	
-	/**
 	 * response format:
 	 * {
 	 *   errMsg: String
