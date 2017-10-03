@@ -1,16 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+  <property name="LOG_HOME" value="${user.home}/javaDbPrac_log" />
+
   <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>dbPrac.log</file>
+    <file>${LOG_HOME}/dbPrac.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>dbPrac.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+      <fileNamePattern>${LOG_HOME}/dbPrac.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
       <!-- <maxHistory>365</maxHistory> -->
     </rollingPolicy>
 
     <encoder>
       <!-- reference: https://logback.qos.ch/manual/layouts.html#conversionWord -->
-      <pattern>%-4date [%thread] %-5level %logger{35} - %msg%n</pattern>
+      <pattern>%-4date %-5level %logger{35} - %msg%n</pattern>
     </encoder>
   </appender>
 	
