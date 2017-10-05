@@ -1,24 +1,16 @@
 package com.harku.controller.user;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,14 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.BeanConfig;
 import com.harku.model.user.UsersModel;
+import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
 
 @RestController
 @RequestMapping("/user")
 public class UserRestServlet {
-	private static final String STORE_PATH = System.getProperty("user.home") + "/upload/";
-	private static Logger log = LoggerFactory.getLogger(UserRestServlet.class);
 	//workload for bcrypt
 	private static final int workload = 12;
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
@@ -46,22 +37,19 @@ public class UserRestServlet {
 	
 	@RequestMapping(value = "/photo", method = RequestMethod.GET, produces = {"image/jpeg", "image/gif", "image/png"})
 	public ResponseEntity<byte[]> UserPhoto(
-		@RequestParam(value = "n", required = false, defaultValue = "default.png") String filename) throws IOException {
+		@RequestParam(value = "n", required = false, defaultValue = "default.png") String fileName) throws IOException {
 		
-		String homePathStr = System.getProperty("user.home");
-		Path path = Paths.get(homePathStr, "upload", filename);
 		HttpHeaders headers = new HttpHeaders();
 		
 		//read photo
-		if(!Files.exists(path)) path = Paths.get(homePathStr, "upload", "default.png");
-		byte[] photo = Files.readAllBytes(path);
+		byte[] photo = PhotoService.read(fileName);
+		if(photo == null) {
+			fileName = PhotoService.DEFAULT_PHOTO_NAME;
+			photo = PhotoService.read(fileName);
+		}
 		
 		//set the content type of header
-		String[] pathStrParts = path.toString().split("\\.");
-		String type = pathStrParts[pathStrParts.length - 1];
-		if(type.equals("png")) headers.setContentType(MediaType.IMAGE_PNG);
-		else if(type.equals("gif")) headers.setContentType(MediaType.IMAGE_GIF);
-		else headers.setContentType(MediaType.IMAGE_JPEG);
+		headers.setContentType(PhotoService.parseType(fileName));
 		
 		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(photo, headers, HttpStatus.OK);
 		return responseEntity;
@@ -100,26 +88,10 @@ public class UserRestServlet {
     	//update photo
 		if(photo.getSize() != 0) {
 			//delete original photo
-			if(photoName != null) {
-				String path = STORE_PATH + "/" + photoName;
-				File file = new File(path);
-				if(file.exists()) file.delete();
-			}
+			PhotoService.delete(photoName);
 			
 			//store new photo
-			photoName = UUID.randomUUID().toString();
-			photoName += "." + photoType;	//filename extension
-			
-			String path = STORE_PATH + photoName;
-			
-			File dir = new File(STORE_PATH);
-			if(!dir.exists()) dir.mkdir();
-			try {
-				dir = new File(path);
-				photo.transferTo(dir);
-			} catch (Exception e) {
-				log.error(e.toString());
-			}
+			photoName = PhotoService.write(photo, photoType);
 		}
 		
 		//call service function
@@ -128,7 +100,7 @@ public class UserRestServlet {
     	newData.put("name", name);
     	newData.put("age", Integer.parseInt(age));
 		newData.put("birth", birth);
-    	if(photo.getSize() != 0) {
+    	if(photoName != null) {
     		newData.put("photoName", photoName);
     	}
     	newData.put("interest", interest);
@@ -222,11 +194,7 @@ public class UserRestServlet {
 		
 		//delete the photo
 		String photoName = dbService.getUser(id).getPhotoName();
-		if(photoName != null) {
-			String path = STORE_PATH + photoName;
-			File file = new File(path);
-			if(file.exists()) file.delete();
-		}
+		PhotoService.delete(photoName);
 		
 		dbService.delete(id);
 	}

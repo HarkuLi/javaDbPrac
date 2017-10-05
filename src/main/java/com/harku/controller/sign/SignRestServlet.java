@@ -1,9 +1,7 @@
 package com.harku.controller.sign;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.BeanConfig;
+import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
 
 @RestController
 public class SignRestServlet {
 	private static final int workload = 12;
-	private static final String STORE_PATH = System.getProperty("user.home") + "/upload/";
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	private final UserAccService UAS = ctx.getBean(UserAccService.class);
 	private final UsersService dbService = ctx.getBean(UsersService.class);
@@ -51,7 +49,7 @@ public class SignRestServlet {
 		@RequestParam(required = false, defaultValue = "1") String state) throws IllegalStateException, IOException {
 		
 		HashMap<String, String> rstMap = new HashMap<String, String>();
-		String fileName = null;
+		String photoName = null;
 		
 		//check data
     	String errMsg = checkData(age, account, password, passwordCheck);
@@ -65,7 +63,7 @@ public class SignRestServlet {
     	
     	//store photo
 		if(photo.getSize() != 0) {
-			fileName = storePhoto(photo, photoType);
+			photoName = PhotoService.write(photo, photoType);
 		}
     	
     	//call service function
@@ -75,8 +73,8 @@ public class SignRestServlet {
     	newData.put("password", password);
     	newData.put("age", Integer.parseInt(age));
     	newData.put("birth", birth);
-    	if(photo.getSize() != 0) {
-    		newData.put("photoName", fileName);
+    	if(photoName != null) {
+    		newData.put("photoName", photoName);
     	}
     	newData.put("interest", interest);
     	newData.put("occupation", occupation);
@@ -106,19 +104,5 @@ public class SignRestServlet {
     	}
     	
     	return null;
-	}
-	
-	private String storePhoto(MultipartFile photo, String photoType) throws IllegalStateException, IOException {
-		String fileName = UUID.randomUUID().toString();
-		fileName += "." + photoType;	//filename extension
-		String path = STORE_PATH + fileName;
-		
-		File dir = new File(STORE_PATH);
-		if(!dir.exists()) dir.mkdir();
-		
-		dir = new File(path);
-		photo.transferTo(dir);
-		
-		return fileName;
 	}
 }
