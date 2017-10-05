@@ -29,6 +29,7 @@ public class SignRestServlet {
 	/**
 	 * response format:
 	 * {
+	 *   account: String
 	 *   errMsg: String
 	 * }
 	 * @throws IOException 
@@ -50,6 +51,8 @@ public class SignRestServlet {
 		
 		HashMap<String, String> rstMap = new HashMap<String, String>();
 		String photoName = null;
+		
+		rstMap.put("account", account);
 		
 		//check data
     	String errMsg = checkData(age, account, password, passwordCheck);
@@ -81,7 +84,7 @@ public class SignRestServlet {
     	newData.put("state", state.equals("1"));
     	dbService.createUser(newData);
     	
-    	return null;
+    	return rstMap;
 	}
 	
 	private String checkData(String age, String account, String password, String passwordCheck) {

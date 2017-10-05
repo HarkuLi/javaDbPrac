@@ -58,6 +58,7 @@ public class UserRestServlet {
 	/**
 	 * response format:
 	 * {
+	 *   id: String
 	 *   errMsg: String
 	 * }
 	 */
@@ -75,6 +76,8 @@ public class UserRestServlet {
 		@RequestParam String state) {
 		
     	HashMap<String, String> rstMap = new HashMap<String, String>();
+    	
+    	rstMap.put("id", id);
     	
     	//check data
     	String pattern = "^\\d+$";
@@ -108,7 +111,7 @@ public class UserRestServlet {
     	newData.put("state", state.equals("1"));
     	dbService.update(newData);
     	
-    	return null;
+    	return rstMap;
 	}
 	
 	//@RequestMapping(value = {"/sign_up/action", "/user/new"}, method = RequestMethod.POST, produces = "application/json")
@@ -190,13 +193,18 @@ public class UserRestServlet {
 	}
 	
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public void DeleteUser(@RequestParam String id) {
+	public HashMap<String, String> DeleteUser(@RequestParam String id) {
+		
+		HashMap<String, String> rstMap = new HashMap<String, String>();
 		
 		//delete the photo
 		String photoName = dbService.getUser(id).getPhotoName();
 		PhotoService.delete(photoName);
 		
 		dbService.delete(id);
+		
+		rstMap.put("id", id);
+		return rstMap;
 	}
 	
 	@RequestMapping(value = "/change_password", method = RequestMethod.POST, produces = "application/json")
