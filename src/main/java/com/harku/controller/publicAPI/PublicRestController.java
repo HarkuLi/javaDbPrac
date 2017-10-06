@@ -18,7 +18,7 @@ import com.harku.service.occ.OccService;
 
 @RestController
 @RequestMapping("/public")
-public class PublicRestServlet {
+public class PublicRestController {
 	
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	private static final OccService occService = ctx.getBean(OccService.class);

@@ -24,7 +24,7 @@ import com.harku.service.user.UserAccService;
 import com.harku.validator.user.AccountValidator;
 
 @Controller
-public class SignPageServlet {
+public class SignPageController {
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	private static final UserAccService UAS = ctx.getBean(UserAccService.class);
 	

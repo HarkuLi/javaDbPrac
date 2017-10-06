@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/occ")
-public class OccPageServlet {
+public class OccPageController {
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public String ShowPage(){
 		return "occupation";

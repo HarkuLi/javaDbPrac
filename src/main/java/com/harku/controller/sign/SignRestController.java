@@ -20,7 +20,7 @@ import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
 
 @RestController
-public class SignRestServlet {
+public class SignRestController {
 	private static final int workload = 12;
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	private final UserAccService UAS = ctx.getBean(UserAccService.class);

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/user")
-public class UserPageServlet {
+public class UserPageController {
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public String ShowPage(ModelMap model) {
 		return "user";

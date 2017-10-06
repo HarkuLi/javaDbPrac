@@ -1,4 +1,4 @@
-package com.harku.controller.interest;
+package com.harku.controller.occ;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harku.config.BeanConfig;
-import com.harku.model.interest.IntModel;
-import com.harku.service.interest.IntService;
+import com.harku.model.occ.OccModel;
+import com.harku.service.occ.OccService;
 
 @RestController
-@RequestMapping("/interest")
-public class IntRestServlet {
+@RequestMapping("/occ")
+public class OccRestController {
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
-	private static final IntService dbService = ctx.getBean(IntService.class);
+	private static final OccService dbService = ctx.getBean(OccService.class);
 	
 	/**
 	 * response format:
@@ -28,12 +28,12 @@ public class IntRestServlet {
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, String> UpdateInt(
+	public Map<String, String> UpdateOcc(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String state) {
 		
-		Map<String, String> rstMap = new HashMap<String, String>();
+    	Map<String, String> rstMap = new HashMap<String, String>();
     	
     	//check data
     	if(!state.equals("0") && !state.equals("1")) {
@@ -53,7 +53,7 @@ public class IntRestServlet {
 	 * }
 	 */
 	@RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, String> NewInt(
+	public Map<String, String> NewOcc(
 		@RequestParam String name,
 		@RequestParam String state) {
     	
@@ -65,7 +65,7 @@ public class IntRestServlet {
 	    	return rstMap;
     	}
     	
-    	dbService.createInt(name, state);
+    	dbService.createOcc(name, state);
     	
     	return null;
     }
@@ -78,13 +78,13 @@ public class IntRestServlet {
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, Object> GetIntPage(
+	public Map<String, Object> GetPage(
 		@RequestParam int page,
 		@RequestParam(required = false) String name,
 		@RequestParam(required = false) String state) {
-		
+    	
 		int totalPage;
-		ArrayList<IntModel> tableList;
+		ArrayList<OccModel> tableList;
 		HashMap<String, String> filter = new HashMap<String, String>();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	
@@ -105,24 +105,27 @@ public class IntRestServlet {
     	rstMap.put("totalPage", totalPage);
     	
     	return rstMap;
-	}
+    }
 	
 	/**
-	 * response: interest data
+	 * response: occupation data
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public IntModel GetInterest(@RequestParam String id) {
+	public OccModel GetOcc(@RequestParam String id) {
 		
-    	return dbService.getInterest(id);
+    	return dbService.getOcc(id);
 	}
+	
 	
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public void DeleteInterest(@RequestParam String id) {
-    	
+	public void DeleteOcc(@RequestParam String id) {
+		
     	dbService.delete(id);
 	}
-	
 }
+
+
+
 
 
 

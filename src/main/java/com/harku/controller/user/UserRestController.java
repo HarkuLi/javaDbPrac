@@ -27,7 +27,7 @@ import com.harku.service.user.UsersService;
 
 @RestController
 @RequestMapping("/user")
-public class UserRestServlet {
+public class UserRestController {
 	//workload for bcrypt
 	private static final int workload = 12;
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);

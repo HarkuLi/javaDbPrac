@@ -19,7 +19,7 @@ public class AspectLogging {
 	@Pointcut("execution(* com.harku..*.*(..))")
 	private void selectAll() {}
 	
-	@AfterReturning(pointcut = "execution(* com.harku.controller.sign.SignRestServlet.NewUser(..))", returning = "retVal")
+	@AfterReturning(pointcut = "execution(* com.harku.controller.sign.SignRestController.NewUser(..))", returning = "retVal")
 	private void NewUserAdvice(Object retVal) {
 		
 		@SuppressWarnings("unchecked")
@@ -33,7 +33,7 @@ public class AspectLogging {
 			log.info("Create a new account: " + account);
 	}
 	
-	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestServlet.UpdateUser(..))", returning = "retVal")
+	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.UpdateUser(..))", returning = "retVal")
 	private void UpdateUserAdvice(Object retVal) {
 		
 		@SuppressWarnings("unchecked")
@@ -47,7 +47,7 @@ public class AspectLogging {
 			log.info("Update a account whose id is: " + id);
 	}
 	
-	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestServlet.DeleteUser(..))", returning = "retVal")
+	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.DeleteUser(..))", returning = "retVal")
 	private void DeleteUserAdvice(Object retVal) {
 		
 		@SuppressWarnings("unchecked")

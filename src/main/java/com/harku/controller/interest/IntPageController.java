@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/interest")
-public class IntPageServlet {
+public class IntPageController {
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public String ShowPage() {
