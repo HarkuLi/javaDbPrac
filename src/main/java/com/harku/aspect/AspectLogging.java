@@ -20,49 +20,60 @@ public class AspectLogging {
 	private void selectAll() {}
 	
 	@AfterReturning(pointcut = "execution(* com.harku.controller.sign.SignRestController.NewUser(..))", returning = "retVal")
-	private void NewUserAdvice(Object retVal) {
+	private void NewUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
 		Map<String, String> retMap = (Map<String, String>) retVal;
 		String account = retMap.get("account");
 		String errMsg = retMap.get("errMsg");
+		String sourceName = getSourceName(joinPoint);
 		
 		if(errMsg != null)
-			log.info("Failed to create a new account [" + account + "] becuase of: " + errMsg);
+			log.info(String.format("[%s] Failed to create a new account [%s] becuase of: %s",
+									sourceName, account, errMsg));
 		else
-			log.info("Create a new account: " + account);
+			log.info(String.format("[%s] Create a new account: " + account, sourceName));
 	}
 	
 	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.UpdateUser(..))", returning = "retVal")
-	private void UpdateUserAdvice(Object retVal) {
+	private void UpdateUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
 		Map<String, String> retMap = (Map<String, String>) retVal;
 		String id = retMap.get("id");
 		String errMsg = retMap.get("errMsg");
+		String sourceName = getSourceName(joinPoint);
 		
 		if(errMsg != null)
-			log.info("Failed to update a account with id [" + id + "] becuase of: " + errMsg);
+			log.info(String.format("[%s] Failed to update a account with id [%s] becuase of: %s",
+									sourceName, id, errMsg));
 		else
-			log.info("Update a account whose id is: " + id);
+			log.info(String.format("[%s] Update a account whose id is: %s", sourceName, id));
 	}
 	
 	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.DeleteUser(..))", returning = "retVal")
-	private void DeleteUserAdvice(Object retVal) {
+	private void DeleteUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
 		Map<String, String> retMap = (Map<String, String>) retVal;
 		String id = retMap.get("id");
+		String sourceName = getSourceName(joinPoint);
 		
-		log.info("Delete a account whose id is: " + id);
+		log.info(String.format("[%s] Delete a account whose id is: %s", sourceName, id));
 	}
 	
 	@AfterThrowing(pointcut = "selectAll()", throwing = "e")
 	public void AllThrowingAdvice(JoinPoint joinPoint, Exception e) {
+		String sourceName = getSourceName(joinPoint);
+		
+		log.error(String.format("[%s] Exception occurs: %s", sourceName, e.toString()));
+	}
+	
+	private String getSourceName(JoinPoint joinPoint) {
 		String className = joinPoint.getTarget().getClass().getName();
 		String methodName = joinPoint.getSignature().getName();
 		String wholeName = className + "." + methodName;
 		
-		log.error("Exception in [" + wholeName + "]: " + e.toString());
+		return wholeName;
 	}
 }
