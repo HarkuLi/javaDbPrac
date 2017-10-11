@@ -1,54 +1,38 @@
-package com.harku.controller.filter;
+package com.harku.controller.interceptor;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.harku.config.BeanConfig;
 import com.harku.service.user.UserAccService;
 
-public class SignInFilter implements Filter {
+public class SignInInterceptor extends HandlerInterceptorAdapter {
 	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	
 	@Override
-	public void destroy() {}
-
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-			throws IOException, ServletException {
-		HttpServletRequest httpReq = (HttpServletRequest) req;
-		HttpServletResponse httpRes = (HttpServletResponse) res;
+	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 		
 		final String signInRoute = "/javaDbPrac/sign_in/page";
 		UserAccService UAS = ctx.getBean(UserAccService.class);
 		
-		
 		//check token
-		HashMap<String, String> cookie = cookieHandle(httpReq.getCookies());
+		HashMap<String, String> cookie = cookieHandle(req.getCookies());
 		if(!(cookie != null && UAS.checkToken(cookie.get("LOGIN_INFO")))) {
-			httpRes.sendRedirect(signInRoute);
-			return;
+			res.sendRedirect(signInRoute);
+			return false;
 		}
 		
-		chain.doFilter(req, res);
+		return true;
 	}
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {}
 	
-	private HashMap<String, String> cookieHandle(Cookie[] cookies){
+	private HashMap<String, String> cookieHandle(Cookie[] cookies) {
 		if(cookies == null) return null;
 		
 		HashMap<String, String> rst = new HashMap<String, String>();
