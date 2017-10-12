@@ -47,4 +47,15 @@ public class PublicRestController {
     	
     	return rstMap;
 	}
+	
+	@RequestMapping(value = "/e_test", method = RequestMethod.GET, produces = "application/json")
+	public Map<String, Object> ExceptionTest() throws Exception {
+		
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		rstMap.put("msg", "success");
+		
+		if(!rstMap.isEmpty())	throw new Exception("Error test.");
+    	
+    	return rstMap;
+	}
 }

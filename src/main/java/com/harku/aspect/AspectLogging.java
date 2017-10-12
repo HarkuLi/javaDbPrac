@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
@@ -60,13 +59,6 @@ public class AspectLogging {
 		String sourceName = getSourceName(joinPoint);
 		
 		log.info(String.format("[%s] Delete a account whose id is: %s", sourceName, id));
-	}
-	
-	@AfterThrowing(pointcut = "selectAll()", throwing = "e")
-	public void AllThrowingAdvice(JoinPoint joinPoint, Exception e) {
-		String sourceName = getSourceName(joinPoint);
-		
-		log.error(String.format("[%s] Exception occurs: %s", sourceName, e.toString()));
 	}
 	
 	private String getSourceName(JoinPoint joinPoint) {
