@@ -3,16 +3,18 @@ package com.harku.service.interest;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.harku.dao.interest.IntDao;
 import com.harku.model.interest.IntModel;
 
+@Service
 public class IntService {
+	@Autowired
 	private IntDao dao;
-	private final int ENTRY_PER_PAGE = 10;
 	
-	public IntService(IntDao _dao) {
-		dao = _dao;
-	}
+	private final int ENTRY_PER_PAGE = 10;
 	
 	public void createInt(String name, String state) {
 		HashMap<String, Object> newData = new HashMap<String, Object>();

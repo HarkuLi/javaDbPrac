@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.harku.dao.user.UsersDao;
 import com.harku.model.user.UsersModel;
 
+@Service
 public class UsersService{
 	private final int ENTRY_PER_PAGE = 10;
+	@Autowired
 	private UsersDao dao;
+	@Autowired
 	private UserIntService UIS;
+	@Autowired
 	private UserAccService UAS;
-	
-	public UsersService(UsersDao _dao, UserIntService _UIS, UserAccService _UAS) {
-		dao = _dao;
-		UIS = _UIS;
-		UAS = _UAS;
-	}
 	
 	/**
 	 * 

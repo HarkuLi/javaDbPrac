@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.harku.model.occ.OccModel;
 import com.harku.rowMapper.occ.OccMapper;
 
+@Repository
 public class OccDao {
+	@Autowired
 	private JdbcTemplate jdbcObj;
 	
 	private final String tableName = "occ";
 
-	public OccDao(DataSource dataSource) {
-		jdbcObj = new JdbcTemplate(dataSource);
-	}
-	
 	/**
 	 * @param filter {HashMap<String, String>}
 	 * @return {int} total number of rows, and return -1 when the table doesn't exist

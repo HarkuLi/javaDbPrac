@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harku.config.BeanConfig;
 import com.harku.model.interest.IntModel;
 import com.harku.service.interest.IntService;
 
 @RestController
 @RequestMapping("/interest")
 public class IntRestController {
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
-	private static final IntService dbService = ctx.getBean(IntService.class);
+	@Autowired
+	private IntService dbService;
 	
 	/**
 	 * response format:

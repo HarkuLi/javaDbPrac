@@ -2,14 +2,15 @@ package com.harku.service.user;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.harku.dao.user.UserIntDao;
 
+@Service
 public class UserIntService {
+	@Autowired
 	private UserIntDao dao;
-	
-	public UserIntService(UserIntDao _dao) {
-		dao = _dao;
-	}
 	
 	public void saveInterests(String userId, String[] interestList) {
 		if(interestList == null) return;

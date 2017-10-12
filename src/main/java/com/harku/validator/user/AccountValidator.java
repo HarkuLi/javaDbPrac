@@ -8,12 +8,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.harku.config.BeanConfig;
+import com.harku.config.AppConfig;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
 
 public class AccountValidator implements Validator {
-	private final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
+	private final ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 	private final UserAccService UAS = ctx.getBean(UserAccService.class);
 	
 	public boolean supports(Class<?> clazz) {

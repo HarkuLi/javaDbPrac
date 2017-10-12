@@ -3,19 +3,17 @@ package com.harku.dao.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.harku.model.user.UsersModel;
 import com.harku.rowMapper.user.UserMapper;
 
+@Repository
 public class UsersDao{
+	@Autowired
 	private JdbcTemplate jdbcObj;
-	
-	public UsersDao(DataSource dataSource) {
-		jdbcObj = new JdbcTemplate(dataSource);
-	}
 	
 	/**
 	 * @param filter {HashMap<String, String>}

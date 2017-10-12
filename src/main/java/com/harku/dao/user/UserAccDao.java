@@ -3,21 +3,19 @@ package com.harku.dao.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.harku.rowMapper.user.UserAccMapper;
 
+@Repository
 public class UserAccDao {
+	@Autowired
 	private JdbcTemplate jdbcObj;
 	
 	private final String tableName = "userAccount";
 
-	public UserAccDao(DataSource dataSource) {
-		jdbcObj = new JdbcTemplate(dataSource);
-	}
-	
 	public void create(HashMap<String, Object> newData) {
 		String sqlStr = "insert into " + tableName;
 		sqlStr	     += " (userId, account, password, state)";

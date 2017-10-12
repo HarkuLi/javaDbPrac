@@ -6,15 +6,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.harku.config.BeanConfig;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
@@ -22,9 +20,10 @@ import com.harku.service.user.UsersService;
 @RestController
 public class SignRestController {
 	private static final int workload = 12;
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
-	private final UserAccService UAS = ctx.getBean(UserAccService.class);
-	private final UsersService dbService = ctx.getBean(UsersService.class);
+	@Autowired
+	private UserAccService UAS;
+	@Autowired
+	private UsersService dbService;
 	
 	/**
 	 * response format:

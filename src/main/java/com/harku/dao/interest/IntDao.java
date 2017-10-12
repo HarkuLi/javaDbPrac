@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.harku.model.interest.IntModel;
 import com.harku.rowMapper.interest.IntMapper;
 
+@Repository
 public class IntDao {
+	@Autowired
 	private JdbcTemplate jdbcObj;
 	
 	private final String tableName = "interest";
-
-	public IntDao(DataSource dataSource) {
-		jdbcObj = new JdbcTemplate(dataSource);
-	}
 	
 	/**
 	 * @param filter {HashMap<String, String>}

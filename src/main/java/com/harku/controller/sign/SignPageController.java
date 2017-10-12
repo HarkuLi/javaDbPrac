@@ -6,8 +6,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.DataBinder;
@@ -18,15 +17,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.harku.config.BeanConfig;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
 import com.harku.validator.user.AccountValidator;
 
 @Controller
 public class SignPageController {
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
-	private static final UserAccService UAS = ctx.getBean(UserAccService.class);
+	@Autowired
+	private UserAccService UAS;
 	
 	@InitBinder
 	private void initBinder(DataBinder binder) {

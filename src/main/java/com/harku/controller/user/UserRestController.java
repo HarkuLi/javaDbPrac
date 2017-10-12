@@ -7,8 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.harku.config.BeanConfig;
 import com.harku.model.user.UsersModel;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
@@ -30,10 +28,11 @@ import com.harku.service.user.UsersService;
 public class UserRestController {
 	//workload for bcrypt
 	private static final int workload = 12;
-	private static final ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfig.class);
 	
-	private final UsersService dbService = ctx.getBean(UsersService.class);
-	private final UserAccService UAS = ctx.getBean(UserAccService.class);
+	@Autowired
+	private UsersService dbService;
+	@Autowired
+	private UserAccService UAS;
 	
 	@RequestMapping(value = "/photo", method = RequestMethod.GET, produces = {"image/jpeg", "image/gif", "image/png"})
 	public ResponseEntity<byte[]> UserPhoto(

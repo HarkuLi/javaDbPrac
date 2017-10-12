@@ -3,16 +3,18 @@ package com.harku.service.occ;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.harku.dao.occ.OccDao;
 import com.harku.model.occ.OccModel;
 
+@Service
 public class OccService {
+	@Autowired
 	private OccDao dao;
-	private final int ENTRY_PER_PAGE = 10;
 	
-	public OccService(OccDao _dao) {
-		dao = _dao;
-	}
+	private final int ENTRY_PER_PAGE = 10;
 	
 	public void createOcc(String name, String state) {
 		HashMap<String, Object> newData = new HashMap<String, Object>();

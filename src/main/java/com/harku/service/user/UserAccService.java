@@ -3,16 +3,17 @@ package com.harku.service.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.harku.dao.user.UserAccDao;
 
+@Service
 public class UserAccService {
+	@Autowired
 	private UserAccDao dao;
 	
 	public static final int EXPIRE_TIME_SEC = 604800;	//one week, 60*60*24*7
-	
-	public UserAccService(UserAccDao _dao) {
-		dao = _dao;
-	}
 	
 	public void saveAcc(HashMap<String, Object> newData) {
 		dao.create(newData);

@@ -2,20 +2,18 @@ package com.harku.dao.user;
 
 import java.util.ArrayList;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.harku.rowMapper.user.UserIntMapper;
 
+@Repository
 public class UserIntDao {
+	@Autowired
 	private JdbcTemplate jdbcObj;
 	
 	private final String tableName = "userInterest";
-
-	public UserIntDao(DataSource dataSource) {
-		jdbcObj = new JdbcTemplate(dataSource);
-	}
 	
 	public void create(String userId, String interest) {
 		String sqlStr = "insert into " + tableName;

@@ -1,9 +1,11 @@
 package com.harku.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -13,13 +15,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.harku.aspect.AspectLogging;
-import com.harku.controller.interceptor.SignInInterceptor;
+import com.harku.interceptor.SignInInterceptor;
 
 @Configuration
+@Import(AppConfig.class)
 @EnableWebMvc
-@EnableAspectJAutoProxy
-@ComponentScan("com.harku")
-public class ServletConfig extends WebMvcConfigurerAdapter {
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+@ComponentScan(basePackages = {"com.harku.controller", "com.harku.aspect", "com.harku.interceptor"})
+public class WebConfig extends WebMvcConfigurerAdapter {
+	@Autowired
+	private SignInInterceptor signInInterceptor;
 	
 	@Bean
 	public InternalResourceViewResolver viewResolver() {
@@ -49,8 +54,9 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 		return new AspectLogging();
 	}
 	
+	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new SignInInterceptor())
+		registry.addInterceptor(signInInterceptor)
 				.addPathPatterns("/user/*", "/occ/*", "/interest/*");
 	}
 	
@@ -60,4 +66,5 @@ public class ServletConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/css/*").addResourceLocations("/css/");
 		registry.addResourceHandler("/*.png").addResourceLocations("/image/");
 	}
+	
 }
