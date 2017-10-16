@@ -2,12 +2,14 @@
     pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/user.css">	
-	<title>user</title>
+	<title><spring:message code="user.text" /></title>
 </head>
 <body>
 	<!-- navigation bar -->
@@ -17,7 +19,7 @@
 	<div class="container filter">
 		<form class="form-horizontal">
 			<fieldset>
-				<legend>Filter</legend>
+				<legend><spring:message code="filter.text" /></legend>
 				<jsp:include page="/WEB-INF/partial/user/filter.jsp"></jsp:include>
 			</fieldset>
 		</form>
@@ -33,7 +35,7 @@
 		</div>
 		
 		<!-- new users -->
-		<button type="button" id="new_btn" class="btn btn-primary btn-sm pull-left">new</button><br>
+		<button type="button" id="new_btn" class="btn btn-primary btn-sm pull-left"><spring:message code="new.text" /></button><br>
 	</div>
 	<br>
 	
@@ -63,14 +65,14 @@
 	<div class="container">
 		<table id="data_table" class="table table-hover">
 			<tr>
-				<th>photo</th>
-				<th>account</th>
-				<th>name</th>
-				<th>age</th>
-				<th>birth</th>
-				<th>occupation</th>
-				<th>interests</th>
-				<th>state</th>
+				<th><spring:message code="photo.text" /></th>
+				<th><spring:message code="account.text" /></th>
+				<th><spring:message code="name.text" /></th>
+				<th><spring:message code="age.text" /></th>
+				<th><spring:message code="birth.text" /></th>
+				<th><spring:message code="occupation.text" /></th>
+				<th><spring:message code="interest.text" /></th>
+				<th><spring:message code="state.text" /></th>
 				<th></th>
 				<th></th>
 			</tr>
