@@ -55,7 +55,7 @@ $(() => {
   	//set pop up window
   	$(".mask").css("display", "flex");
   	$(".mask").prop("id", "new_block");
-  	$("#popup_form").children(":submit").prop("id", "int_create");
+  	$("#popup_form").children("[type='submit']").prop("id", "int_create");
   });
   
   $(".close_btn").on("click", function(){
@@ -176,7 +176,7 @@ function save(self){
 function edit(self){
 	//set pop up window
 	$(".mask").prop("id", "edit_block");
-	$("#popup_form").children(":submit").prop("id", "int_modify");
+	$("#popup_form").children("[type='submit']").prop("id", "int_modify");
 	
 	var dataRow = $(self).parent().parent();
 	var id = $(dataRow).find(".id").children().prop("value");
@@ -287,7 +287,7 @@ function closePopup(){
 	clrFields($("#popup_form"));
 	$(".mask").prop("id", "");
 	$(".mask").css("display", "");
-	$("#popup_form").children(":submit").prop("id", "");
+	$("#popup_form").children("[type='submit']").prop("id", "");
 }
 
 /**

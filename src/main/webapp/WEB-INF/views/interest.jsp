@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
-	<title>interest</title>
+	<title><spring:message code="interest.text" /></title>
 </head>
 <body>
 	<!-- navigation bar -->
@@ -16,24 +16,26 @@
 	<div class="container filter">
 		<form class="form-horizontal">
 			<fieldset>
-				<legend>Filter</legend>
+				<legend><spring:message code="filter.text" /></legend>
 				<div class="form-group">
-					<label class="control-label col-md-2">Name:</label>
+					<label class="control-label col-md-2"><spring:message code="name.text" />:</label>
 					<div class="col-md-10">
 						<input type="text" name="name" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-md-2">State:</label>
+					<label class="control-label col-md-2"><spring:message code="state.text" />:</label>
 					<div class="col-md-10">
 						<select name="state" class="form-control">
 							<option value="">--</option>
-							<option value="1">enable</option>
-							<option value="0">disable</option>
+							<option value="1"><spring:message code="enable.text" /></option>
+							<option value="0"><spring:message code="disable.text" /></option>
 						</select>
 					</div>
 				</div>
-				<button id="filter_search" class="btn btn-default btn-sm center-block">Go</button>
+				<button id="filter_search" class="btn btn-default btn-sm center-block">
+					<spring:message code="filterApply.text" />
+				</button>
 			</fieldset>
 		</form>
 	</div>
@@ -48,7 +50,9 @@
 		</div>
 		
 		<!-- new occupation -->
-		<button type="button" id="new_btn" class="btn btn-primary btn-sm pull-left">new</button><br>
+		<button type="button" id="new_btn" class="btn btn-primary btn-sm pull-left">
+			<spring:message code="new.text" />
+		</button><br>
 	</div>
 	<br>
 	
@@ -70,8 +74,8 @@
 	<div class="container">
 		<table id="data_table" class="table table-hover">
 			<tr>
-				<th>name</th>
-				<th>state</th>
+				<th><spring:message code="name.text" /></th>
+				<th><spring:message code="state.text" /></th>
 				<th></th>
 				<th></th>
 			</tr>
