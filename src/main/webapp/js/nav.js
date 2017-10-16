@@ -26,7 +26,11 @@ function getPageList(){
 	var pageLinkList = $("#navbar").find("li");
 	for(let ele of pageLinkList){
 		let eleId = $(ele).prop("id");
-		let pageName = eleId.slice(eleId.indexOf("_")+1);
+		
+		let startIdx = eleId.indexOf("_") + 1;
+		if(startIdx <= 0)	continue;
+		
+		let pageName = eleId.slice(startIdx);
 		pageList.push(pageName);
 	}
 
@@ -68,6 +72,12 @@ function setNavView(pageName){
   	if(pageName === "sign_up"){
   		$("#nav_sign_out").prop("class", "hidden");
   		$("#nav_sign_in").prop("class", "");
+  		return Promise.resolve(true);
+  	}
+  	if(pageName === "setting"){
+  		$("#nav_sign_out").prop("class", "hidden");
+  		$("#nav_sign_in").prop("class", "");
+  		$("#nav_sign_up").prop("class", "");
   		return Promise.resolve(true);
   	}
 	}
