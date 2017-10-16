@@ -58,36 +58,25 @@ function getPageName(pageList){
 /**
  * set the link of current page active, text, and hide buttons not required
  * @param {String} pageName
- * @return {Promise} return true if success
+ * @return {Promise}
  */
 function setNavView(pageName){
-	if(pageName){
-  	$(`#nav_${pageName}`).prop("class", "active");
-  	
-  	if(pageName === "sign_in"){
-  		$("#nav_sign_out").prop("class", "hidden");
-  		$("#nav_sign_up").prop("class", "");
-  		return Promise.resolve(true);
-  	}
-  	if(pageName === "sign_up"){
-  		$("#nav_sign_out").prop("class", "hidden");
-  		$("#nav_sign_in").prop("class", "");
-  		return Promise.resolve(true);
-  	}
-  	if(pageName === "setting"){
-  		$("#nav_sign_out").prop("class", "hidden");
-  		$("#nav_sign_in").prop("class", "");
-  		$("#nav_sign_up").prop("class", "");
-  		return Promise.resolve(true);
-  	}
-	}
 	
 	return getUserInfo()
 		.then(user => {
-			if(!user.name) return false;
-			var userStr = user.name + " (" + user.account + ")";
-			$("#nav_user_name").children().text(userStr);
-			return true;
+			if(user.name) {
+	  		$("#nav_user_name").prop("class", "");
+	  		$("#nav_sign_out").prop("class", "");
+	  		
+	  		var userStr = user.name + " (" + user.account + ")";
+	  		$("#nav_user_name").children().text(userStr);
+			}
+			else {
+				$("#nav_sign_up").prop("class", "");
+	  		$("#nav_sign_in").prop("class", "");
+			}
+			
+			$(`#nav_${pageName}`).prop("class", "active");
 		});
 }
 

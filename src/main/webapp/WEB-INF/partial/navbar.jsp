@@ -17,10 +17,10 @@
 				<li id="nav_interest"><a href="/javaDbPrac/interest/page"><spring:message code="interest.text" text="interest" /></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li id="nav_sign_up" class="hidden"><a href="/javaDbPrac/sign_up/page"><span class="glyphicon glyphicon-user"></span> <spring:message code="signUp.text" text="Sign Up" /></a></li>
-				<li id="nav_sign_in" class="hidden"><a href="/javaDbPrac/sign_in/page"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="signIn.text" text="Sign In" /></a></li>
+				<li id="nav_sign_up"   class="hidden"><a href="/javaDbPrac/sign_up/page"><span class="glyphicon glyphicon-user"></span> <spring:message code="signUp.text" text="Sign Up" /></a></li>
+				<li id="nav_sign_in"   class="hidden"><a href="/javaDbPrac/sign_in/page"><span class="glyphicon glyphicon-log-in"></span> <spring:message code="signIn.text" text="Sign In" /></a></li>
 				<li id="nav_user_name" class="hidden"><p class="navbar-text"></p></li>
-				<li id="nav_sign_out"><a href="/javaDbPrac/sign_out"><span class="glyphicon glyphicon-log-out"></span> <spring:message code="signOut.text" text="Sign Out" /></a></li>
+				<li id="nav_sign_out"  class="hidden"><a href="/javaDbPrac/sign_out"><span class="glyphicon glyphicon-log-out"></span> <spring:message code="signOut.text" text="Sign Out" /></a></li>
 				<li id="nav_setting"><a href="/javaDbPrac/setting"><span class="glyphicon glyphicon-cog"></span></a></li>
 			</ul>
 		</div>

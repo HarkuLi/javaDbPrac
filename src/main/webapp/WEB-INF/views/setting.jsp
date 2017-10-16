@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<button type="submit" id="save_setting" class="btn btn-default btn-sm center-block">
-					<spring:message code="submit.text" />
+					<spring:message code="save.text" />
 				</button>
 			</form>
 		</div>
