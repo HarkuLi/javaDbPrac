@@ -8,26 +8,13 @@ public class UsersModel{
 	//the hashed password
 	private String password;
 	private String name;
-	private int age;
+	private Integer age;
 	private String birth;
 	private String photoName;
 	//a list of interest id
 	private ArrayList<String> interest;
 	private String occupation;
-	private boolean state;
-	
-	public UsersModel() {
-		id = null;
-		account = null;
-		password = null;
-		name = null;
-		age = 0;
-		birth = null;
-		photoName= null;
-		interest = null;
-		occupation = null;
-		state = true;
-	}
+	private Boolean state;
 	
 	public void setId(String _id) {
 		id = _id;
@@ -45,7 +32,7 @@ public class UsersModel{
 		name = _name;
 	}
 	
-	public void setAge(int _age) {
+	public void setAge(Integer _age) {
 		age = _age;
 	}
 	
@@ -65,7 +52,7 @@ public class UsersModel{
 		occupation = _occupation;
 	}
 	
-	public void setState(boolean _state) {
+	public void setState(Boolean _state) {
 		state = _state;
 	}
 	
@@ -85,7 +72,7 @@ public class UsersModel{
 		return name;
 	}
 	
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 	
@@ -105,7 +92,7 @@ public class UsersModel{
 		return occupation;
 	}
 	
-	public boolean getState() {
+	public Boolean getState() {
 		return state;
 	}
 	

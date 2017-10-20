@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.harku.dao.user.UsersDao;
+import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
 import com.harku.test.config.AppConfigTest;
 
@@ -38,15 +38,15 @@ public class TestUsersDao {
 	@Test
 	public void testReadOne() {
 		//create random data
-		HashMap<String, Object> newData = genRandomData();
+		UsersModel newData = genRandomData();
 		userDao.create(newData);
 		
 		//read
-		HashMap<String, Object> filter = new HashMap<String, Object>();
-		filter.put("id", newData.get("id"));
+		UserFilterModel filter = new UserFilterModel();
+		filter.setId(newData.getId());
 		ArrayList<UsersModel> readRows = userDao.read(filter, 0, 1);
-		assertEquals((String)newData.get("name"), readRows.get(0).getName());
-		assertEquals((String)newData.get("photoName"), readRows.get(0).getPhotoName());
+		assertEquals(newData.getName()     , readRows.get(0).getName());
+		assertEquals(newData.getPhotoName(), readRows.get(0).getPhotoName());
 	}
 	
 	@Test
@@ -55,13 +55,13 @@ public class TestUsersDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			HashMap<String, Object> newData = genRandomData();
-			idList.add((String)newData.get("id"));
+			UsersModel newData = genRandomData();
+			idList.add(newData.getId());
 			userDao.create(newData);
 		}
 		
 		//read
-		List<UsersModel> readRows = userDao.read(new HashMap<String, Object>(), 0, 10000);
+		List<UsersModel> readRows = userDao.read(new UserFilterModel(), 0, 10000);
 		for(UsersModel user : readRows) {
 			assertTrue(idList.indexOf(user.getId()) >= 0);
 		}
@@ -70,34 +70,34 @@ public class TestUsersDao {
 	@Test
 	public void testUpdate() {
 		//create random data
-		HashMap<String, Object> newData = genRandomData();
-		String id = (String)newData.get("id");
+		UsersModel newData = genRandomData();
+		String id = newData.getId();
 		userDao.create(newData);
 		
 		//update
 		String newName = "test update name";
-		int newAge = 13;
+		Integer newAge = 13;
 		String newBirth = "2017-01-01";
 		String newPhotoName = "testPhotoName.gif";
 		String newOccupation = "testOccupation";
-		HashMap<String, Object> setData = new HashMap<String, Object>();
-		setData.put("id", id);
-		setData.put("name", newName);
-		setData.put("age", newAge);
-		setData.put("birth", newBirth);
-		setData.put("photoName", newPhotoName);
-		setData.put("occupation", newOccupation);
+		UsersModel setData = new UsersModel();
+		setData.setId(id);
+		setData.setName(newName);
+		setData.setAge(newAge);;
+		setData.setBirth(newBirth);;
+		setData.setPhotoName(newPhotoName);;
+		setData.setOccupation(newOccupation);;
 		userDao.update(setData);
 		
 		//read
-		HashMap<String, Object> filter = new HashMap<String, Object>();
-		//filter.put("id", id);
+		UserFilterModel filter = new UserFilterModel();
+		filter.setId(id);
 		List<UsersModel> readRows = userDao.read(filter, 0, 1);
-		assertEquals(readRows.get(0).getName(), newName);
-		assertEquals(readRows.get(0).getAge(), newAge);
-		assertEquals(readRows.get(0).getBirth(), newBirth);
-		assertEquals(readRows.get(0).getPhotoName(), newPhotoName);
-		assertEquals(readRows.get(0).getOccupation(), newOccupation);
+		assertEquals(newName      , readRows.get(0).getName());
+		assertEquals(newAge       , readRows.get(0).getAge());
+		assertEquals(newBirth     , readRows.get(0).getBirth());
+		assertEquals(newPhotoName , readRows.get(0).getPhotoName());
+		assertEquals(newOccupation, readRows.get(0).getOccupation());
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class TestUsersDao {
 		for(int i=0; i<rowNum; ++i) userDao.create(genRandomData());
 		
 		//check number of rows
-		assertEquals(userDao.getRowNum(new HashMap<String, Object>()), rowNum);
+		assertEquals(rowNum, userDao.getRowNum(new UserFilterModel()));
 	}
 	
 	@Test
@@ -116,16 +116,18 @@ public class TestUsersDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			HashMap<String, Object> newData = genRandomData();
-			idList.add((String)newData.get("id"));
+			UsersModel newData = genRandomData();
+			idList.add(newData.getId());
 			userDao.create(newData);
 		}
 		
 		//delete
 		for(String id : idList) userDao.delete(id);
+		
+		assertEquals(0, userDao.getRowNum(new UserFilterModel()));
 	}
 	
-	private HashMap<String, Object> genRandomData() {
+	private UsersModel genRandomData() {
 		String id = UUID.randomUUID().toString();
 		String name = genRandomStr(3, 10);
 		int age = (int)(Math.random()*80 + 1);
@@ -133,13 +135,13 @@ public class TestUsersDao {
 		String photoName = UUID.randomUUID().toString() + "." + genImageType();
 		String occupation = genRandomStr(5, 10);
 		
-		HashMap<String, Object> newData = new HashMap<String, Object>();
-		newData.put("id", id);
-		newData.put("name", name);
-		newData.put("age", age);
-		newData.put("birth", birth);
-		newData.put("photoName", photoName);
-		newData.put("occupation", occupation);
+		UsersModel newData = new UsersModel();
+		newData.setId(id);
+		newData.setName(name);
+		newData.setAge(age);
+		newData.setBirth(birth);
+		newData.setPhotoName(photoName);
+		newData.setOccupation(occupation);;
 		return newData;
 	}
 	

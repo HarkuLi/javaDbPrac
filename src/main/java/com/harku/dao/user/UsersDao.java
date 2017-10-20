@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
 import com.harku.rowMapper.user.UserMapper;
 
@@ -16,10 +17,10 @@ public class UsersDao{
 	private JdbcTemplate jdbcObj;
 	
 	/**
-	 * @param filter {HashMap<String, String>}
+	 * @param filter {UserFilterModel}
 	 * @return {int} total number of rows
 	 */
-	public int getRowNum(HashMap<String, Object> filter) {
+	public int getRowNum(UserFilterModel filter) {
 		String sqlStr = "select count(id) from users";
 		
 		//handle the filter
@@ -32,24 +33,24 @@ public class UsersDao{
 		return jdbcObj.queryForObject(sqlStr, paramList.toArray(), Integer.class);
 	}
 	
-	public void create(HashMap<String, Object> newData) {
+	public void create(UsersModel newData) {
 		String sqlStr = "insert into users (id, name, age, birth, photoName, occupation)";
 		sqlStr += " values (?, ?, ?, ?, ?, ?)";
 		
-		Object[] paramList = {newData.get("id"), newData.get("name"), newData.get("age"),
-							  newData.get("birth"), newData.get("photoName"), newData.get("occupation")};
+		Object[] paramList = {newData.getId(), newData.getName(), newData.getAge(),
+							  newData.getBirth(), newData.getPhotoName(), newData.getOccupation()};
 		
 		jdbcObj.update(sqlStr, paramList);
 	}
 	
 	/**
 	 * 
-	 * @param filter {HashMap<String, String>}
+	 * @param filter {UserFilterModel}
 	 * @param skipNum {int} how many rows to skip
 	 * @param readNum {int} how many rows to read
 	 * @return {ArrayList<UsersModel>} a list of user object
 	 */
-	public ArrayList<UsersModel> read(HashMap<String, Object> filter, int skipNum, int readNum) {
+	public ArrayList<UsersModel> read(UserFilterModel filter, int skipNum, int readNum) {
 		String sqlStr = "select * from users";
 		
 		//handle the filter
@@ -71,12 +72,11 @@ public class UsersDao{
 		return tableList;
 	}
 	
-	public void update(HashMap<String, Object> setData) {
+	public void update(UsersModel setData) {
 		String sqlStr = "update users";
 		
 		//handle the data to set
-		String id = (String)setData.get("id");
-		setData.remove("id");
+		String id = setData.getId();
 		HashMap<String, Object> handledNewData = setDataHandle(setData);
 		String setDataStr = (String)handledNewData.get("queryStr");
 		@SuppressWarnings("unchecked")
@@ -99,22 +99,48 @@ public class UsersDao{
 	
 	/**
 	 * 
-	 * @param setData {HashMap<String, Object>}
+	 * @param setData {UsersModel}
 	 * @return {HashMap<String, Object>}
 	 *   {
 	 *     queryStr: String
 	 *     paramList: ArrayList<Object>,
 	 *   }
 	 */
-	private HashMap<String, Object> setDataHandle(HashMap<String, Object> setData) {
+	private HashMap<String, Object> setDataHandle(UsersModel setData) {
 		String queryStr = "";
 		ArrayList<Object> paramList = new ArrayList<Object>();
 		HashMap<String, Object> rst = new HashMap<String, Object>();
 		
-		for(String key : setData.keySet()) {
+		String name = setData.getName();
+		Integer age = setData.getAge();
+		String birth = setData.getBirth();
+		String photoName = setData.getPhotoName();
+		String occupation = setData.getOccupation();
+		
+		if(name != null) {
 			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += key + " = ?";
-			paramList.add(setData.get(key));
+			queryStr += "name = ?";
+			paramList.add(name);
+		}
+		if(age != null) {
+			if(queryStr.length() != 0) queryStr += ", ";
+			queryStr += "age = ?";
+			paramList.add(age);
+		}
+		if(birth != null) {
+			if(queryStr.length() != 0) queryStr += ", ";
+			queryStr += "birth = ?";
+			paramList.add(birth);
+		}
+		if(photoName != null) {
+			if(queryStr.length() != 0) queryStr += ", ";
+			queryStr += "photoName = ?";
+			paramList.add(photoName);
+		}
+		if(occupation != null) {
+			if(queryStr.length() != 0) queryStr += ", ";
+			queryStr += "occupation = ?";
+			paramList.add(occupation);
 		}
 		
 		rst.put("queryStr", queryStr);
@@ -124,26 +150,26 @@ public class UsersDao{
 	
 	/**
 	 * 
-	 * @param filter {HashMap<String, Object>}
+	 * @param filter {UserFilterModel}
 	 * @return {HashMap<String, Object>}
 	 *   {
 	 *     queryStr: String
 	 *     paramList: ArrayList<Object>,
 	 *   }
 	 */
-	private HashMap<String, Object> filterHandle(HashMap<String, Object> filter) {
+	private HashMap<String, Object> filterHandle(UserFilterModel filter) {
 		String queryStr = "";
 		ArrayList<Object> paramList = new ArrayList<Object>();
 		HashMap<String, Object> rst = new HashMap<String, Object>();
 		
 		//get filters
-		String id = (String)filter.get("id");
-		String name = (String)filter.get("name");
-		String birthFrom = (String)filter.get("birthFrom");
-		String birthTo = (String)filter.get("birthTo");
-		String occ = (String)filter.get("occ");
-		Object state = filter.get("state");	//boolean
-		String[] interest = (String[])filter.get("interest");
+		String id = filter.getId();
+		String name = filter.getName();
+		String birthFrom = filter.getBirthFrom();
+		String birthTo = filter.getBirthTo();
+		String occ = filter.getOccupation();
+		Boolean state = filter.getState();
+		String[] interest = filter.getInterest();
 		
 		if(id != null) {
 			queryStr += "id = ?";
@@ -172,7 +198,7 @@ public class UsersDao{
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "id in (select userId from userAccount where state = ?)";
-			paramList.add((boolean)state);
+			paramList.add(state);
 		}
 		if(interest != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
