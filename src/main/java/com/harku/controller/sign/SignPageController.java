@@ -1,7 +1,5 @@
 package com.harku.controller.sign;
 
-import java.util.HashMap;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -54,16 +52,14 @@ public class SignPageController {
 		}
 		
 		String account = user.getAccount();
-		HashMap<String, Object> acc = UAS.getAcc(account);
+		UsersModel acc = UAS.getAcc(account);
 		long signInTime = System.currentTimeMillis();
 		String token = genToken();
 		
 		//store the sign in info.
-		HashMap<String, Object> setData = new HashMap<String, Object>();
-		setData.put("userId", (String)acc.get("userId"));
-		setData.put("signInTime", signInTime);
-		setData.put("token", token);
-		UAS.updateAcc(setData);
+		acc.setSignInTime(signInTime);
+		acc.setToken(token);
+		UAS.updateAcc(acc);
 		
 		//set cookie
 		Cookie cookie = new Cookie("LOGIN_INFO", token);

@@ -1,6 +1,7 @@
 package com.harku.dao.user;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,14 +27,14 @@ public class UserIntDao {
 	/**
 	 * 
 	 * @param userId {String} user's id
-	 * @return {ArrayList<String>} return a list of interest id of the user
+	 * @return {List<String>} return a list of interest id of the user
 	 */
-	public ArrayList<String> read(String userId) {
+	public List<String> read(String userId) {
 		String sqlStr = "select interest" +
 				        " from " + tableName +
 			            " where userId = ?";
 		
-		ArrayList<String> rstList = new ArrayList<String>(jdbcObj.query(sqlStr, new Object[] {userId}, new UserIntMapper()));
+		List<String> rstList = new ArrayList<String>(jdbcObj.query(sqlStr, new Object[] {userId}, new UserIntMapper()));
 		
 		return rstList;
 	}

@@ -2,19 +2,20 @@ package com.harku.rowMapper.user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class UserAccMapper implements RowMapper<HashMap<String, Object>> {
-	public HashMap<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
-		HashMap<String, Object> acc = new HashMap<String, Object>();
-		acc.put("userId", rs.getString("userId"));
-		acc.put("account", rs.getString("account"));
-		acc.put("password", rs.getString("password"));
-		acc.put("state", rs.getBoolean("state"));
-		acc.put("signInTime", rs.getLong("signInTime"));
-		acc.put("token", rs.getString("token"));
+import com.harku.model.user.UsersModel;
+
+public class UserAccMapper implements RowMapper<UsersModel> {
+	public UsersModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+		UsersModel acc = new UsersModel();
+		acc.setId(rs.getString("userId"));
+		acc.setAccount(rs.getString("account"));
+		acc.setPassword(rs.getString("password"));
+		acc.setState(rs.getBoolean("state"));
+		acc.setSignInTime(rs.getLong("signInTime"));
+		acc.setToken(rs.getString("token"));
 		
 		return acc;
 	}

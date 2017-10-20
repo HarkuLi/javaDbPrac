@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.harku.model.user.UsersModel;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
@@ -69,18 +70,18 @@ public class SignRestController {
 		}
     	
     	//call service function
-    	HashMap<String, Object> newData = new HashMap<String, Object>();
-    	newData.put("name", name);
-    	newData.put("account", account);
-    	newData.put("password", password);
-    	newData.put("age", Integer.parseInt(age));
-    	newData.put("birth", birth);
+    	UsersModel newData = new UsersModel();
+    	newData.setName(name);
+    	newData.setAccount(account);
+    	newData.setPassword(password);;
+    	newData.setAge(Integer.parseInt(age));
+    	newData.setBirth(birth);
     	if(photoName != null) {
-    		newData.put("photoName", photoName);
+    		newData.setPhotoName(photoName);
     	}
-    	newData.put("interest", interest);
-    	newData.put("occupation", occupation);
-    	newData.put("state", state.equals("1"));
+    	newData.setInterest(interest);
+    	newData.setOccupation(occupation);
+    	newData.setState(state.equals("1"));
     	dbService.createUser(newData);
     	
     	return rstMap;

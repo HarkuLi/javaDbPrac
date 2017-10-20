@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
@@ -97,17 +98,17 @@ public class UserRestController {
 		}
 		
 		//call service function
-    	HashMap<String, Object> newData = new HashMap<String, Object>();
-    	newData.put("id", id);
-    	newData.put("name", name);
-    	newData.put("age", Integer.parseInt(age));
-		newData.put("birth", birth);
+    	UsersModel newData = new UsersModel();
+    	newData.setId(id);
+    	newData.setName(name);
+    	newData.setAge(Integer.parseInt(age));
+		newData.setBirth(birth);
     	if(photoName != null) {
-    		newData.put("photoName", photoName);
+    		newData.setPhotoName(photoName);
     	}
-    	newData.put("interest", interest);
-    	newData.put("occupation", occupation);
-    	newData.put("state", state.equals("1"));
+    	newData.setInterest(interest);
+    	newData.setOccupation(occupation);
+    	newData.setState(state.equals("1"));
     	dbService.update(newData);
     	
     	return rstMap;
@@ -135,17 +136,17 @@ public class UserRestController {
 		
 		int totalPage;
 		ArrayList<UsersModel> tableList;
-		HashMap<String, Object> filter = new HashMap<String, Object>();
+		UserFilterModel filter = new UserFilterModel();
 		HashMap<String, Object> rstMap = new HashMap<String, Object>();
 		
 		//set filter
-    	filter.put("name", name);
-    	filter.put("birthFrom", birthFrom);
-    	filter.put("birthTo", birthTo);
-    	filter.put("occ", occ);
+    	filter.setName(name);
+    	filter.setBirthFrom(birthFrom);
+    	filter.setBirthTo(birthTo);
+    	filter.setOccupation(occ);
     	if(state != null)
-    		filter.put("state", state.equals("1"));
-    	filter.put("interest", interest);
+    		filter.setState(state.equals("1"));
+    	filter.setInterest(interest);
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);
@@ -168,8 +169,8 @@ public class UserRestController {
 		if(LOGIN_INFO == null) return null;
 		
 		//get id by token in the cookie
-		HashMap<String, Object> acc = UAS.getAccByToken(LOGIN_INFO);
-		String id = (String) acc.get("userId");
+		UsersModel acc = UAS.getAccByToken(LOGIN_INFO);
+		String id = acc.getId();
 		
 		//get user by id
 		UsersModel user = dbService.getUser(id);
@@ -216,7 +217,7 @@ public class UserRestController {
 		HashMap<String, String> rstMap = new HashMap<String, String>();
 		
 		//check data
-    	HashMap<String, Object> originalAcc = UAS.getAccById(id);
+    	UsersModel originalAcc = UAS.getAccById(id);
     	String errMsg = checkAccountData(originalAcc, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
@@ -227,19 +228,17 @@ public class UserRestController {
     	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
     	
     	//call service to update the password
-    	HashMap<String, Object> setData = new HashMap<String, Object>();
-    	setData.put("userId", id);
-    	if(originalAcc.get("account") == null)
-    		setData.put("account", account);
-    	setData.put("password", password);
-    	UAS.updateAcc(setData);
+    	if(originalAcc.getAccount() == null)
+    		originalAcc.setAccount(account);
+    	originalAcc.setPassword(password);
+    	UAS.updateAcc(originalAcc);
     	
 		return null;
 	}
 	
-	private String checkAccountData(HashMap<String, Object> originalAcc, String account, String password, String passwordCheck) {
+	private String checkAccountData(UsersModel originalAcc, String account, String password, String passwordCheck) {
 		//check account name
-    	if(originalAcc.get("account") == null && UAS.isAccExist(account)) {
+    	if(originalAcc.getAccount() == null && UAS.isAccExist(account)) {
     		return "The account name already exists.";
     	}
     	

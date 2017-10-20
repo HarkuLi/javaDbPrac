@@ -1,7 +1,5 @@
 package com.harku.service.user;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +17,8 @@ public class UserIntService {
 		}
 	}
 	
-	/**
-	 * return a list of interest id
-	 * @param userId {String}
-	 * @return {ArrayList<String>}
-	 */
-	public ArrayList<String> getInterests(String userId) {
-		return dao.read(userId);
+	public String[] getInterests(String userId) {
+		return dao.read(userId).toArray(new String[0]);
 	}
 	
 	public void updateInterests(String userId, String[] interestList) {

@@ -1,7 +1,5 @@
 package com.harku.validator.user;
 
-import java.util.HashMap;
-
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -26,10 +24,10 @@ public class AccountValidator implements Validator {
 		String password = user.getPassword();
     	
     	//check whether the account exists
-    	HashMap<String, Object> acc = UAS.getAcc(account);
+    	UsersModel acc = UAS.getAcc(account);
     	if(acc == null)	e.rejectValue("account", "account.noMatch");
-    	else if(!(Boolean)acc.get("state"))	e.rejectValue("account", "account.noMatch");
-    	else if(!BCrypt.checkpw(password, (String)acc.get("password"))) e.rejectValue("password", "account.noMatch");
+    	else if(!acc.getState())	e.rejectValue("account", "account.noMatch");
+    	else if(!BCrypt.checkpw(password, (String)acc.getPassword())) e.rejectValue("password", "account.noMatch");
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.harku.model.user;
 
-import java.util.ArrayList;
-
 public class UsersModel{
 	private String id;
 	private String account;
@@ -12,9 +10,11 @@ public class UsersModel{
 	private String birth;
 	private String photoName;
 	//a list of interest id
-	private ArrayList<String> interest;
+	private String[] interest;
 	private String occupation;
 	private Boolean state;
+	private Long signInTime;
+	private String token;
 	
 	public void setId(String _id) {
 		id = _id;
@@ -44,8 +44,8 @@ public class UsersModel{
 		photoName = _photoName;
 	}
 	
-	public void setInterest(ArrayList<String> _interest) {
-		if(_interest.size() != 0) interest = _interest;
+	public void setInterest(String[] _interest) {
+		interest = _interest;
 	}
 	
 	public void setOccupation(String _occupation) {
@@ -54,6 +54,14 @@ public class UsersModel{
 	
 	public void setState(Boolean _state) {
 		state = _state;
+	}
+	
+	public void setSignInTime(Long _signInTime) {
+		signInTime = _signInTime;
+	}
+	
+	public void setToken(String _token) {
+		token = _token;
 	}
 	
 	public String getId() {
@@ -84,7 +92,7 @@ public class UsersModel{
 		return photoName;
 	}
 	
-	public ArrayList<String> getInterest() {
+	public String[] getInterest() {
 		return interest;
 	}
 	
@@ -96,7 +104,17 @@ public class UsersModel{
 		return state;
 	}
 	
+	public Long getSignInTime() {
+		return signInTime;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+	
 	public void eraseSecretInfo() {
 		password = null;
+		signInTime = null;
+		token = null;
 	}
 }
