@@ -88,12 +88,12 @@ public class TestUsersDao {
 		//read
 		UserFilterModel filter = new UserFilterModel();
 		filter.setId(id);
-		List<UsersModel> readRows = userDao.read(filter, 0, 1);
-		assertEquals(newName      , readRows.get(0).getName());
-		assertEquals(newAge       , readRows.get(0).getAge());
-		assertEquals(newBirth     , readRows.get(0).getBirth());
-		assertEquals(newPhotoName , readRows.get(0).getPhotoName());
-		assertEquals(newOccupation, readRows.get(0).getOccupation());
+		UsersModel readUser = userDao.read(filter, 0, 1).get(0);
+		assertEquals(newName      , readUser.getName());
+		assertEquals(newAge       , readUser.getAge());
+		assertEquals(newBirth     , readUser.getBirth());
+		assertEquals(newPhotoName , readUser.getPhotoName());
+		assertEquals(newOccupation, readUser.getOccupation());
 	}
 	
 	@Test

@@ -49,9 +49,21 @@ public class AppConfigTest {
 		jdbcObj.execute(sqlStr);
 		
 		//"userInterest" table
-		sqlStr = "create table userInterest(";
+		sqlStr  = "create table userInterest(";
 		sqlStr += "userId varchar(40), ";
 		sqlStr += "interest varchar(40));";
+		jdbcObj.execute(sqlStr);
+		
+		//"userAccount" table
+		sqlStr  = "create table userAccount(";
+		sqlStr += "userId varchar(40) not null, ";
+		sqlStr += "account varchar(32), ";
+		sqlStr += "password varchar(60), ";
+		sqlStr += "state boolean default true, ";
+		sqlStr += "signInTime bigint, ";
+		sqlStr += "token varchar(100), ";
+		sqlStr += "unique (account), ";
+		sqlStr += "primary key (userId));";
 		jdbcObj.execute(sqlStr);
 	}
 }

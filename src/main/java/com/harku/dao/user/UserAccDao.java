@@ -37,8 +37,7 @@ public class UserAccDao {
 		String filterStr = (String)handledFilter.get("queryStr");
 		@SuppressWarnings("unchecked")
 		ArrayList<String> paramList = (ArrayList<String>)handledFilter.get("paramList");
-		if(filterStr.length() == 0) return null;
-		sqlStr   += " where " + filterStr;
+		if(filterStr.length() != 0) sqlStr += " where " + filterStr;
 		
 		ArrayList<UsersModel> rstList = 
 				new ArrayList<UsersModel>(jdbcObj.query(sqlStr, paramList.toArray(), new UserAccMapper()));
