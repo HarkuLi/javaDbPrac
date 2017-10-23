@@ -19,10 +19,10 @@ public class OccDao {
 	private final String tableName = "occ";
 
 	/**
-	 * @param filter {HashMap<String, String>}
+	 * @param filter {OccModel}
 	 * @return {int} total number of rows, and return -1 when the table doesn't exist
 	 */
-	public int getRowNum(HashMap<String, String> filter) {
+	public int getRowNum(OccModel filter) {
 		String sqlStr = "select count(id) from " + tableName;
 		
 		//handle the filter
@@ -35,23 +35,23 @@ public class OccDao {
 		return jdbcObj.queryForObject(sqlStr, paramList.toArray(), Integer.class);
 	}
 	
-	public void create(HashMap<String, Object> newData) {
+	public void create(OccModel newData) {
 		String id = UUID.randomUUID().toString();
 		String sqlStr = "insert into " + tableName;
 		sqlStr		 += " (id, name, state)";
 		sqlStr       += " values (?, ?, ?)";
 		
-		Object[] paramList = {id, newData.get("name"), newData.get("state")};
+		Object[] paramList = {id, newData.getName(), newData.getState()};
 
 		jdbcObj.update(sqlStr, paramList);
 	}
 	
 	/**
 	 * 
-	 * @param filter {HashMap<String, String>}
+	 * @param filter {OccModel}
 	 * @return {ArrayList<OccModel>} a list of occupation object
 	 */
-	public ArrayList<OccModel> read(HashMap<String, String> filter) {
+	public ArrayList<OccModel> read(OccModel filter) {
 		String sqlStr = "select * from " + tableName;
 		
 		//handle the filter
@@ -71,12 +71,12 @@ public class OccDao {
 	
 	/**
 	 * 
-	 * @param filter {HashMap<String, String>}
+	 * @param filter {OccModel}
 	 * @param skipNum {int} how many rows to skip
 	 * @param readNum {int} how many rows to read
 	 * @return {ArrayList<OccModel>} a list of occupation object
 	 */
-	public ArrayList<OccModel> read(HashMap<String, String> filter, int skipNum, int readNum) {
+	public ArrayList<OccModel> read(OccModel filter, int skipNum, int readNum) {
 		String sqlStr = "select * from " + tableName;
 		
 		//handle the filter
@@ -98,12 +98,12 @@ public class OccDao {
 		return tableList;
 	}
 	
-	public void update(HashMap<String, Object> data) {
+	public void update(OccModel data) {
 		String sqlStr = "update " + tableName +
 						" set name = ?, state = ?" +
 						" where id = ?";
 		
-		Object[] paramList = {data.get("name"), data.get("state"), data.get("id")};
+		Object[] paramList = {data.getName(), data.getState(), data.getId()};
 		
 		jdbcObj.update(sqlStr, paramList);
 	}
@@ -117,22 +117,22 @@ public class OccDao {
 	
 	/**
 	 * 
-	 * @param filter {HashMap<String, String>}
+	 * @param filter {OccModel}
 	 * @return {HashMap<String, Object>}
 	 *   {
 	 *     queryStr: String
 	 *     paramList: ArrayList<Object>,
 	 *   }
 	 */
-	private HashMap<String, Object> filterHandle(HashMap<String, String> filter) {
+	private HashMap<String, Object> filterHandle(OccModel filter) {
 		String queryStr = "";
 		ArrayList<Object> paramList = new ArrayList<Object>();
 		HashMap<String, Object> rst = new HashMap<String, Object>();
 		
 		//get filters
-		String id = filter.get("id");
-		String name = filter.get("name");
-		String state = filter.get("state");
+		String id = filter.getId();
+		String name = filter.getName();
+		Boolean state = filter.getState();
 		
 		if(id != null) {
 			queryStr += "id = ?";
@@ -146,7 +146,7 @@ public class OccDao {
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
 			queryStr += "state = ?";
-			paramList.add(state.equals("1"));
+			paramList.add(state);
 		}
 		
 		rst.put("queryStr", queryStr);

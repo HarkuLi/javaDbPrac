@@ -1,23 +1,9 @@
 package com.harku.model.occ;
 
-import java.util.HashMap;
-
 public class OccModel {
 	private String id;
 	private String name;
 	private Boolean state;
-	
-	public OccModel() {
-		id = null;
-		name = null;
-		state = null;
-	}
-	
-	public OccModel(HashMap<String, Object> data) {
-		id = (String) data.get("id");
-		name = (String) data.get("name");
-		state = (Boolean) data.get("state");
-	}
 	
 	public void setId(String _id) {
 		id = _id;
@@ -39,7 +25,7 @@ public class OccModel {
 		return name;
 	}
 	
-	public boolean getState() {
+	public Boolean getState() {
 		return state;
 	}
 }
