@@ -66,6 +66,8 @@ public class UserAccService {
 	 * @return {boolean}
 	 */
 	public boolean checkToken(String token) {
+		if(token == null) return false;
+		
 		UserFilterModel filter = new UserFilterModel();
 		filter.setToken(token);
 		
