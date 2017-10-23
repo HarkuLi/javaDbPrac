@@ -3,13 +3,7 @@ package com.harku.model.interest;
 public class IntModel {
 	private String id;
 	private String name;
-	private boolean state;
-	
-	public IntModel() {
-		id = null;
-		name = null;
-		state = true;
-	}
+	private Boolean state;
 	
 	public void setId(String _id) {
 		id = _id;
@@ -31,7 +25,7 @@ public class IntModel {
 		return name;
 	}
 	
-	public boolean getState() {
+	public Boolean getState() {
 		return state;
 	}
 }

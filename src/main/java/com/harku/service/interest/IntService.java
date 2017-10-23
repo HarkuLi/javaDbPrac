@@ -1,7 +1,6 @@
 package com.harku.service.interest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,46 +15,46 @@ public class IntService {
 	
 	private final int ENTRY_PER_PAGE = 10;
 	
-	public void createInt(String name, String state) {
-		HashMap<String, Object> newData = new HashMap<String, Object>();
+	public void createInt(String name, Boolean state) {
+		IntModel newData = new IntModel();
 		
-		newData.put("name", name);
-		newData.put("state", state.equals("1"));
+		newData.setName(name);
+		newData.setState(state);
 		dao.create(newData);
 	}
 	
 	public IntModel getInterest(String id) {
-		HashMap<String, String> filter = new HashMap<String, String>();
-		filter.put("id", id);
+		IntModel filter = new IntModel();
+		filter.setId(id);
 		ArrayList<IntModel> interestList = dao.read(filter, 0, 1);
 		return interestList.get(0);
 	}
 	
-	public ArrayList<IntModel> getPage(int page, HashMap<String, String> filter) {
+	public ArrayList<IntModel> getPage(int page, IntModel filter) {
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
 		return dao.read(filter, skipNum, ENTRY_PER_PAGE);
 	}
 	
 	public ArrayList<IntModel> getList() {
-		HashMap<String, String> filter = new HashMap<String, String>();
-		filter.put("state", "1");
+		IntModel filter = new IntModel();
+		filter.setState(true);
 		return dao.read(filter);
 	}
 	
-	public int getTotalPage(HashMap<String, String> filter) {
+	public int getTotalPage(IntModel filter) {
 		int rowNum = dao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
 	}
 	
-	public void update(String id, String name, String state) {
-		HashMap<String, Object> newData = new HashMap<String, Object>();
+	public void update(String id, String name, Boolean state) {
+		IntModel newData = new IntModel();
 		
-		newData.put("id", id);
-		newData.put("name", name);
-		newData.put("state", state.equals("1"));
+		newData.setId(id);
+		newData.setName(name);
+		newData.setState(state);
 		dao.update(newData);
 	}
 	

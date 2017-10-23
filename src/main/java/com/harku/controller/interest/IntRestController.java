@@ -39,7 +39,7 @@ public class IntRestController {
 	    	return rstMap;
     	}
     	
-    	dbService.update(id, name, state);
+    	dbService.update(id, name, state.equals("1"));
     	
     	return null;
 	}
@@ -63,7 +63,7 @@ public class IntRestController {
 	    	return rstMap;
     	}
     	
-    	dbService.createInt(name, state);
+    	dbService.createInt(name, state.equals("1"));
     	
     	return null;
     }
@@ -83,12 +83,13 @@ public class IntRestController {
 		
 		int totalPage;
 		ArrayList<IntModel> tableList;
-		HashMap<String, String> filter = new HashMap<String, String>();
+		IntModel filter = new IntModel();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	
     	//set filter
-    	filter.put("name", name);
-    	filter.put("state", state);
+    	filter.setName(name);
+    	if(state != null)
+    		filter.setState(state.equals("1"));
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);
