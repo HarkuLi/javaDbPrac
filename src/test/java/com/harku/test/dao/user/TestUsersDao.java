@@ -1,13 +1,10 @@
-package com.harku.test.dao;
+package com.harku.test.dao.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,25 +17,24 @@ import com.harku.dao.user.UsersDao;
 import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
 import com.harku.test.config.AppConfigTest;
+import com.harku.test.util.RandomData;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfigTest.class)
 @Transactional
 public class TestUsersDao {
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	
 	@Autowired
 	private UsersDao userDao;
 	
 	@Test
 	public void testCreate() {
-		userDao.create(genRandomData());
+		userDao.create(RandomData.genUser());
 	}
 	
 	@Test
 	public void testReadOne() {
 		//create random data
-		UsersModel newData = genRandomData();
+		UsersModel newData = RandomData.genUser();
 		userDao.create(newData);
 		
 		//read
@@ -55,7 +51,7 @@ public class TestUsersDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			UsersModel newData = genRandomData();
+			UsersModel newData = RandomData.genUser();
 			idList.add(newData.getId());
 			userDao.create(newData);
 		}
@@ -70,7 +66,7 @@ public class TestUsersDao {
 	@Test
 	public void testUpdate() {
 		//create random data
-		UsersModel newData = genRandomData();
+		UsersModel newData = RandomData.genUser();
 		String id = newData.getId();
 		userDao.create(newData);
 		
@@ -104,7 +100,7 @@ public class TestUsersDao {
 	public void testGetRowNum() {
 		//create random numbers of data
 		int rowNum = (int)(Math.random()*100 + 1);
-		for(int i=0; i<rowNum; ++i) userDao.create(genRandomData());
+		for(int i=0; i<rowNum; ++i) userDao.create(RandomData.genUser());
 		
 		//check number of rows
 		assertEquals(rowNum, userDao.getRowNum(new UserFilterModel()));
@@ -116,7 +112,7 @@ public class TestUsersDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			UsersModel newData = genRandomData();
+			UsersModel newData = RandomData.genUser();
 			idList.add(newData.getId());
 			userDao.create(newData);
 		}
@@ -125,50 +121,5 @@ public class TestUsersDao {
 		for(String id : idList) userDao.delete(id);
 		
 		assertEquals(0, userDao.getRowNum(new UserFilterModel()));
-	}
-	
-	private UsersModel genRandomData() {
-		String id = UUID.randomUUID().toString();
-		String name = genRandomStr(3, 10);
-		int age = (int)(Math.random()*80 + 1);
-		String birth = genRandomBirth();
-		String photoName = UUID.randomUUID().toString() + "." + genImageType();
-		String occupation = genRandomStr(5, 10);
-		
-		UsersModel newData = new UsersModel();
-		newData.setId(id);
-		newData.setName(name);
-		newData.setAge(age);
-		newData.setBirth(birth);
-		newData.setPhotoName(photoName);
-		newData.setOccupation(occupation);;
-		return newData;
-	}
-	
-	private String genRandomStr(int minLength, int maxLength) {
-		int lengthRange = maxLength - minLength + 1;
-		String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ";
-		String rst = "";
-		int contentLen = (int)(Math.random()*lengthRange + minLength);
-		
-		for(int i=0; i<contentLen; ++i) {
-			int idx = (int)(Math.random()*charSet.length());
-			rst += charSet.charAt(idx);
-		}
-		return rst;
-	}
-	
-	private String genRandomBirth() {
-		long currentTime = System.currentTimeMillis();
-		long randomTime = (long)(Math.random()*currentTime);
-		Date date = new Date(randomTime);
- 
-		return sdf.format(date).toString();
-	}
- 
-	private String genImageType() {
-		String[] imageTypes = {"jpeg", "png", "gif"};
-		int idx = (int)(Math.random()*3);
-		return imageTypes[idx];
 	}
 }

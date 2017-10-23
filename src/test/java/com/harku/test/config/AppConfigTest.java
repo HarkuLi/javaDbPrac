@@ -26,8 +26,18 @@ public class AppConfigTest {
 	@Bean
 	public JdbcTemplate jdbcTemplate() {
 		JdbcTemplate jdbcObj = new JdbcTemplate(dataSource());
+		prepareTables(jdbcObj);
 		
-		//prepare the table to be tested
+		return jdbcObj;
+	}
+	
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		return new DataSourceTransactionManager(dataSource());
+	}
+	
+	private void prepareTables(JdbcTemplate jdbcObj) {
+		//"users" table
 		String sqlStr = "create table users(";
 		sqlStr += "id varchar(40) not null, ";
 		sqlStr += "name varchar(40) not null, ";
@@ -38,11 +48,10 @@ public class AppConfigTest {
 		sqlStr += "primary key (id));";
 		jdbcObj.execute(sqlStr);
 		
-		return jdbcObj;
-	}
-	
-	@Bean
-	public PlatformTransactionManager transactionManager() {
-		return new DataSourceTransactionManager(dataSource());
+		//"userInterest" table
+		sqlStr = "create table userInterest(";
+		sqlStr += "userId varchar(40), ";
+		sqlStr += "interest varchar(40));";
+		jdbcObj.execute(sqlStr);
 	}
 }
