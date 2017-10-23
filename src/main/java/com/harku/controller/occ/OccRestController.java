@@ -88,7 +88,7 @@ public class OccRestController {
     	
     	//set filter
     	filter.setName(name);
-    	if(state != null) filter.setState(state.equals(1));
+    	if(state != null) filter.setState(state.equals("1"));
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);
