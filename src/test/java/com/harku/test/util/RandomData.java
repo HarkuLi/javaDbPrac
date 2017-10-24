@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.harku.model.interest.IntModel;
 import com.harku.model.occ.OccModel;
 import com.harku.model.user.UsersModel;
 
@@ -66,6 +67,18 @@ public class RandomData {
 		Boolean state = new Random().nextBoolean();
 		
 		OccModel newData = new OccModel();
+		newData.setId(id);
+		newData.setName(name);
+		newData.setState(state);
+		return newData;
+	}
+	
+	public static IntModel genInterest() {
+		String id     = UUID.randomUUID().toString();
+		String name   = genStr(1, 40);
+		Boolean state = new Random().nextBoolean();
+		
+		IntModel newData = new IntModel();
 		newData.setId(id);
 		newData.setName(name);
 		newData.setState(state);

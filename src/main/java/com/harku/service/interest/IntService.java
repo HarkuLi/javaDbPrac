@@ -1,6 +1,7 @@
 package com.harku.service.interest;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class IntService {
 	public void createInt(String name, Boolean state) {
 		IntModel newData = new IntModel();
 		
+		newData.setId(UUID.randomUUID().toString());
 		newData.setName(name);
 		newData.setState(state);
 		dao.create(newData);

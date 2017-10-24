@@ -2,7 +2,6 @@ package com.harku.dao.interest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,12 +35,11 @@ public class IntDao {
 	}
 	
 	public void create(IntModel newData) {
-		String id = UUID.randomUUID().toString();
 		String sqlStr = "insert into " + tableName;
 		sqlStr		 += " (id, name, state)";
 		sqlStr       += " values (?, ?, ?)";
 		
-		Object[] paramList = {id , newData.getName(), newData.getState()};
+		Object[] paramList = {newData.getId(), newData.getName(), newData.getState()};
 		
 		jdbcObj.update(sqlStr, paramList);
 	}
