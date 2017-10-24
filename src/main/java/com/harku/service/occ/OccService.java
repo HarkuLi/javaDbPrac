@@ -1,6 +1,7 @@
 package com.harku.service.occ;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class OccService {
 	public void createOcc(String name, Boolean state) {
 		OccModel newData = new OccModel();
 		
+		newData.setId(UUID.randomUUID().toString());
 		newData.setName(name);
 		newData.setState(state);
 		dao.create(newData);

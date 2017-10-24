@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.harku.model.occ.OccModel;
 import com.harku.model.user.UsersModel;
 
 public class RandomData {
@@ -56,6 +57,18 @@ public class RandomData {
 		newData.setState(state);
 		newData.setSignInTime(signInTime);
 		newData.setToken(token);
+		return newData;
+	}
+	
+	public static OccModel genOcc() {
+		String id     = UUID.randomUUID().toString();
+		String name   = genStr(1, 40);
+		Boolean state = new Random().nextBoolean();
+		
+		OccModel newData = new OccModel();
+		newData.setId(id);
+		newData.setName(name);
+		newData.setState(state);
 		return newData;
 	}
 	

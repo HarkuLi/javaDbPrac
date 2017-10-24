@@ -65,5 +65,13 @@ public class AppConfigTest {
 		sqlStr += "unique (account), ";
 		sqlStr += "primary key (userId));";
 		jdbcObj.execute(sqlStr);
+		
+		//"occupation" table
+		sqlStr  = "create table occ(";
+		sqlStr += "id varchar(40) not null, ";
+		sqlStr += "name varchar(40) not null, ";
+		sqlStr += "state boolean not null, ";
+		sqlStr += "primary key (id));";
+		jdbcObj.execute(sqlStr);
 	}
 }
