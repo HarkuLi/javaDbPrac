@@ -20,7 +20,12 @@ public class UsersService{
 	@Autowired
 	private UserAccService UAS;
 	
-	public void createUser(UsersModel newData) {
+	/**
+	 * 
+	 * @param newData
+	 * @return id id of the created user
+	 */
+	public String createUser(UsersModel newData) {
 		String id = UUID.randomUUID().toString();
 		String[] interest = newData.getInterest();
 		
@@ -29,6 +34,8 @@ public class UsersService{
 		UAS.saveAcc(newData);
 		UIS.saveInterests(id, interest);
 		dao.create(newData);
+		
+		return id;
 	}
 	
 	public UsersModel getUser(String id) {

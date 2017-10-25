@@ -1,5 +1,7 @@
 package com.harku.model.user;
 
+import java.util.Arrays;
+
 public class UsersModel{
 	private String id;
 	private String account;
@@ -15,6 +17,26 @@ public class UsersModel{
 	private Boolean state;
 	private Long signInTime;
 	private String token;
+	
+	public UsersModel() {}
+	
+	public UsersModel(UsersModel user) {
+		id = user.getId();
+		account = user.getAccount();
+		password = user.getPassword();
+		name = user.getName();
+		age = user.getAge();
+		birth = user.getBirth();
+		photoName = user.getPhotoName();
+		
+		if(user.getInterest() != null)
+			interest = Arrays.asList(user.getInterest()).toArray(new String[0]);
+		
+		occupation = user.getOccupation();
+		state = user.getState();
+		signInTime = user.getSignInTime();
+		token = user.getToken();
+	}
 	
 	public void setId(String _id) {
 		id = _id;
