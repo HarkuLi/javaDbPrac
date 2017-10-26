@@ -27,7 +27,7 @@ public class OccService {
 	
 	public OccModel getOcc(String id) {
 		OccModel filter = new OccModel();
-		filter.getId();
+		filter.setId(id);
 		ArrayList<OccModel> occList = dao.read(filter, 0, 1);
 		return occList.get(0);
 	}
