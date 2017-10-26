@@ -79,7 +79,7 @@ public class UserAccService {
 		UsersModel acc = accList.get(0);
 		long currentTime = System.currentTimeMillis();
 		long signInTime = acc.getSignInTime();
-		int elapsedTime = (int)(currentTime - signInTime);
+		long elapsedTime = (long)(currentTime - signInTime);
 		if(elapsedTime >= EXPIRE_TIME_SEC*1000) return false;
 		
 		return true;
