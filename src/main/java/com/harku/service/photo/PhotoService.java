@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class PhotoService {
 	private static final String STORE_PATH = Paths.get(System.getProperty("user.home"), "upload").toString();
-	private static final List<String> acceptType = Arrays.asList("jpeg" ,"png", "gif");
+	private static final List<String> acceptType = Arrays.asList("jpg", "jpeg" ,"png", "gif");
 	
 	public static final String DEFAULT_PHOTO_NAME = "default.png";
 	
@@ -25,6 +25,7 @@ public class PhotoService {
 	 * @throws IOException
 	 */
 	public static byte[] read(String photoName) throws IOException {
+		if(photoName == null) return null;
 		
 		Path path = Paths.get(STORE_PATH, photoName);
 		
@@ -44,6 +45,7 @@ public class PhotoService {
 	 */
 	public static String write(MultipartFile photo, String photoType) {
 		
+		if(photo.getSize() == 0) return null;
 		if(!acceptType.contains(photoType))	return null;
 		
 		String photoName = UUID.randomUUID().toString();
@@ -77,7 +79,7 @@ public class PhotoService {
 	/**
 	 * 
 	 * @param photoName
-	 * @return MediaType of the file name. The default type is MediaType.IMAGE_JPEG.
+	 * @return MediaType of the file name. Return null if there is no matched type.
 	 */
 	public static MediaType parseType(String photoName) {
 		String[] fileNameParts = photoName.split("\\.");
@@ -85,7 +87,9 @@ public class PhotoService {
 		
 		if(type.equals("png")) return MediaType.IMAGE_PNG;
 		else if(type.equals("gif")) return MediaType.IMAGE_GIF;
+		else if(type.equals("jpeg")) return MediaType.IMAGE_JPEG;
+		else if(type.equals("jpg")) return MediaType.IMAGE_JPEG;
 		
-		return MediaType.IMAGE_JPEG;
+		return null;
 	}
 }
