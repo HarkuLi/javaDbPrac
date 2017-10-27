@@ -1,4 +1,4 @@
-package com.harku.test.service;
+package com.harku.test.service.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
