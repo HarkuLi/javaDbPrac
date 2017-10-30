@@ -24,9 +24,12 @@ public class SignPageController {
 	@Autowired
 	private UserAccService UAS;
 	
+	@Autowired
+	private AccountValidator accountValidator;
+	
 	@InitBinder
 	private void initBinder(DataBinder binder) {
-		binder.setValidator(new AccountValidator());
+		binder.setValidator(accountValidator);
 	}
 		
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.GET)

@@ -26,7 +26,7 @@ import com.harku.interceptor.SignInInterceptor;
 @Import(AppConfig.class)
 @EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {"com.harku.controller", "com.harku.aspect", "com.harku.interceptor"})
+@ComponentScan(basePackages = {"com.harku.controller", "com.harku.aspect", "com.harku.interceptor", "com.harku.validator"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private SignInInterceptor signInInterceptor;
