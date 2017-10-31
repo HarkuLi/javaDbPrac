@@ -101,6 +101,12 @@ public class TestUsersService {
 	}
 	
 	@Test
+	public void testGetInvalidPage() {
+		int page = -(int)(Math.random()*10);
+		assertTrue(US.getPage(page, new UserFilterModel()).isEmpty());
+	}
+	
+	@Test
 	public void testGetTotalPage() {
 		UserFilterModel filter = new UserFilterModel();
 		

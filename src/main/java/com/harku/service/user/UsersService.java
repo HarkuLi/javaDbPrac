@@ -56,6 +56,8 @@ public class UsersService{
 	}
 	
 	public ArrayList<UsersModel> getPage(int page, UserFilterModel filter) {
+		if(page <= 0) return new ArrayList<UsersModel>();
+		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		ArrayList<UsersModel> userList = dao.read(filter, skipNum, ENTRY_PER_PAGE);
 		
