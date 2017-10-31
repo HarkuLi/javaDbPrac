@@ -2,6 +2,7 @@ package com.harku.test.service.user;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -81,6 +82,13 @@ public class TestUsersService {
 		assertEquals(userAccountTestData.getPassword(), user.getPassword());
 		assertEquals(userAccountTestData.getState(), user.getState());
 		assertTrue(Arrays.equals(interestsTestData, user.getInterest()));
+	}
+	
+	@Test
+	public void testGetUserByNotExistId() {
+		String id = UUID.randomUUID().toString();
+		
+		assertNull(US.getUser(id));
 	}
 	
 	//check called times of getInterests() and getAccById() are equal to the number of user

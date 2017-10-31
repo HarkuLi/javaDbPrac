@@ -43,6 +43,7 @@ public class UsersService{
 		filter.setId(id);
 		
 		ArrayList<UsersModel> userList = dao.read(filter, 0, 1);
+		if(userList.isEmpty()) return null;
 		UsersModel user = userList.get(0);
 		
 		//set values from other tables
