@@ -68,7 +68,6 @@ public class TestUserPhoto {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(URController)
-//				.addInterceptors(new SignInInterceptor())
 				.build();
 	}
 	

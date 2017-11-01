@@ -90,6 +90,7 @@ public class UserRestController {
 		@RequestParam String state) {
 		
     	Map<String, Object> rstMap = new HashMap<String, Object>();
+    	String newPhotoName = null;
     	
     	rstMap.put("id", id);
     	
@@ -110,12 +111,17 @@ public class UserRestController {
     	}
     	
     	//update photo
-		if(photo.getSize() != 0) {
+		if(photo != null && photo.getSize() != 0) {
+			//store new photo
+			newPhotoName = PhotoService.write(photo, photoType);
+			
+			if(newPhotoName == null) {
+				rstMap.put("errMsg", "Wrong input for photo.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+			}
+				
 			//delete original photo
 			PhotoService.delete(photoName);
-			
-			//store new photo
-			photoName = PhotoService.write(photo, photoType);
 		}
 		
 		//call service function
@@ -124,8 +130,8 @@ public class UserRestController {
     	newData.setName(name);
     	newData.setAge(Integer.parseInt(age));
 		newData.setBirth(birth);
-    	if(photoName != null) {
-    		newData.setPhotoName(photoName);
+    	if(newPhotoName != null) {
+    		newData.setPhotoName(newPhotoName);
     	}
     	newData.setInterest(interest);
     	newData.setOccupation(occupation);
