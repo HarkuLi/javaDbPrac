@@ -3,6 +3,7 @@ package com.harku.controller.user;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,35 +36,48 @@ public class UserRestController {
 	@Autowired
 	private UserAccService UAS;
 	
+	/**
+	 * 
+	 * response:
+	 * 200:
+	 *   an image
+	 * 404: (the image name is not found)
+	 */
 	@RequestMapping(value = "/photo", method = RequestMethod.GET, produces = {"image/jpeg", "image/gif", "image/png"})
 	public ResponseEntity<byte[]> UserPhoto(
-		@RequestParam(value = "n", required = false, defaultValue = "default.png") String fileName) throws IOException {
+		@RequestParam(value = "n", required = false, defaultValue = PhotoService.DEFAULT_PHOTO_NAME) String fileName) throws IOException {
 		
 		HttpHeaders headers = new HttpHeaders();
+		ResponseEntity<byte[]> responseEntity;
 		
 		//read photo
 		byte[] photo = PhotoService.read(fileName);
 		if(photo == null) {
-			fileName = PhotoService.DEFAULT_PHOTO_NAME;
-			photo = PhotoService.read(fileName);
+			responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return responseEntity;
 		}
 		
 		//set the content type of header
 		headers.setContentType(PhotoService.parseType(fileName));
 		
-		ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(photo, headers, HttpStatus.OK);
+		responseEntity = new ResponseEntity<>(photo, headers, HttpStatus.OK);
 		return responseEntity;
 	}
 	
 	/**
-	 * response format:
+	 * response:
+	 * 200: (success)
 	 * {
 	 *   id: String
+	 * }
+	 * 400: (wrong input)
+	 * {
+	 *   id: String,
 	 *   errMsg: String
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public HashMap<String, String> UpdateUser(
+	public ResponseEntity<Map<String, Object>> UpdateUser(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String age,
@@ -75,17 +89,24 @@ public class UserRestController {
 		@RequestParam String occupation,
 		@RequestParam String state) {
 		
-    	HashMap<String, String> rstMap = new HashMap<String, String>();
+    	Map<String, Object> rstMap = new HashMap<String, Object>();
     	
     	rstMap.put("id", id);
     	
     	//check data
+    		//id
+    	UsersModel user = dbService.getUser(id);
+    	if(user == null) {
+    		rstMap.put("errMsg", "No such user id.");
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+    	}
+    		//age
     	String pattern = "^\\d+$";
     	Pattern r = Pattern.compile(pattern);
     	Matcher m = r.matcher(age);
     	if(!m.find()) {
 	    	rstMap.put("errMsg", "Wrong input for age.");
-	    	return rstMap;
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	//update photo
@@ -111,21 +132,22 @@ public class UserRestController {
     	newData.setState(state.equals("1"));
     	dbService.update(newData);
     	
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
 	//@RequestMapping(value = {"/sign_up/action", "/user/new"}, method = RequestMethod.POST, produces = "application/json")
 	//in the SignRestServlet.java
 	
 	/**
-	 * response format:
+	 * response:
+	 * 200:
 	 * {
 	 *   list: Array<Object>,
 	 *   totalPage: Number
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public HashMap<String, Object> GetPage(
+	public ResponseEntity<Map<String, Object>> GetPage(
 		@RequestParam int page,
 		@RequestParam(required=false) String name,
 		@RequestParam(required=false) String birthFrom,
@@ -137,7 +159,7 @@ public class UserRestController {
 		int totalPage;
 		ArrayList<UsersModel> tableList;
 		UserFilterModel filter = new UserFilterModel();
-		HashMap<String, Object> rstMap = new HashMap<String, Object>();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
 		
 		//set filter
     	filter.setName(name);
@@ -154,22 +176,27 @@ public class UserRestController {
 		else if(page > totalPage) page = totalPage;
 		
 		//set result
-		if(page > 0) {
-			tableList = dbService.getPage(page, filter);
-			rstMap.put("list", tableList);
-		}
+		tableList = dbService.getPage(page, filter);
+		rstMap.put("list", tableList); 
 		rstMap.put("totalPage", totalPage);
 		
-		return rstMap;
+		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
+	/**
+	 * response:
+	 * 200:
+	 *   user object
+	 * 404: (no user matches the token)
+	 */
 	@RequestMapping(value = "/get_by_token", method = RequestMethod.POST, produces = "application/json")
-	public UsersModel GetUserByToken(@CookieValue("LOGIN_INFO") String LOGIN_INFO) {
+	public ResponseEntity<UsersModel> GetUserByToken(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO) {
 		
-		if(LOGIN_INFO == null) return null;
+		if(LOGIN_INFO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		
 		//get id by token in the cookie
 		UsersModel acc = UAS.getAccByToken(LOGIN_INFO);
+		if(acc == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		String id = acc.getId();
 		
 		//get user by id
@@ -177,51 +204,88 @@ public class UserRestController {
 		user.eraseSecretInfo();
 		
 		//response
-		return user;
+		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 	
 	/**
-	 * response: user data
+	 * response:
+	 * 200:
+	 *   user object
+	 * 404: (no user matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public UsersModel GetUser(@RequestParam String id) {
+	public ResponseEntity<UsersModel> GetUser(@RequestParam String id) {
 		
 		UsersModel user = dbService.getUser(id);
+		if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	user.eraseSecretInfo();
     	
-    	return user;
+    	return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 	
-	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public HashMap<String, String> DeleteUser(@RequestParam String id) {
+	/**
+	 * response:
+	 * 200:
+	 *   {
+	 *   	id: String
+	 *   }
+	 * 400: (no user matches the id)
+	 *   {
+	 *   	id: String,
+	 *   	errMsg: String
+	 *   }
+	 */
+	@RequestMapping(value = "/del", method = RequestMethod.DELETE, produces = "application/json")
+	public ResponseEntity<Map<String, Object>> DeleteUser(@RequestParam String id) {
 		
-		HashMap<String, String> rstMap = new HashMap<String, String>();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		rstMap.put("id", id);
+		
+		//get the user by id
+		UsersModel user = dbService.getUser(id);
+		if(user == null) {
+			rstMap.put("errMsg", "No user matches the id.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		}
 		
 		//delete the photo
-		String photoName = dbService.getUser(id).getPhotoName();
+		String photoName = user.getPhotoName();
 		PhotoService.delete(photoName);
 		
 		dbService.delete(id);
 		
-		rstMap.put("id", id);
-		return rstMap;
+		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
+	/**
+	 * 
+	 * response:
+	 * 200:
+	 *   {
+	 *   	id: String
+	 *   }
+	 * 400:
+	 *   {
+	 *   	id: String,
+	 *   	errMsg: String
+	 *   }
+	 */
 	@RequestMapping(value = "/change_password", method = RequestMethod.POST, produces = "application/json")
-	public HashMap<String, String> ChangePassword(
+	public ResponseEntity<Map<String, Object>> ChangePassword(
 		@RequestParam String id,
 		@RequestParam(required = false) String account,
 		@RequestParam String password,
 		@RequestParam String passwordCheck) {
 		
-		HashMap<String, String> rstMap = new HashMap<String, String>();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		rstMap.put("id", id);
 		
 		//check data
     	UsersModel originalAcc = UAS.getAccById(id);
     	String errMsg = checkAccountData(originalAcc, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
-        	return rstMap;
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	//hash the password
@@ -233,10 +297,14 @@ public class UserRestController {
     	originalAcc.setPassword(password);
     	UAS.updateAcc(originalAcc);
     	
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
 	private String checkAccountData(UsersModel originalAcc, String account, String password, String passwordCheck) {
+		if(originalAcc == null) {
+			return "No account matches the id.";
+		}
+		
 		//check account name
     	if(originalAcc.getAccount() == null && UAS.isAccExist(account)) {
     		return "The account name already exists.";

@@ -38,6 +38,11 @@ public class UsersService{
 		return id;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return user, or null if not found
+	 */
 	public UsersModel getUser(String id) {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setId(id);

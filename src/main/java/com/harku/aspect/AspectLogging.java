@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -38,7 +39,8 @@ public class AspectLogging {
 	private void UpdateUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
-		Map<String, String> retMap = (Map<String, String>) retVal;
+		ResponseEntity<Map<String, String>> retEntity = (ResponseEntity<Map<String, String>>) retVal;
+		Map<String, String> retMap = retEntity.getBody();
 		String id = retMap.get("id");
 		String errMsg = retMap.get("errMsg");
 		String sourceName = getSourceName(joinPoint);
@@ -54,11 +56,17 @@ public class AspectLogging {
 	private void DeleteUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
-		Map<String, String> retMap = (Map<String, String>) retVal;
+		ResponseEntity<Map<String, String>> retEntity = (ResponseEntity<Map<String, String>>) retVal;
+		Map<String, String> retMap = retEntity.getBody();
 		String id = retMap.get("id");
+		String errMsg = retMap.get("errMsg");
 		String sourceName = getSourceName(joinPoint);
 		
-		log.info(String.format("[%s] Delete a account whose id is: %s", sourceName, id));
+		if(errMsg != null)
+			log.info(String.format("[%s] Failed to delete a account with id [%s] becuase of: %s",
+									sourceName, id, errMsg));
+		else
+			log.info(String.format("[%s] Delete a account whose id is: %s", sourceName, id));
 	}
 	
 	private String getSourceName(JoinPoint joinPoint) {
