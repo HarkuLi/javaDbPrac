@@ -95,18 +95,18 @@ public class RandomData {
 		return interestSet;
 	}
 	
+	public static String genImageType() {
+		String[] imageTypes = {"jpeg", "png", "gif"};
+		int idx = (int)(Math.random()*3);
+		return imageTypes[idx];
+	}
+	
 	private static String genBirth() {
 		long currentTime = System.currentTimeMillis();
 		long randomTime = (long)(Math.random()*currentTime);
 		Date date = new Date(randomTime);
  
 		return sdf.format(date).toString();
-	}
- 
-	private static String genImageType() {
-		String[] imageTypes = {"jpeg", "png", "gif"};
-		int idx = (int)(Math.random()*3);
-		return imageTypes[idx];
 	}
 	
 	private static String genToken() {

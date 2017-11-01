@@ -13,9 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 public class PhotoService {
-	private static final String STORE_PATH = Paths.get(System.getProperty("user.home"), "upload").toString();
 	private static final List<String> acceptType = Arrays.asList("jpg", "jpeg" ,"png", "gif");
 	
+	public static final String STORE_PATH = Paths.get(System.getProperty("user.home"), "upload").toString();
 	public static final String DEFAULT_PHOTO_NAME = "default.png";
 	
 	/**
