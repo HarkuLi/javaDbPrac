@@ -50,6 +50,11 @@ public class UserAccService {
 		return accList.get(0);
 	}
 	
+	/**
+	 * 
+	 * @param token
+	 * @return the account has the token, null if not found
+	 */
 	public UsersModel getAccByToken(String token) {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setToken(token);
