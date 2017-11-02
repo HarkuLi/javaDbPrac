@@ -1,8 +1,8 @@
 package com.harku.controller.user;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -163,7 +163,7 @@ public class UserRestController {
 		@RequestParam(value = "interest[]", required=false) String[] interest) {
 		
 		int totalPage;
-		ArrayList<UsersModel> tableList;
+		List<UsersModel> tableList;
 		UserFilterModel filter = new UserFilterModel();
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		
