@@ -241,7 +241,7 @@ public class UserRestController {
 	 *   	errMsg: String
 	 *   }
 	 */
-	@RequestMapping(value = "/del", method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Map<String, Object>> DeleteUser(@RequestParam String id) {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
