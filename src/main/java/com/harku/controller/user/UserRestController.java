@@ -312,8 +312,13 @@ public class UserRestController {
 		}
 		
 		//check account name
-    	if(originalAcc.getAccount() == null && UAS.isAccExist(account)) {
-    		return "The account name already exists.";
+    	if(originalAcc.getAccount() == null) {
+    		if(account == null) {
+    			return "The user with the id doesn't have a account, and you can't create a new account without an account name.";
+    		}
+    		else if(UAS.isAccExist(account)) {
+    			return "The account name already exists.";
+    		}
     	}
     	
     	//check whether the password is equal to the checked password
