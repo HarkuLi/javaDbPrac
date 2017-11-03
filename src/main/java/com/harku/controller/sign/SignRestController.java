@@ -2,11 +2,14 @@ package com.harku.controller.sign;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,16 +30,21 @@ public class SignRestController {
 	private UsersService dbService;
 	
 	/**
-	 * response format:
+	 * response:
+	 * 201: (success)
 	 * {
 	 *   account: String
+	 * }
+	 * 400: (wrong input)
+	 * {
+	 *   account: String,
 	 *   errMsg: String
 	 * }
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
 	@RequestMapping(value = {"/sign_up/action", "/user/new"}, method = RequestMethod.POST, produces = "application/json")
-	public HashMap<String, String> NewUser(
+	public ResponseEntity<Map<String, Object>> NewUser(
 		@RequestParam String account, 
 		@RequestParam String password,
 		@RequestParam String passwordCheck,
@@ -49,7 +57,7 @@ public class SignRestController {
 		@RequestParam String occupation,
 		@RequestParam(required = false, defaultValue = "1") String state) throws IllegalStateException, IOException {
 		
-		HashMap<String, String> rstMap = new HashMap<String, String>();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
 		String photoName = null;
 		
 		rstMap.put("account", account);
@@ -58,15 +66,20 @@ public class SignRestController {
     	String errMsg = checkData(age, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
-        	return rstMap;
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
 		
     	//hash the password
     	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
     	
     	//store photo
-		if(photo.getSize() != 0) {
+		if(photo != null && photo.getSize() != 0) {
 			photoName = PhotoService.write(photo, photoType);
+			
+			if(photoName == null) {
+				rstMap.put("errMsg", "Wrong input for photo.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+			}
 		}
     	
     	//call service function
@@ -84,7 +97,7 @@ public class SignRestController {
     	newData.setState(state.equals("1"));
     	dbService.createUser(newData);
     	
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
 	}
 	
 	private String checkData(String age, String account, String password, String passwordCheck) {
