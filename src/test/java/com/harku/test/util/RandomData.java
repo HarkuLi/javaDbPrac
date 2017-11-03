@@ -34,7 +34,7 @@ public class RandomData {
 	public static UsersModel genUser() {
 		String id         = UUID.randomUUID().toString();
 		String account    = genStr(1, 32);
-		String password   = BCrypt.hashpw(genStr(60, 60), BCrypt.gensalt(workload));
+		String password   = BCrypt.hashpw(genStr(20, 20), BCrypt.gensalt(workload));
 		String name       = genStr(1, 40);
 		int age           = (int)(Math.random()*80 + 1);
 		String birth      = genBirth();
