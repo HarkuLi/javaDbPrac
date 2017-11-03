@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -49,13 +50,25 @@ public class SignPageController {
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.POST)
 	public String SingInAction(@Valid @ModelAttribute("account_form") UsersModel user, Errors errors, ModelMap model, HttpServletResponse res) {
 		
+		//error generated in the validator
 		if(errors.hasErrors()) {
 			model.addAttribute("account_form", user);
 			return "sign_in";
 		}
 		
 		String account = user.getAccount();
+		String password = user.getPassword();
 		UsersModel acc = UAS.getAcc(account);
+		
+		if(acc == null)	errors.rejectValue("account", "account.noMatch");
+		else if(!acc.getState())	errors.rejectValue("account", "account.noMatch");
+		else if(!BCrypt.checkpw(password, (String)acc.getPassword())) errors.rejectValue("password", "account.noMatch");
+		
+		if(errors.hasErrors()) {
+			model.addAttribute("account_form", user);
+			return "sign_in";
+		}
+		
 		long signInTime = System.currentTimeMillis();
 		String token = genToken();
 		
