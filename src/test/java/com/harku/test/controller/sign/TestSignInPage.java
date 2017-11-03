@@ -1,5 +1,7 @@
 package com.harku.test.controller.sign;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mindrot.jbcrypt.BCrypt;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -20,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.WebConfig;
@@ -101,11 +105,19 @@ public class TestSignInPage {
 	
 	@Test
 	public void post_signInSuccess() throws Exception {
-		mockMvc.perform(post("/sign_in/page")
+		MvcResult result = mockMvc.perform(post("/sign_in/page")
 						.param("account", enabledUser.getAccount())
 						.param("password", enabledUserPassword))
 				.andExpect(redirectedUrl("/user/page"))
-				.andExpect(status().isFound());
+				.andExpect(status().isFound())
+				.andReturn();
+		
+		String tokenInCookie = result.getResponse().getCookie("LOGIN_INFO").getValue();
+		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
+		verify(UAS).updateAcc(captor.capture());
+		UsersModel updatedAccount = captor.getValue();
+		//the token of the account passed to the DB must be equal to the token in the cookie
+		assertEquals(updatedAccount.getToken(), tokenInCookie);
 	}
 	
 	@Test
