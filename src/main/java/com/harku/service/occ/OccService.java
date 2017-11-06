@@ -46,6 +46,8 @@ public class OccService {
 	}
 	
 	public ArrayList<OccModel> getPage(int page, OccModel filter) {
+		if(page <= 0) return new ArrayList<OccModel>();
+		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
 		return dao.read(filter, skipNum, ENTRY_PER_PAGE);

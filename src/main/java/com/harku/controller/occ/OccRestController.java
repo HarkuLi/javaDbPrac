@@ -112,11 +112,9 @@ public class OccRestController {
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
-		if(page > 0) {
-			tableList = dbService.getPage(page, filter);
-			rstMap.put("list", tableList);
-		}
-		
+		//set result
+		tableList = dbService.getPage(page, filter);
+		rstMap.put("list", tableList);
     	rstMap.put("totalPage", totalPage);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
