@@ -11,10 +11,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.harku.config.WebConfig;
 import com.harku.controller.root.RootPageController;
+import com.harku.test.config.ViewResolverTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -26,7 +26,7 @@ public class TestShowSettingPage {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(new RootPageController())
-				.setViewResolvers(viewResolver())
+				.setViewResolvers(ViewResolverTest.genResolver())
 				.build();
 	}
 	
@@ -34,13 +34,5 @@ public class TestShowSettingPage {
 	public void showPage() throws Exception {
 		mockMvc.perform(get("/setting"))
 				.andExpect(status().isOk());
-	}
-	
-	private InternalResourceViewResolver viewResolver() {
-		InternalResourceViewResolver resolver
-			= new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".jsp");
-		return resolver;
 	}
 }

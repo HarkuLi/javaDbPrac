@@ -30,6 +30,7 @@ import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
+import com.harku.test.config.ViewResolverTest;
 import com.harku.test.util.RandomData;
 import com.harku.validator.user.AccountValidator;
 
@@ -45,6 +46,7 @@ public class TestSignInPage {
 	private String enabledUserPassword;
 	private final String invalidToken = "invalidToken";
 	private final String notExistingAccount = "notExistingAccount";
+	private final String signInPageURL = "/WEB-INF/views/sign_in.jsp";
 	
 	@Mock
 	private UserAccService UAS;
@@ -59,6 +61,7 @@ public class TestSignInPage {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(SPController)
+				.setViewResolvers(ViewResolverTest.genResolver())
 				.build();
 		
 		setTestData();
@@ -99,7 +102,7 @@ public class TestSignInPage {
 	@Test
 	public void post_noAccountAndPassword() throws Exception {
 		mockMvc.perform(post("/sign_in/page"))
-				.andExpect(forwardedUrl("sign_in"))
+				.andExpect(forwardedUrl(signInPageURL))
 				.andExpect(status().isOk());
 	}
 	
@@ -125,7 +128,7 @@ public class TestSignInPage {
 		mockMvc.perform(post("/sign_in/page")
 						.param("account", notExistingAccount)
 						.param("password", "password"))
-				.andExpect(forwardedUrl("sign_in"))
+				.andExpect(forwardedUrl(signInPageURL))
 				.andExpect(status().isOk());
 	}
 	
@@ -134,7 +137,7 @@ public class TestSignInPage {
 		mockMvc.perform(post("/sign_in/page")
 						.param("account", disabledUser.getAccount())
 						.param("password", disabledUserPassword))
-				.andExpect(forwardedUrl("sign_in"))
+				.andExpect(forwardedUrl(signInPageURL))
 				.andExpect(status().isOk());
 	}
 	
@@ -143,7 +146,7 @@ public class TestSignInPage {
 		mockMvc.perform(post("/sign_in/page")
 						.param("account", enabledUser.getAccount())
 						.param("password", "wrongPassword"))
-				.andExpect(forwardedUrl("sign_in"))
+				.andExpect(forwardedUrl(signInPageURL))
 				.andExpect(status().isOk());
 	}
 	
