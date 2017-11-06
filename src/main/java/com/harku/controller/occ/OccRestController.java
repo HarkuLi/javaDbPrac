@@ -44,6 +44,10 @@ public class OccRestController {
     	rstMap.put("id", id);
     	
     	//check data
+    	if(dbService.getOcc(id) == null) {
+			rstMap.put("errMsg", "No occupation matches the id.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		}
     	if(!state.equals("0") && !state.equals("1")) {
 	    	rstMap.put("errMsg", "Wrong input for state.");
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
