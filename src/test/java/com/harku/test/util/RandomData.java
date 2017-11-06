@@ -63,7 +63,7 @@ public class RandomData {
 	
 	public static OccModel genOcc() {
 		String id     = UUID.randomUUID().toString();
-		String name   = genStr(1, 40);
+		String name   = genStr(40, 40);
 		Boolean state = new Random().nextBoolean();
 		
 		OccModel newData = new OccModel();
@@ -75,7 +75,7 @@ public class RandomData {
 	
 	public static IntModel genInterest() {
 		String id     = UUID.randomUUID().toString();
-		String name   = genStr(1, 40);
+		String name   = genStr(40, 40);
 		Boolean state = new Random().nextBoolean();
 		
 		IntModel newData = new IntModel();
