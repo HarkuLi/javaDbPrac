@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RootPageController {
 	@RequestMapping(value = "/setting", method = RequestMethod.GET)
-	public String ShowSingInPage() {
+	public String ShowSettingPage() {
 		return "setting";
 	}
 }
