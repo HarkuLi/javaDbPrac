@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,63 +22,74 @@ public class OccRestController {
 	private OccService dbService;
 	
 	/**
-	 * response format:
+	 * 
+	 * response:
+	 * 200: (success)
 	 * {
+	 *   id: String
+	 * }
+	 * 400: (wrong input)
+	 * {
+	 *   id: String,
 	 *   errMsg: String
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, String> UpdateOcc(
+	public ResponseEntity<Map<String, Object>> UpdateOcc(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String state) {
 		
-    	Map<String, String> rstMap = new HashMap<String, String>();
+    	Map<String, Object> rstMap = new HashMap<String, Object>();
+    	rstMap.put("id", id);
     	
     	//check data
     	if(!state.equals("0") && !state.equals("1")) {
 	    	rstMap.put("errMsg", "Wrong input for state.");
-	    	return rstMap;
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	dbService.update(id, name, state.equals("1"));
     	
-    	return null;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
 	/**
-	 * response format:
+	 * response:
+	 * 201:
+	 * 400: (wrong input)
 	 * {
 	 *   errMsg: String
 	 * }
 	 */
 	@RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, String> NewOcc(
+	public ResponseEntity<Map<String, Object>> NewOcc(
 		@RequestParam String name,
 		@RequestParam String state) {
     	
-		Map<String, String> rstMap = new HashMap<String, String>();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
     	
     	//check data
     	if(!state.equals("0") && !state.equals("1")) {
 	    	rstMap.put("errMsg", "Wrong input for state.");
-	    	return rstMap;
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	dbService.createOcc(name, state.equals("1"));
     	
-    	return null;
+    	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
     }
 	
 	/**
-	 * response format:
+	 * response:
+	 * 200:
 	 * {
 	 *   list: Array<Object>,
 	 *   totalPage: Number
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, Object> GetPage(
+	public ResponseEntity<Map<String, Object>> GetPage(
 		@RequestParam int page,
 		@RequestParam(required = false) String name,
 		@RequestParam(required = false) String state) {
@@ -102,23 +115,49 @@ public class OccRestController {
 		
     	rstMap.put("totalPage", totalPage);
     	
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
     }
 	
 	/**
-	 * response: occupation data
+	 * response:
+	 * 200:
+	 *   occupation data
+	 * 404: (no occupation matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public OccModel GetOcc(@RequestParam String id) {
+	public ResponseEntity<OccModel> GetOcc(@RequestParam String id) {
 		
-    	return dbService.getOcc(id);
+    	OccModel occupation = dbService.getOcc(id);
+    	if(occupation == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	
+    	return ResponseEntity.status(HttpStatus.OK).body(occupation);
 	}
 	
-	
+	/**
+	 * response:
+	 * 200:
+	 *   {
+	 *   	id: String
+	 *   }
+	 * 400: (no occupation matches the id)
+	 *   {
+	 *   	id: String,
+	 *   	errMsg: String
+	 *   }
+	 */
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public void DeleteOcc(@RequestParam String id) {
+	public ResponseEntity<Map<String, Object>> DeleteOcc(@RequestParam String id) {
+		
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		rstMap.put("id", id);
+		
+		if(dbService.getOcc(id) == null) {
+			rstMap.put("errMsg", "No occupation matches the id.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		}
 		
     	dbService.delete(id);
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 }
 

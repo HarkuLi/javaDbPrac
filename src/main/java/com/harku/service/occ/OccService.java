@@ -25,10 +25,17 @@ public class OccService {
 		dao.create(newData);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return occupation data, null if not found
+	 */
 	public OccModel getOcc(String id) {
 		OccModel filter = new OccModel();
 		filter.setId(id);
 		ArrayList<OccModel> occList = dao.read(filter, 0, 1);
+		
+		if(occList.isEmpty()) return null;
 		return occList.get(0);
 	}
 	
