@@ -25,14 +25,23 @@ public class IntService {
 		dao.create(newData);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return interest data, null if not found
+	 */
 	public IntModel getInterest(String id) {
 		IntModel filter = new IntModel();
 		filter.setId(id);
 		ArrayList<IntModel> interestList = dao.read(filter, 0, 1);
+		
+		if(interestList.isEmpty()) return null;
 		return interestList.get(0);
 	}
 	
 	public ArrayList<IntModel> getPage(int page, IntModel filter) {
+		if(page <= 0) return new ArrayList<IntModel>();
+		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
 		return dao.read(filter, skipNum, ENTRY_PER_PAGE);

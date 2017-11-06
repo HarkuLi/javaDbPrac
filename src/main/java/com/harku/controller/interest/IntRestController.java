@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,63 +22,78 @@ public class IntRestController {
 	private IntService dbService;
 	
 	/**
-	 * response format:
+	 * 
+	 * response:
+	 * 200: (success)
 	 * {
+	 *   id: String
+	 * }
+	 * 400: (wrong input)
+	 * {
+	 *   id: String,
 	 *   errMsg: String
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, String> UpdateInt(
+	public ResponseEntity<Map<String, Object>> UpdateInt(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String state) {
 		
-		Map<String, String> rstMap = new HashMap<String, String>();
-    	
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+    	rstMap.put("id", id);
+		
     	//check data
+		if(dbService.getInterest(id) == null) {
+			rstMap.put("errMsg", "No interest matches the id.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		}
     	if(!state.equals("0") && !state.equals("1")) {
 	    	rstMap.put("errMsg", "Wrong input for state.");
-	    	return rstMap;
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	dbService.update(id, name, state.equals("1"));
     	
-    	return null;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
 	/**
-	 * response format:
+	 * response:
+	 * 201:
+	 * 400: (wrong input)
 	 * {
 	 *   errMsg: String
 	 * }
 	 */
 	@RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, String> NewInt(
+	public ResponseEntity<Map<String, Object>> NewInt(
 		@RequestParam String name,
 		@RequestParam String state) {
     	
-		Map<String, String> rstMap = new HashMap<String, String>();
+		Map<String, Object> rstMap = new HashMap<String, Object>();
     	
     	//check data
     	if(!state.equals("0") && !state.equals("1")) {
 	    	rstMap.put("errMsg", "Wrong input for state.");
-	    	return rstMap;
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	dbService.createInt(name, state.equals("1"));
     	
-    	return null;
+    	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
     }
 	
 	/**
-	 * response format:
+	 * response:
+	 * 200:
 	 * {
 	 *   list: Array<Object>,
 	 *   totalPage: Number
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, Object> GetIntPage(
+	public ResponseEntity<Map<String, Object>> GetIntPage(
 		@RequestParam int page,
 		@RequestParam(required = false) String name,
 		@RequestParam(required = false) String state) {
@@ -88,39 +105,62 @@ public class IntRestController {
     	
     	//set filter
     	filter.setName(name);
-    	if(state != null)
-    		filter.setState(state.equals("1"));
+    	if(state != null) filter.setState(state.equals("1"));
     	
     	//check page range
     	totalPage = dbService.getTotalPage(filter);
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
-		if(page > 0) {
-			tableList = dbService.getPage(page, filter);
-			rstMap.put("list", tableList);
-		}
-		
+		//set result
+		tableList = dbService.getPage(page, filter);
+		rstMap.put("list", tableList);
     	rstMap.put("totalPage", totalPage);
     	
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
 	/**
-	 * response: interest data
+	 * response:
+	 * 200:
+	 *   interest data
+	 * 404: (no interest matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public IntModel GetInterest(@RequestParam String id) {
+	public ResponseEntity<IntModel> GetInterest(@RequestParam String id) {
 		
-    	return dbService.getInterest(id);
-	}
-	
-	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public void DeleteInterest(@RequestParam String id) {
+		IntModel interest = dbService.getInterest(id);
+    	if(interest == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
-    	dbService.delete(id);
+    	return ResponseEntity.status(HttpStatus.OK).body(interest);
 	}
 	
+	/**
+	 * response:
+	 * 200:
+	 *   {
+	 *   	id: String
+	 *   }
+	 * 400: (no interest matches the id)
+	 *   {
+	 *   	id: String,
+	 *   	errMsg: String
+	 *   }
+	 */
+	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<Map<String, Object>> DeleteInterest(@RequestParam String id) {
+    	
+		Map<String, Object> rstMap = new HashMap<String, Object>();
+		rstMap.put("id", id);
+		
+		if(dbService.getInterest(id) == null) {
+			rstMap.put("errMsg", "No interest matches the id.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		}
+		
+    	dbService.delete(id);
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
+	}
 }
 
 
