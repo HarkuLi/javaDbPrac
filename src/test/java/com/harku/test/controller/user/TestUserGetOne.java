@@ -73,8 +73,7 @@ public class TestUserGetOne {
 		String notExistingId = UUID.randomUUID().toString();
 		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/get_one")
 						.param("id", notExistingId))
-				.andExpect(status().isNotFound())
-				.andReturn();
+				.andExpect(status().isNotFound());
 	}
 	
 	private void setTestData() {
