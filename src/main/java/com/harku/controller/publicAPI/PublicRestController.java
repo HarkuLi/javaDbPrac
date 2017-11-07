@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,76 +26,92 @@ import com.harku.service.occ.OccService;
 @RequestMapping("/public")
 public class PublicRestController {
 	@Autowired
-	private OccService occService;
+	private OccService occupationService;
 	@Autowired
-	private IntService intService;
+	private IntService interestService;
 	@Autowired
 	private LocaleResolver localeResolver;
 	
 	/**
-	 * response: {list: Array<Object>} occupation list
+	 * 
+	 * get occupation list
+	 * response:
+	 * 200:
+	 * {
+	 *   list: Array<Object>
+	 * }
 	 */
 	@RequestMapping(value = "/get_occ_list", method = RequestMethod.GET, produces = "application/json")
-	public Map<String, Object> GetOccList() {
+	public ResponseEntity<Map<String, Object>> GetOccList() {
 		
-		ArrayList<OccModel> occList = occService.getList();
+		ArrayList<OccModel> occList = occupationService.getList();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	rstMap.put("list", occList);
     	
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
 	/**
-	 * response: {list: Array<Object>} interest list
+	 * 
+	 * get interest list
+	 * response:
+	 * 200:
+	 * {
+	 *   list: Array<Object>
+	 * }
 	 */
 	@RequestMapping(value = "/get_interest_list", method = RequestMethod.GET, produces = "application/json")
-	public Map<String, Object> GetIntList() {
+	public ResponseEntity<Map<String, Object>> GetIntList() {
 		
-		ArrayList<IntModel> interestList = intService.getList();
+		ArrayList<IntModel> interestList = interestService.getList();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	rstMap.put("list", interestList);
     	
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
+	/**
+	 * 
+	 * response:
+	 * 200:
+	 * 400:
+	 * {
+	 *   errMsg: String
+	 * }
+	 */
 	@RequestMapping(value = "/set_language", method = RequestMethod.POST, produces = "application/json")
-	public Map<String, Object> SetLanguage(@RequestParam String language, HttpServletRequest req, HttpServletResponse res) {
+	public ResponseEntity<Map<String, Object>> SetLanguage(@RequestParam String language, HttpServletRequest req, HttpServletResponse res) {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		
 		String[] languageToken = language.split("_");
 		if(languageToken.length != 2) {
 			rstMap.put("errMsg", "Wrong format.");
-			return rstMap;
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
 		}
 		
 		Locale locale = new Locale(languageToken[0], languageToken[1]);
-		
 		localeResolver.setLocale(req, res, locale);
-		rstMap.put("msg", "Success.");
 		
-    	return rstMap;
+    	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
+	/**
+	 * 
+	 * response:
+	 * 200:
+	 * {
+	 *   language: String
+	 * }
+	 */
 	@RequestMapping(value = "/get_current_language", method = RequestMethod.GET, produces = "application/json")
-	public Map<String, Object> GetCurrentLanguage(HttpServletRequest req) {
+	public ResponseEntity<Map<String, Object>> GetCurrentLanguage(HttpServletRequest req) {
 		
 		Locale locale = localeResolver.resolveLocale(req);
 		String language = locale.getLanguage();
 		String country = locale.getCountry();
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		rstMap.put("language", language + "_" + country);
-		return rstMap;
-	}
-	
-	@RequestMapping(value = "/e_test", method = RequestMethod.GET, produces = "application/json")
-	public Map<String, Object> ExceptionTest() throws Exception {
-		
-		Map<String, Object> rstMap = new HashMap<String, Object>();
-		rstMap.put("msg", "success");
-		
-		if(!rstMap.isEmpty())	throw new Exception("Error test.");
-    	
-    	return rstMap;
+		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 }
