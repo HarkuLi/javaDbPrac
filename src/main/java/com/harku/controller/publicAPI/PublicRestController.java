@@ -1,6 +1,7 @@
 package com.harku.controller.publicAPI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
 
+import com.harku.config.ConstantConfig;
 import com.harku.model.interest.IntModel;
 import com.harku.model.occ.OccModel;
 import com.harku.service.interest.IntService;
@@ -108,10 +110,12 @@ public class PublicRestController {
 	public ResponseEntity<Map<String, Object>> GetCurrentLanguage(HttpServletRequest req) {
 		
 		Locale locale = localeResolver.resolveLocale(req);
-		String language = locale.getLanguage();
-		String country = locale.getCountry();
+		if(!Arrays.asList(ConstantConfig.SUPPORTED_LOCALES).contains(locale)) {
+			locale = ConstantConfig.DEFAULT_LOCALE;
+		}
+		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
-		rstMap.put("language", language + "_" + country);
+		rstMap.put("language", locale.toString());
 		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 }
