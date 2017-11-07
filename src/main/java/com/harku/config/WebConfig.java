@@ -63,6 +63,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public LocaleResolver localeResolver() {
 		CookieLocaleResolver clr = new CookieLocaleResolver();
 		clr.setDefaultLocale(Locale.US);
+		clr.setCookieName("LOCALE");
 		return clr;
 	}
 	
