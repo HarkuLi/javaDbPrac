@@ -1,7 +1,5 @@
 package com.harku.config;
 
-import java.util.Locale;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -62,8 +60,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public LocaleResolver localeResolver() {
 		CookieLocaleResolver clr = new CookieLocaleResolver();
-		clr.setDefaultLocale(Locale.US);
-		clr.setCookieName("LOCALE");
+		clr.setDefaultLocale(ConstantConfig.DEFAULT_LOCALE);
+		clr.setCookieName(ConstantConfig.LOCALE_COOKIE_NAME);
 		return clr;
 	}
 	
