@@ -23,7 +23,8 @@ public class AspectLogging {
 	private void NewUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
-		Map<String, String> retMap = (Map<String, String>) retVal;
+		ResponseEntity<Map<String, String>> retEntity = (ResponseEntity<Map<String, String>>) retVal;
+		Map<String, String> retMap = retEntity.getBody();
 		String account = retMap.get("account");
 		String errMsg = retMap.get("errMsg");
 		String sourceName = getSourceName(joinPoint);
