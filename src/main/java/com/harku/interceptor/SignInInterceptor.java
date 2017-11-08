@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.harku.config.ConstantConfig;
 import com.harku.service.user.UserAccService;
 
 @Component
@@ -20,12 +21,10 @@ public class SignInInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 		
-		final String signInRoute = "/javaDbPrac/sign_in/page";
-		
 		//check token
 		HashMap<String, String> cookie = cookieHandle(req.getCookies());
 		if(!(cookie != null && UAS.checkToken(cookie.get("LOGIN_INFO")))) {
-			res.sendRedirect(signInRoute);
+			res.sendRedirect(ConstantConfig.SIGN_IN_ROUTE);
 			return false;
 		}
 		
