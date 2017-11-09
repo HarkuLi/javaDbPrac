@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/user")
 public class UserPageController {
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public String ShowPage(ModelMap model) {
-		return "user";
+	public String showPage(ModelMap model) {
+		return "views/user";
+	}
+	@RequestMapping(value = "/new_form", method = RequestMethod.GET)
+	public String getNewForm(ModelMap model) {
+		return "partial/user/detail_new";
 	}
 }

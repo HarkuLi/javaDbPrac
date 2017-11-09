@@ -10,6 +10,6 @@ public class IntPageController {
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public String ShowPage() {
-		return "interest";
+		return "views/interest";
 	}
 }

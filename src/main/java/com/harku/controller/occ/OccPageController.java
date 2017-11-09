@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class OccPageController {
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public String ShowPage(){
-		return "occupation";
+		return "views/occupation";
 	}
 }

@@ -44,7 +44,7 @@ public class SignPageController {
 		UsersModel user = new UsersModel();
 		model.addAttribute("account_form", user);
 		
-		return "sign_in";
+		return "views/sign_in";
 	}
 	
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.POST)
@@ -53,7 +53,7 @@ public class SignPageController {
 		//error generated in the validator
 		if(errors.hasErrors()) {
 			model.addAttribute("account_form", user);
-			return "sign_in";
+			return "views/sign_in";
 		}
 		
 		String account = user.getAccount();
@@ -66,7 +66,7 @@ public class SignPageController {
 		
 		if(errors.hasErrors()) {
 			model.addAttribute("account_form", user);
-			return "sign_in";
+			return "views/sign_in";
 		}
 		
 		long signInTime = System.currentTimeMillis();
@@ -94,7 +94,7 @@ public class SignPageController {
 			return "redirect:/user/page";
 		}
 		
-		return "sign_up";
+		return "views/sign_up";
 	}
 	
 	@RequestMapping(value = "/sign_out", method = RequestMethod.GET)

@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RootPageController {
 	@RequestMapping(value = "/setting", method = RequestMethod.GET)
 	public String ShowSettingPage() {
-		return "setting";
+		return "views/setting";
 	}
 }
