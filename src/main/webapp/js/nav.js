@@ -77,6 +77,9 @@ function setNavView(pageName){
 			}
 			
 			$(`#nav_${pageName}`).prop("class", "active");
+		})
+		.catch(error => {
+			alert(error);
 		});
 }
 
@@ -90,9 +93,19 @@ function setNavView(pageName){
  */
 function getUserInfo(){
 	return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/user/get_by_token`, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+    $.post(`${URLBase}/user/get_by_token`, (data, status, xhr) => {
+      if(status !== "success") {
+      	reject("post status: " + status);
+      	return;
+      }
+      if(xhr.status !== 200) {
+				reject("failed to get user: " + data.errMsg);
+				return;
+			}
       resolve(data);
+    })
+    .fail(res => {
+    	reject(res.responseJSON.errMsg);
     });
   });
 }

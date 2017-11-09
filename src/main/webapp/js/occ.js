@@ -145,6 +145,10 @@ function delRow(self){
 	return doDel(id)
 		.then(() => {
 			return true;
+		})
+		.catch((error) => {
+			console.log(error);
+			return false;
 		});
 }
 
@@ -164,16 +168,15 @@ function save(self){
 	//update the change
 	return doUpdate(passedData)
   	.then(data => {
-  		if(data.errMsg){
-  			alert(data.errMsg);
-  			return false;
-  		}
   		return selectPage(currentPage);
   	})
   	.then(rst => {
   		if(!rst) return;
   		closePopup();
-  	});
+		})
+		.catch(error => {
+			alert(error);
+		});
 }
 
 /**
@@ -215,6 +218,9 @@ function edit(self){
 			
 			//show pop up window
 			$(".mask").css("display", "flex");
+		})
+		.catch(error => {
+			console.log(error);
 		});
 }
 
@@ -279,15 +285,14 @@ function newOcc(){
 	
 	return doCreate(passedData)
 		.then(data => {
-			if(data.errMsg){
-				alert(data.errMsg);
-				return false;
-			}
 			return selectPage(currentPage);
 		})
 		.then(rst => {
 			if(!rst) return;
 			closePopup();
+		})
+		.catch(error => {
+			alert(error);
 		});
 }
 
@@ -337,7 +342,11 @@ function selectPage(page){
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
   		return true;
-  	});
+		})
+		.catch(error => {
+			console.log(error);
+			return false;
+		});
 }
 
 /**
@@ -347,7 +356,7 @@ function selectPage(page){
  * @param dataList {Array<Object>}
  */
 function renderData(dataList){
-	if(!dataList){
+	if(!dataList || !dataList.length){
 		$("#data_table").css("display", "none");
 		return;
 	}
@@ -453,42 +462,71 @@ function pageNumDisp(totalPage){
 /**
  * 
  * @param id {String}
- * @return {Promise} no return value
+ * @return {Promise} id
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/occ/del`, {id}, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+		$.post(`${URLBase}/occ/del`, {id}, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to delete: " + data.errMsg);
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
 	});
 }
 
 /**
  * 
  * @param passedData {Object} {id: String, name: String, state: String}
- * @return {Promise} if error, return: {errMsg: String}
+ * @return {Promise}
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/occ/update`, passedData, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+		$.post(`${URLBase}/occ/update`, passedData, (data, status, xhr) => {
+			if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to update: " + data.errMsg);
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
 	});
 }
 
 /**
  * 
  * @param passedData {Object} {name: String, state: String}
- * @return {Promise} if error, return: {errMsg: String}
+ * @return {Promise}
  */
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/occ/new`, passedData, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+		$.post(`${URLBase}/occ/new`, passedData, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+			}
+			if(xhr.status !== 201) {
+				reject("failed to create");
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
 	});
 }
 
@@ -507,10 +545,20 @@ function getList(page){
   }
   
   return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/occ/get_page`, passedData, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+    $.post(`${URLBase}/occ/get_page`, passedData, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get list");
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
   });
 }
 
@@ -521,10 +569,20 @@ function getList(page){
  */
 function getOcc(id){
 	return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/occ/get_one`, {id}, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+    $.post(`${URLBase}/occ/get_one`, {id}, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get");
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
   });
 }
 

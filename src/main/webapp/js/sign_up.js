@@ -75,7 +75,7 @@ function isFillAll(form){
 
 /**
  * 
- * @return {Promise}
+ * @return {Promise} return true if creating successfully
  */
 function newUser(){
 	var passedData = new FormData($("#sign_up_form")[0]);
@@ -91,12 +91,12 @@ function newUser(){
 	}
 	
 	return doCreate(passedData)
-		.then(data => {
-			if(data.errMsg){
-				alert(data.errMsg);
-				return false;
-			}
+		.then(() => {
 			return true;
+		})
+		.catch(error => {
+			alert(error);
+			return false;
 		});
 }
 
@@ -134,6 +134,9 @@ function renderOccList(){
 				//record occupations
 				occMap[ele.id] = ele.name;
 			}
+		})
+		.catch(error => {
+			console.log(error);
 		});
 }
 
@@ -163,6 +166,9 @@ function renderInterestList(){
 				interestMap[ele.id] = ele.name;
 			}
 			$(".interest_box").append(ul);
+		})
+		.catch(error => {
+			console.log(error);
 		});
 }
 
@@ -176,9 +182,18 @@ function renderInterestList(){
  */
 function getOccList(){
 	return new Promise((resolve, reject) => {
-		$.get(`${URLBase}/public/get_occ_list`, (data, status) => {
-			if(status !== "success") return reject("get status: " + status);
+		$.get(`${URLBase}/public/get_occ_list`, (data, status, xhr) => {
+			if(status !== "success") {
+				reject("get status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get occupation list: " + data.errMsg);
+			}
 			resolve(data.list);
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
 		});
 	});
 }
@@ -189,9 +204,18 @@ function getOccList(){
  */
 function getInterestList(){
 	return new Promise((resolve, reject) => {
-		$.get(`${URLBase}/public/get_interest_list`, (data, status) => {
-			if(status !== "success") return reject("get status: " + status);
+		$.get(`${URLBase}/public/get_interest_list`, (data, status, xhr) => {
+			if(status !== "success") {
+				reject("get status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get interest list: " + data.errMsg);
+			}
 			resolve(data.list);
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
 		});
 	});
 }
@@ -222,10 +246,20 @@ function doCreate(passedData){
 			data: passedData,
 			processData: false,
 			contentType: false,
-			success: (data, status) => {
-        if(status !== "success") return reject("post status: " + status);
+			success: (data, status, xhr) => {
+        if(status !== "success") {
+					reject("post status: " + status);
+					return;
+				}
+				if(xhr.status !== 201) {
+					reject("failed to create: " + data.errMsg);
+					return;
+				}
         resolve(data);
-      }
-		});
+      },
+      error: (res) => {
+				reject(res.responseJSON.errMsg);
+			}
+		})
 	});
 }

@@ -170,16 +170,10 @@ $(() => {
 function changePw(){
 	var passedData = new FormData($("#popup_form_chpw")[0]);
 	return updatePassword(passedData)
-		.then(data => {
-  		if(data.errMsg){
-  			alert(data.errMsg);
-  			return false;
-  		}
+		.then(() => {
   		return getUser(editingUser.id);
 		})
   	.then(data => {
-  		if(!data)	return false;
-  		
 			//record the editing user
 			editingUser = data;
 			
@@ -187,7 +181,11 @@ function changePw(){
 			$("#popup_form_edit").find("[name='account']").prop("value", data.account);
   		
 			return true;
-  	});
+		})
+		.catch(error => {
+			alert(error);
+			return false;
+		});
 }
 
 function editPw(){
@@ -308,6 +306,10 @@ function delRow(self){
 	return doDel(id)
 		.then(() => {
 			return true;
+		})
+		.catch((error) => {
+			console.log(error);
+			return false;
 		});
 }
 
@@ -329,20 +331,15 @@ function save(self){
 	
 	//update the change
 	return doUpdate(passedData)
-  	.then(data => {
-  		if(data.errMsg){
-  			alert(data.errMsg);
-  			return false;
-  		}
-  		return true;
-  	})
-  	.then(rst => {
-  		if(!rst) return;
+  	.then(() => {
   		return selectPage(currentPage);
   	})
   	.then(() => {
   		closeForm();
-  	});
+		})
+		.catch(error => {
+			alert(error);
+		});
 }
 
 /**
@@ -360,7 +357,8 @@ function edit(self){
 			editingUser = data;
 			
 			//set current photo
-			$("#current_photo").prop("src", URLBase + "/user/photo?n=" + data.photoName);
+			var photoURL = URLBase + "/user/photo?n=" + (data.photoName || "");
+			$("#current_photo").prop("src", photoURL);
 			
 			//set pop up form
 				//set non-checked type data
@@ -389,6 +387,9 @@ function edit(self){
 					}
 				}
 			}
+		})
+		.catch(error => {
+			console.log(error);
 		});
 }
 
@@ -462,15 +463,14 @@ function newUser(){
 	
 	return doCreate(passedData)
 		.then(data => {
-			if(data.errMsg){
-				alert(data.errMsg);
-				return false;
-			}
 			return selectPage(currentPage);
 		})
 		.then(rst => {
 			if(!rst) return;
 			closeForm();
+		})
+		.catch(error => {
+			alert(error);
 		});
 }
 
@@ -552,7 +552,7 @@ function handlePageData(data){
  * go to the page
  * can be used for reload by select current page
  * @param page {Number}
- * @return {Promise}
+ * @return {Promise} return true if switching to the page successfully
  */
 function selectPage(page){
 	if(page < 1) return Promise.resolve(false);
@@ -567,7 +567,11 @@ function selectPage(page){
   		pageNumDisp(data.totalPage);
   		$("body").css("cursor", "");
   		return true;
-  	});
+		})
+		.catch(error => {
+			console.log(error);
+			return false;
+		});
 }
 
 /**
@@ -613,6 +617,9 @@ function renderOccList(){
 				//record occupations
 				occMap[ele.id] = ele.name;
 			}
+		})
+		.catch(error => {
+			console.log(error);
 		});
 }
 
@@ -642,6 +649,9 @@ function renderInterestList(){
 				interestMap[ele.id] = ele.name;
 			}
 			$(".interest_box").append(ul);
+		})
+		.catch(error => {
+			console.log(error);
 		});
 }
 
@@ -652,7 +662,7 @@ function renderInterestList(){
  * @param dataList {Array<Object>}
  */
 function renderData(dataList){
-	if(!dataList){
+	if(!dataList || !dataList.length){
 		$("#data_table").css("display", "none");
 		return;
 	}
@@ -707,7 +717,8 @@ function renderData(dataList){
 		
 	  //set photo entry
 		let photo = $(row).find("img");
-		$(photo).prop("src", URLBase + "/user/photo?n=" + dataList[idx].photoName);
+		let photoURL = URLBase + "/user/photo?n=" + (dataList[idx].photoName || "");
+		$(photo).prop("src", photoURL);
 		
 		$(row).css("display", "");
 		++idx;
@@ -730,7 +741,8 @@ function renderData(dataList){
 			//photo entry
 			if(prop === "photo"){
 				let img = $("<img>");
-				img.prop("src", URLBase + "/user/photo?n=" + data.photoName);
+				let photoURL = URLBase + "/user/photo?n=" + (data.photoName || "");
+				img.prop("src", photoURL);
 				img.prop("height", "40")
 				img.prop("width", "40")
 				rowEntry.append(img);
@@ -784,9 +796,19 @@ function renderData(dataList){
  */
 function getOccList(){
 	return new Promise((resolve, reject) => {
-		$.get(`${URLBase}/public/get_occ_list`, (data, status) => {
-			if(status !== "success") return reject("get status: " + status);
+		$.get(`${URLBase}/public/get_occ_list`, (data, status, xhr) => {
+			if(status !== "success") {
+				reject("get status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get occupation list: " + data.errMsg);
+				return;
+			}
 			resolve(data.list);
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
 		});
 	});
 }
@@ -797,9 +819,19 @@ function getOccList(){
  */
 function getInterestList(){
 	return new Promise((resolve, reject) => {
-		$.get(`${URLBase}/public/get_interest_list`, (data, status) => {
-			if(status !== "success") return reject("get status: " + status);
+		$.get(`${URLBase}/public/get_interest_list`, (data, status, xhr) => {
+			if(status !== "success") {
+				reject("get status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get interest list: " + data.errMsg);
+				return;
+			}
 			resolve(data.list);
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
 		});
 	});
 }
@@ -811,10 +843,20 @@ function getInterestList(){
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/user/del`, {id}, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+		$.post(`${URLBase}/user/del`, {id}, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to delete: " + data.errMsg);
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
 	});
 }
 
@@ -829,7 +871,7 @@ function doDel(id){
  * 				photo: Object,
  * 				photoType: String
  * 			}
- * @return {Promise} if error, return: {errMsg: String}
+ * @return {Promise}
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
@@ -839,11 +881,21 @@ function doUpdate(passedData){
 			data: passedData,
 			processData: false,
 			contentType: false,
-			success: (data, status) => {
-        if(status !== "success") return reject("post status: " + status);
+			success: (data, status, xhr) => {
+        if(status !== "success") {
+					reject("post status: " + status);
+					return;
+				}
+				if(xhr.status !== 200) {
+					reject("failed to update: " + data.errMsg);
+					return;
+				}
         resolve(data);
-      }
-		});
+			},
+			error: (res) => {
+				reject(res.responseJSON.errMsg);
+			}
+		})
 	});
 }
 
@@ -857,7 +909,7 @@ function doUpdate(passedData){
  * 				photo: Object,
  * 				photoType: String
  * 			}
- * @return {Promise} if error, return: {errMsg: String}
+ * @return {Promise}
  */
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
@@ -867,10 +919,20 @@ function doCreate(passedData){
 			data: passedData,
 			processData: false,
 			contentType: false,
-			success: (data, status) => {
-        if(status !== "success") return reject("post status: " + status);
+			success: (data, status, xhr) => {
+        if(status !== "success") {
+					reject("post status: " + status);
+					return;
+				}
+				if(xhr.status !== 201) {
+					reject("failed to create: " + data.errMsg);
+					return;
+				}
         resolve(data);
-      }
+			},
+			error: (res) => {
+				reject(res.responseJSON.errMsg);
+			}
 		});
 	});
 }
@@ -898,10 +960,20 @@ function getList(page){
   }
   
   return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/user/get_page`, passedData, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+    $.post(`${URLBase}/user/get_page`, passedData, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get list: " + data.errMsg);
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
   });
 }
 
@@ -912,10 +984,20 @@ function getList(page){
  */
 function getUser(id){
 	return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/user/get_one`, {id}, (data, status) => {
-      if(status !== "success") return reject("post status: " + status);
+    $.post(`${URLBase}/user/get_one`, {id}, (data, status, xhr) => {
+      if(status !== "success") {
+				reject("post status: " + status);
+				return;
+			}
+			if(xhr.status !== 200) {
+				reject("failed to get user: " + data.errMsg);
+				return;
+			}
       resolve(data);
-    });
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
+		});
   });
 }
 
@@ -928,9 +1010,6 @@ function getUser(id){
  *				passwordCheck: String
  * 			}
  * @return {Promise}
- * 			{
- * 				errMsg: String,		//if error
- * 			}
  */
 function updatePassword(passedData){
 	return new Promise((resolve, reject) => {
@@ -940,10 +1019,20 @@ function updatePassword(passedData){
 			data: passedData,
 			processData: false,
 			contentType: false,
-			success: (data, status) => {
-        if(status !== "success") return reject("post status: " + status);
+			success: (data, status, xhr) => {
+				if(status !== "success") {
+					reject("post status: " + status);
+					return;
+				}
+				if(xhr.status !== 200) {
+					reject("failed to update password: " + data.errMsg);
+					return;
+				}
         resolve(data);
-      }
+			},
+			error: (res) => {
+				reject(res.responseJSON.errMsg);
+			}
 		});
 	});
 }

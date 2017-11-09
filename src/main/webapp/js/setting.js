@@ -19,12 +19,11 @@ $(() => {
 		var passedData = new FormData($("#setting_form")[0]);
 		
 		setLanguage(passedData)
-			.then((data) => {
-				if(data.errMsg){
-					alert(data.errMsg);
-					return;
-				}
+			.then(() => {
 				location.reload();
+  		})
+  		.catch(error => {
+  			alert(error);
   		});
 	})
 });
@@ -46,6 +45,9 @@ function selectCurrentLanguage(){
   	.then((data) => {
   		var language = data.language;
   		$("option").filter(`[value=${language}]`).prop("selected", true);
+  	})
+  	.catch(error => {
+  		console.log(error);
   	});
 }
 
@@ -70,10 +72,20 @@ function setLanguage(passedData){
 			data: passedData,
 			processData: false,
 			contentType: false,
-			success: (data, status) => {
-        if(status !== "success") return reject("post status: " + status);
+			success: (data, status, xhr) => {
+        if(status !== "success") {
+        	reject("post status: " + status);
+        	return;
+        }
+        if(xhr.status !== 200) {
+        	reject("failed to set language: " + data.errMsg);
+					return;
+        }
         resolve(data);
-      }
+      },
+			error: (res) => {
+				reject(res.responseJSON.errMsg);
+			}
 		});
 	});
 }
@@ -84,9 +96,19 @@ function setLanguage(passedData){
  */
 function getCurrentLanguage(){
 	return new Promise((resolve, reject) => {
-		$.get(`${URLBase}/public/get_current_language`, (data, status) => {
-			if(status !== "success") return reject("get status: " + status);
+		$.get(`${URLBase}/public/get_current_language`, (data, status, xhr) => {
+			if(status !== "success") {
+      	reject("post status: " + status);
+      	return;
+      }
+      if(xhr.status !== 200) {
+      	reject("failed to get language: " + data.errMsg);
+				return;
+      }
 			resolve(data);
+		})
+		.fail(res => {
+			reject(res.responseJSON.errMsg);
 		});
 	});
 }
