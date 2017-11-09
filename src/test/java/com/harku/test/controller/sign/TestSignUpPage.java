@@ -34,7 +34,7 @@ public class TestSignUpPage {
 	private final String invalidToken = "invalidToken";
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@InjectMocks
 	private SignPageController SPController;
@@ -78,7 +78,7 @@ public class TestSignUpPage {
 	}
 	
 	private void setStubs() {
-		when(UAS.checkToken(invalidToken)).thenReturn(false);
-		when(UAS.checkToken(userTestData.getToken())).thenReturn(true);
+		when(userAccService.checkToken(invalidToken)).thenReturn(false);
+		when(userAccService.checkToken(userTestData.getToken())).thenReturn(true);
 	}
 }

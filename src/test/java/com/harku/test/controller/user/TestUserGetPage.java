@@ -39,10 +39,10 @@ public class TestUserGetPage {
 	private MockMvc mockMvc;
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@Autowired
 	@InjectMocks
@@ -135,9 +135,9 @@ public class TestUserGetPage {
 	}
 	
 	private void setStubs() {
-		when(US.getTotalPage(any(UserFilterModel.class))).thenReturn(totalPage);
-		when(US.getPage(eq(1), any(UserFilterModel.class))).thenReturn(page1List);
-		when(US.getPage(eq(2), any(UserFilterModel.class))).thenReturn(page2List);
+		when(usersService.getTotalPage(any(UserFilterModel.class))).thenReturn(totalPage);
+		when(usersService.getPage(eq(1), any(UserFilterModel.class))).thenReturn(page1List);
+		when(usersService.getPage(eq(2), any(UserFilterModel.class))).thenReturn(page2List);
 	}
 }
 

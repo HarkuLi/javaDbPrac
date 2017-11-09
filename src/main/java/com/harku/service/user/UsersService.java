@@ -14,11 +14,11 @@ import com.harku.model.user.UsersModel;
 public class UsersService{
 	private final int ENTRY_PER_PAGE = 10;
 	@Autowired
-	private UsersDao dao;
+	private UsersDao usersDao;
 	@Autowired
-	private UserIntService UIS;
+	private UserIntService userInterestService;
 	@Autowired
-	private UserAccService UAS;
+	private UserAccService userAccountService;
 	
 	/**
 	 * 
@@ -31,9 +31,9 @@ public class UsersService{
 		
 		newData.setId(id);
 		
-		UAS.saveAcc(newData);
-		UIS.saveInterests(id, interest);
-		dao.create(newData);
+		userAccountService.saveAcc(newData);
+		userInterestService.saveInterests(id, interest);
+		usersDao.create(newData);
 		
 		return id;
 	}
@@ -47,13 +47,13 @@ public class UsersService{
 		UserFilterModel filter = new UserFilterModel();
 		filter.setId(id);
 		
-		ArrayList<UsersModel> userList = dao.read(filter, 0, 1);
+		ArrayList<UsersModel> userList = usersDao.read(filter, 0, 1);
 		if(userList.isEmpty()) return null;
 		UsersModel user = userList.get(0);
 		
 		//set values from other tables
-		user.setInterest(UIS.getInterests(id));
-		UsersModel userAcc = UAS.getAccById(id);
+		user.setInterest(userInterestService.getInterests(id));
+		UsersModel userAcc = userAccountService.getAccById(id);
 		user.setAccount(userAcc.getAccount());
 		user.setPassword(userAcc.getPassword());
 		user.setState(userAcc.getState());
@@ -65,12 +65,12 @@ public class UsersService{
 		if(page <= 0) return new ArrayList<UsersModel>();
 		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
-		ArrayList<UsersModel> userList = dao.read(filter, skipNum, ENTRY_PER_PAGE);
+		ArrayList<UsersModel> userList = usersDao.read(filter, skipNum, ENTRY_PER_PAGE);
 		
 		//set values from other table for each user
 		for(UsersModel user : userList) {
-			user.setInterest(UIS.getInterests(user.getId()));
-			UsersModel userAcc = UAS.getAccById(user.getId());
+			user.setInterest(userInterestService.getInterests(user.getId()));
+			UsersModel userAcc = userAccountService.getAccById(user.getId());
 			user.setAccount(userAcc.getAccount());
 			user.setPassword(userAcc.getPassword());
 			user.setState(userAcc.getState());
@@ -80,7 +80,7 @@ public class UsersService{
 	}
 	
 	public int getTotalPage(UserFilterModel filter) {
-		int rowNum = dao.getRowNum(filter);
+		int rowNum = usersDao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
@@ -90,17 +90,17 @@ public class UsersService{
 		String userId = newData.getId();
 		String[] interestList = newData.getInterest();
 		
-		UIS.updateInterests(userId, interestList);
+		userInterestService.updateInterests(userId, interestList);
 		
 		//when it comes to updating account and password, do it in the "change password" feature
-		UAS.updateAcc(newData);
+		userAccountService.updateAcc(newData);
 		
-		dao.update(newData);
+		usersDao.update(newData);
 	}
 	
 	public void delete(String id) {
-		UIS.delInterests(id);
-		UAS.delAcc(id);
-		dao.delete(id);
+		userInterestService.delInterests(id);
+		userAccountService.delAcc(id);
+		usersDao.delete(id);
 	}
 }

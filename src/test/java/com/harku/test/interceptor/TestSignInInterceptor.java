@@ -29,7 +29,7 @@ public class TestSignInInterceptor {
 	private Object handler = new Object();
 	
 	@Mock
-	private UserAccService userAccService;
+	private UserAccService userAccountService;
 	
 	@Mock
 	private HttpServletRequest req;
@@ -49,7 +49,7 @@ public class TestSignInInterceptor {
 		
 		//set Stubs
 		when(req.getCookies()).thenReturn(cookies);
-		when(userAccService.checkToken(signedInUser.getToken())).thenReturn(true);
+		when(userAccountService.checkToken(signedInUser.getToken())).thenReturn(true);
 		
 		//call the function and verify
 		assertTrue(signInInterceptor.preHandle(req, res, handler));
@@ -92,7 +92,7 @@ public class TestSignInInterceptor {
 		
 		//set Stubs
 		when(req.getCookies()).thenReturn(cookies);
-		when(userAccService.checkToken(invalidToken)).thenReturn(false);
+		when(userAccountService.checkToken(invalidToken)).thenReturn(false);
 		
 		//call the function and verify
 		assertFalse(signInInterceptor.preHandle(req, res, handler));

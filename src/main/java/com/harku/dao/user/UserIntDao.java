@@ -12,7 +12,7 @@ import com.harku.rowMapper.user.UserIntMapper;
 @Repository
 public class UserIntDao {
 	@Autowired
-	private JdbcTemplate jdbcObj;
+	private JdbcTemplate jdbcTemplate;
 	
 	private final String tableName = "userInterest";
 	
@@ -21,7 +21,7 @@ public class UserIntDao {
 		sqlStr	     += " (userId, interest)";
 		sqlStr 		 += " values (?, ?)";
 		
-		jdbcObj.update(sqlStr, new Object[] {userId, interest});
+		jdbcTemplate.update(sqlStr, new Object[] {userId, interest});
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class UserIntDao {
 				        " from " + tableName +
 			            " where userId = ?";
 		
-		List<String> rstList = new ArrayList<String>(jdbcObj.query(sqlStr, new Object[] {userId}, new UserIntMapper()));
+		List<String> rstList = new ArrayList<String>(jdbcTemplate.query(sqlStr, new Object[] {userId}, new UserIntMapper()));
 		
 		return rstList;
 	}
@@ -43,6 +43,6 @@ public class UserIntDao {
 		String sqlStr = "delete from " + tableName +
 						" where userId = ?";
 		
-		jdbcObj.update(sqlStr, new Object[] {userId});
+		jdbcTemplate.update(sqlStr, new Object[] {userId});
 	}
 }

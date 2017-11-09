@@ -37,10 +37,10 @@ public class TestUserPhoto {
 	private MockMvc mockMvc;
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@Autowired
 	@InjectMocks

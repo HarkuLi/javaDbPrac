@@ -12,19 +12,19 @@ import com.harku.model.user.UsersModel;
 @Service
 public class UserAccService {
 	@Autowired
-	private UserAccDao dao;
+	private UserAccDao userAccountDao;
 	
 	public static final int EXPIRE_TIME_SEC = 604800;	//one week, 60*60*24*7
 	
 	public void saveAcc(UsersModel newData) {
-		dao.create(newData);
+		userAccountDao.create(newData);
 	}
 	
 	public boolean isAccExist(String account) {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setAccount(account);
 		
-		ArrayList<UsersModel> accList = dao.read(filter);
+		ArrayList<UsersModel> accList = userAccountDao.read(filter);
 		if(!accList.isEmpty()) return true;
 		
 		return false;
@@ -34,7 +34,7 @@ public class UserAccService {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setAccount(account);
 		
-		ArrayList<UsersModel> accList = dao.read(filter);
+		ArrayList<UsersModel> accList = userAccountDao.read(filter);
 		
 		if(accList.isEmpty()) return null;
 		return accList.get(0);
@@ -44,7 +44,7 @@ public class UserAccService {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setId(userId);
 		
-		ArrayList<UsersModel> accList = dao.read(filter);
+		ArrayList<UsersModel> accList = userAccountDao.read(filter);
 		
 		if(accList.isEmpty()) return null;
 		return accList.get(0);
@@ -59,7 +59,7 @@ public class UserAccService {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setToken(token);
 		
-		ArrayList<UsersModel> accList = dao.read(filter);
+		ArrayList<UsersModel> accList = userAccountDao.read(filter);
 		
 		if(accList.isEmpty()) return null;
 		return accList.get(0);
@@ -76,7 +76,7 @@ public class UserAccService {
 		UserFilterModel filter = new UserFilterModel();
 		filter.setToken(token);
 		
-		ArrayList<UsersModel> accList = dao.read(filter);
+		ArrayList<UsersModel> accList = userAccountDao.read(filter);
 		
 		if(accList.isEmpty()) return false;
 		
@@ -91,10 +91,10 @@ public class UserAccService {
 	}
 	
 	public void updateAcc(UsersModel setData) {
-		dao.update(setData);
+		userAccountDao.update(setData);
 	}
 	
 	public void delAcc(String userId) {
-		dao.delete(userId);
+		userAccountDao.delete(userId);
 	}
 }

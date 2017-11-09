@@ -39,14 +39,14 @@ public class TestUsersService {
 	private UsersDao userDao;
 	
 	@Mock
-	private UserIntService UIS;
+	private UserIntService userInterestService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccountService;
 	
 	@Autowired
 	@InjectMocks
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Before
 	public void before() {
@@ -56,11 +56,11 @@ public class TestUsersService {
 	@Test
 	public void testCreateUser() {
 		UsersModel newData = RandomData.genUser();
-		String id = US.createUser(newData);
+		String id = usersService.createUser(newData);
 		
 		assertNotNull(id);
-		verify(UAS).saveAcc(newData);
-		verify(UIS).saveInterests(id, newData.getInterest());
+		verify(userAccountService).saveAcc(newData);
+		verify(userInterestService).saveInterests(id, newData.getInterest());
 		verify(userDao).create(newData);
 	}
 	
@@ -73,10 +73,10 @@ public class TestUsersService {
 		when(userDao.read(ArgumentMatchers.any(UserFilterModel.class),
 						  ArgumentMatchers.anyInt(),
 						  ArgumentMatchers.anyInt())).thenReturn(userList);
-		when(UIS.getInterests(userTestData.getId())).thenReturn(interestsTestData);
-		when(UAS.getAccById(userTestData.getId())).thenReturn(userAccountTestData);
+		when(userInterestService.getInterests(userTestData.getId())).thenReturn(interestsTestData);
+		when(userAccountService.getAccById(userTestData.getId())).thenReturn(userAccountTestData);
 		
-		UsersModel user = US.getUser(userTestData.getId());
+		UsersModel user = usersService.getUser(userTestData.getId());
 		assertEquals(userTestData.getName(), user.getName());
 		assertEquals(userAccountTestData.getAccount(), user.getAccount());
 		assertEquals(userAccountTestData.getPassword(), user.getPassword());
@@ -88,7 +88,7 @@ public class TestUsersService {
 	public void testGetUserByNotExistId() {
 		String id = UUID.randomUUID().toString();
 		
-		assertNull(US.getUser(id));
+		assertNull(usersService.getUser(id));
 	}
 	
 	//check called times of getInterests() and getAccById() are equal to the number of user
@@ -98,27 +98,27 @@ public class TestUsersService {
 		int userNum = (int)(Math.random()*50 + 50);
 		ArrayList<UsersModel> userList = new ArrayList<UsersModel>();
 		for(int i=0; i<userNum; ++i) userList.add(RandomData.genUser());
-		when(UAS.getAccById(ArgumentMatchers.anyString())).thenReturn(new UsersModel());
+		when(userAccountService.getAccById(ArgumentMatchers.anyString())).thenReturn(new UsersModel());
 		when(userDao.read(ArgumentMatchers.any(UserFilterModel.class),
 						  ArgumentMatchers.anyInt(),
 						  ArgumentMatchers.anyInt())).thenReturn(userList);
 		
-		US.getPage(1, new UserFilterModel());
-		verify(UIS, times(userNum)).getInterests(ArgumentMatchers.anyString());
-		verify(UAS, times(userNum)).getAccById(ArgumentMatchers.anyString());
+		usersService.getPage(1, new UserFilterModel());
+		verify(userInterestService, times(userNum)).getInterests(ArgumentMatchers.anyString());
+		verify(userAccountService, times(userNum)).getAccById(ArgumentMatchers.anyString());
 	}
 	
 	@Test
 	public void testGetInvalidPage() {
 		int page = -(int)(Math.random()*10);
-		assertTrue(US.getPage(page, new UserFilterModel()).isEmpty());
+		assertTrue(usersService.getPage(page, new UserFilterModel()).isEmpty());
 	}
 	
 	@Test
 	public void testGetTotalPage() {
 		UserFilterModel filter = new UserFilterModel();
 		
-		US.getTotalPage(filter);
+		usersService.getTotalPage(filter);
 		
 		verify(userDao).getRowNum(filter);
 	}
@@ -127,10 +127,10 @@ public class TestUsersService {
 	public void testUpdate() {
 		UsersModel user = RandomData.genUser();
 		
-		US.update(user);
+		usersService.update(user);
 		
-		verify(UIS).updateInterests(user.getId(), user.getInterest());
-		verify(UAS).updateAcc(user);
+		verify(userInterestService).updateInterests(user.getId(), user.getInterest());
+		verify(userAccountService).updateAcc(user);
 		verify(userDao).update(user);
 	}
 	
@@ -138,10 +138,10 @@ public class TestUsersService {
 	public void testDelete() {
 		String id = UUID.randomUUID().toString();
 		
-		US.delete(id);
+		usersService.delete(id);
 		
-		verify(UIS).delInterests(id);
-		verify(UAS).delAcc(id);
+		verify(userInterestService).delInterests(id);
+		verify(userAccountService).delAcc(id);
 		verify(userDao).delete(id);
 	}
 	

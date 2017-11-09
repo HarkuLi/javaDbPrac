@@ -23,13 +23,13 @@ import com.harku.test.util.RandomData;
 @Transactional
 public class TestUserIntDao {
 	@Autowired
-	private UserIntDao userIntDao;
+	private UserIntDao userInterestDao;
 	
 	@Test
 	public void testCreate() {
 		String userId = UUID.randomUUID().toString();
 		String interest = RandomData.genStr(5, 10);
-		userIntDao.create(userId, interest);
+		userInterestDao.create(userId, interest);
 	}
 	
 	@Test
@@ -37,9 +37,9 @@ public class TestUserIntDao {
 		String userId = UUID.randomUUID().toString();
 		Set<String> interestSet = RandomData.genInterestSet(1, 10);
 		
-		for(String interest : interestSet) userIntDao.create(userId, interest);
+		for(String interest : interestSet) userInterestDao.create(userId, interest);
 		
-		Set<String> readInterestSet = new HashSet<String>(userIntDao.read(userId));
+		Set<String> readInterestSet = new HashSet<String>(userInterestDao.read(userId));
 		
 		assertTrue(interestSet.equals(readInterestSet));		
 	}
@@ -49,11 +49,11 @@ public class TestUserIntDao {
 		String userId = UUID.randomUUID().toString();
 		Set<String> interestSet = RandomData.genInterestSet(1, 10);
 		
-		for(String interest : interestSet) userIntDao.create(userId, interest);
+		for(String interest : interestSet) userInterestDao.create(userId, interest);
 		
-		userIntDao.delete(userId);
+		userInterestDao.delete(userId);
 		
-		List<String> readInterestList = userIntDao.read(userId);
+		List<String> readInterestList = userInterestDao.read(userId);
 		assertTrue(readInterestList.isEmpty());
 	}
 }

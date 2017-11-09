@@ -40,15 +40,15 @@ public class TestOccGetPage {
 	private OccModel filterMatchNothing;
 	
 	@Mock
-	private OccService occService;
+	private OccService occupationService;
 	
 	@InjectMocks
-	private OccRestController occRestController;
+	private OccRestController occupationRestController;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(occRestController)
+				.standaloneSetup(occupationRestController)
 				.build();
 		
 		setTestData();
@@ -126,11 +126,11 @@ public class TestOccGetPage {
 	
 	@Test
 	public void noOneMatchFilter() throws Exception {
-		when(occService.getTotalPage(argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
+		when(occupationService.getTotalPage(argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
 													&& filter.getState() == filterMatchNothing.getState())))
 			.thenReturn(0);
 		
-		when(occService.getPage(anyInt(), argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
+		when(occupationService.getPage(anyInt(), argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
 													&& filter.getState() == filterMatchNothing.getState())))
 			.thenReturn(new ArrayList<OccModel>());
 		
@@ -158,8 +158,8 @@ public class TestOccGetPage {
 	}
 	
 	private void setStubs() {
-		when(occService.getTotalPage(any(OccModel.class))).thenReturn(totalPage);
-		when(occService.getPage(eq(1), any(OccModel.class))).thenReturn(page1List);
-		when(occService.getPage(eq(2), any(OccModel.class))).thenReturn(page2List);
+		when(occupationService.getTotalPage(any(OccModel.class))).thenReturn(totalPage);
+		when(occupationService.getPage(eq(1), any(OccModel.class))).thenReturn(page1List);
+		when(occupationService.getPage(eq(2), any(OccModel.class))).thenReturn(page2List);
 	}
 }

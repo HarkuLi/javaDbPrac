@@ -34,10 +34,10 @@ public class TestUserGetByToken {
 	private UsersModel userTestData;
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@Autowired
 	@InjectMocks
@@ -86,8 +86,8 @@ public class TestUserGetByToken {
 	}
 	
 	private void setStubs() {
-		when(UAS.getAccByToken(userTestData.getToken())).thenReturn(userTestData);
-		when(US.getUser(userTestData.getId())).thenReturn(userTestData);
+		when(userAccService.getAccByToken(userTestData.getToken())).thenReturn(userTestData);
+		when(usersService.getUser(userTestData.getId())).thenReturn(userTestData);
 	}
 }
 

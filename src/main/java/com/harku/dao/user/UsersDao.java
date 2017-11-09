@@ -14,7 +14,7 @@ import com.harku.rowMapper.user.UserMapper;
 @Repository
 public class UsersDao{
 	@Autowired
-	private JdbcTemplate jdbcObj;
+	private JdbcTemplate jdbcTemplate;
 	
 	/**
 	 * @param filter {UserFilterModel}
@@ -30,7 +30,7 @@ public class UsersDao{
 		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
 		if(filterStr.length() > 0) sqlStr += " where " + filterStr;
 		
-		return jdbcObj.queryForObject(sqlStr, paramList.toArray(), Integer.class);
+		return jdbcTemplate.queryForObject(sqlStr, paramList.toArray(), Integer.class);
 	}
 	
 	public void create(UsersModel newData) {
@@ -40,7 +40,7 @@ public class UsersDao{
 		Object[] paramList = {newData.getId(), newData.getName(), newData.getAge(),
 							  newData.getBirth(), newData.getPhotoName(), newData.getOccupation()};
 		
-		jdbcObj.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr, paramList);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class UsersDao{
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>(jdbcObj.query(sqlStr, paramList.toArray(), new UserMapper()));
+		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new UserMapper()));
 		
 		return tableList;
 	}
@@ -87,14 +87,14 @@ public class UsersDao{
 		
 		paramList.add(id);
 		
-		jdbcObj.update(sqlStr, paramList.toArray());
+		jdbcTemplate.update(sqlStr, paramList.toArray());
 	}
 	
 	public void delete(String id) {
 		String sqlStr = "delete from users" +
 						" where id = ?";
 		
-		jdbcObj.update(sqlStr, new Object[] {id});
+		jdbcTemplate.update(sqlStr, new Object[] {id});
 	}
 	
 	/**

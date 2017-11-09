@@ -49,7 +49,7 @@ public class TestSignInPage {
 	private final String signInPageURL = "/WEB-INF/views/sign_in.jsp";
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccountService;
 	
 	@Spy
 	private AccountValidator accountValidator = new AccountValidator();
@@ -117,7 +117,7 @@ public class TestSignInPage {
 		
 		String tokenInCookie = result.getResponse().getCookie("LOGIN_INFO").getValue();
 		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
-		verify(UAS).updateAcc(captor.capture());
+		verify(userAccountService).updateAcc(captor.capture());
 		UsersModel updatedAccount = captor.getValue();
 		//the token of the account passed to the DB must be equal to the token in the cookie
 		assertEquals(updatedAccount.getToken(), tokenInCookie);
@@ -167,10 +167,10 @@ public class TestSignInPage {
 	}
 	
 	private void setStubs() {
-		when(UAS.checkToken(userTestData.getToken())).thenReturn(true);
-		when(UAS.checkToken(invalidToken)).thenReturn(false);
-		when(UAS.getAcc(notExistingAccount)).thenReturn(null);
-		when(UAS.getAcc(disabledUser.getAccount())).thenReturn(disabledUser);
-		when(UAS.getAcc(enabledUser.getAccount())).thenReturn(enabledUser);
+		when(userAccountService.checkToken(userTestData.getToken())).thenReturn(true);
+		when(userAccountService.checkToken(invalidToken)).thenReturn(false);
+		when(userAccountService.getAcc(notExistingAccount)).thenReturn(null);
+		when(userAccountService.getAcc(disabledUser.getAccount())).thenReturn(disabledUser);
+		when(userAccountService.getAcc(enabledUser.getAccount())).thenReturn(enabledUser);
 	}
 }

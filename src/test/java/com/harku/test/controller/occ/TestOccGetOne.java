@@ -31,15 +31,15 @@ public class TestOccGetOne {
 	private OccModel existingOccupation;
 	
 	@Mock
-	private OccService occService;
+	private OccService occupationService;
 	
 	@InjectMocks
-	private OccRestController occRestController;
+	private OccRestController occupationRestController;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(occRestController)
+				.standaloneSetup(occupationRestController)
 				.build();
 		
 		setTestData();
@@ -71,6 +71,6 @@ public class TestOccGetOne {
 	}
 	
 	private void setStubs() {
-		when(occService.getOcc(existingOccupation.getId())).thenReturn(existingOccupation);
+		when(occupationService.getOcc(existingOccupation.getId())).thenReturn(existingOccupation);
 	}
 }

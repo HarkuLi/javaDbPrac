@@ -23,7 +23,7 @@ import com.harku.validator.user.AccountValidator;
 @Controller
 public class SignPageController {
 	@Autowired
-	private UserAccService UAS;
+	private UserAccService UserAccountService;
 	
 	@Autowired
 	private AccountValidator accountValidator;
@@ -37,7 +37,7 @@ public class SignPageController {
 	public String ShowSingInPage(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO, ModelMap model) {
 		
 		//check token, and redirect to user page if signed in
-		if(LOGIN_INFO != null && UAS.checkToken(LOGIN_INFO)) {
+		if(LOGIN_INFO != null && UserAccountService.checkToken(LOGIN_INFO)) {
 			return "redirect:/user/page";
 		}
 		
@@ -58,7 +58,7 @@ public class SignPageController {
 		
 		String account = user.getAccount();
 		String password = user.getPassword();
-		UsersModel acc = UAS.getAcc(account);
+		UsersModel acc = UserAccountService.getAcc(account);
 		
 		if(acc == null)	errors.rejectValue("account", "account.noMatch");
 		else if(!acc.getState())	errors.rejectValue("account", "account.noMatch");
@@ -75,7 +75,7 @@ public class SignPageController {
 		//store the sign in info.
 		acc.setSignInTime(signInTime);
 		acc.setToken(token);
-		UAS.updateAcc(acc);
+		UserAccountService.updateAcc(acc);
 		
 		//set cookie
 		Cookie cookie = new Cookie("LOGIN_INFO", token);
@@ -90,7 +90,7 @@ public class SignPageController {
 	public String ShowSingUpPage(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO) {
 		
 		//check token, and redirect to user page if signed in
-		if(LOGIN_INFO != null && UAS.checkToken(LOGIN_INFO)) {
+		if(LOGIN_INFO != null && UserAccountService.checkToken(LOGIN_INFO)) {
 			return "redirect:/user/page";
 		}
 		

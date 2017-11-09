@@ -8,17 +8,17 @@ import com.harku.dao.user.UserIntDao;
 @Service
 public class UserIntService {
 	@Autowired
-	private UserIntDao dao;
+	private UserIntDao userInterestDao;
 	
 	public void saveInterests(String userId, String[] interestList) {
 		if(interestList == null) return;
 		for(String interestId : interestList) {
-			dao.create(userId, interestId);
+			userInterestDao.create(userId, interestId);
 		}
 	}
 	
 	public String[] getInterests(String userId) {
-		return dao.read(userId).toArray(new String[0]);
+		return userInterestDao.read(userId).toArray(new String[0]);
 	}
 	
 	public void updateInterests(String userId, String[] interestList) {
@@ -27,6 +27,6 @@ public class UserIntService {
 	}
 	
 	public void delInterests(String userId) {
-		dao.delete(userId);
+		userInterestDao.delete(userId);
 	}
 }

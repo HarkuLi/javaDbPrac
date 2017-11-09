@@ -14,7 +14,7 @@ import com.harku.rowMapper.user.UserAccMapper;
 @Repository
 public class UserAccDao {
 	@Autowired
-	private JdbcTemplate jdbcObj;
+	private JdbcTemplate jdbcTemplate;
 	
 	private final String tableName = "userAccount";
 
@@ -25,7 +25,7 @@ public class UserAccDao {
 		
 		Object[] paramList = {newData.getId(), newData.getAccount(), newData.getPassword(), newData.getState()};
 		
-		jdbcObj.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr, paramList);
 	}
 	
 	public ArrayList<UsersModel> read(UserFilterModel filter) {
@@ -40,7 +40,7 @@ public class UserAccDao {
 		if(filterStr.length() != 0) sqlStr += " where " + filterStr;
 		
 		ArrayList<UsersModel> rstList = 
-				new ArrayList<UsersModel>(jdbcObj.query(sqlStr, paramList.toArray(), new UserAccMapper()));
+				new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new UserAccMapper()));
 		
 		return rstList;
 	}
@@ -60,14 +60,14 @@ public class UserAccDao {
 		
 		paramList.add(userId);
 		
-		jdbcObj.update(sqlStr, paramList.toArray());
+		jdbcTemplate.update(sqlStr, paramList.toArray());
 	}
 
 	public void delete(String userId) {
 		String sqlStr = "delete from " + tableName +
 						" where userId = ?";
 		
-		jdbcObj.update(sqlStr, new Object[] {userId});
+		jdbcTemplate.update(sqlStr, new Object[] {userId});
 	}
 	
 	/**

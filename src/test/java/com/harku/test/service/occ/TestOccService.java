@@ -25,21 +25,21 @@ import com.harku.test.util.RandomData;
 @RunWith(MockitoJUnitRunner.class)
 public class TestOccService {
 	@Mock
-	private OccDao occDao;
+	private OccDao occupationDao;
 	
 	@Autowired
 	@InjectMocks
-	private OccService occService;
+	private OccService occupationService;
 	
 	@Test
 	public void testCreateOcc() {
 		OccModel occ = RandomData.genOcc();
 		
 		//call function
-		occService.createOcc(occ.getName(), occ.getState());
+		occupationService.createOcc(occ.getName(), occ.getState());
 		
 		//verify
-		verify(occDao).create(argThat(newData -> newData.getName().equals(occ.getName())
+		verify(occupationDao).create(argThat(newData -> newData.getName().equals(occ.getName())
 											  && newData.getState() == occ.getState()));
 	}
 	
@@ -50,11 +50,11 @@ public class TestOccService {
 		occList.add(occ);
 		
 		//set Stub
-		when(occDao.read(argThat(filter -> filter.getId().equals(occ.getId())), eq(0), eq(1)))
+		when(occupationDao.read(argThat(filter -> filter.getId().equals(occ.getId())), eq(0), eq(1)))
 			.thenReturn(occList);
 		
 		//call function
-		OccModel getOcc = occService.getOcc(occ.getId());
+		OccModel getOcc = occupationService.getOcc(occ.getId());
 		
 		//verify
 		assertEquals(occ.getName(), getOcc.getName());
@@ -69,11 +69,11 @@ public class TestOccService {
 		for(int i=0; i<occNum; ++i) occList.add(RandomData.genOcc());
 		
 		//set Stub
-		when(occDao.read(argThat(filter -> filter.getState())))
+		when(occupationDao.read(argThat(filter -> filter.getState())))
 			.thenReturn(occList);
 		
 		//call function and verify
-		assertTrue(occService.getList().equals(occList));
+		assertTrue(occupationService.getList().equals(occList));
 	}
 	
 	@Test
@@ -89,11 +89,11 @@ public class TestOccService {
 		for(int i=0; i<listNum; ++i) occList.add(new OccModel());
 		
 		//set Stub
-		when(occDao.read(filter, skipNum, entryPerPage))
+		when(occupationDao.read(filter, skipNum, entryPerPage))
 			.thenReturn(occList);
 		
 		//call function
-		ArrayList<OccModel> getList = occService.getPage(page, filter);
+		ArrayList<OccModel> getList = occupationService.getPage(page, filter);
 		
 		//verify
 		assertEquals(occList, getList);
@@ -107,10 +107,10 @@ public class TestOccService {
 		int totalPage = (int) Math.ceil((double) rowNum / entryPerPage);
 		
 		//set Stub
-		when(occDao.getRowNum(filter)).thenReturn(rowNum);
+		when(occupationDao.getRowNum(filter)).thenReturn(rowNum);
 		
 		//verify
-		assertEquals(totalPage, occService.getTotalPage(filter));
+		assertEquals(totalPage, occupationService.getTotalPage(filter));
 	}
 	
 	@Test
@@ -121,10 +121,10 @@ public class TestOccService {
 		Boolean state = occupation.getState();
 		
 		//call function
-		occService.update(id, name, state);
+		occupationService.update(id, name, state);
 		
 		//verify
-		verify(occDao).update(argThat(data -> data.getId().equals(id)
+		verify(occupationDao).update(argThat(data -> data.getId().equals(id)
 										   && data.getName().equals(name)
 										   && data.getState() == state));
 	}
@@ -134,10 +134,10 @@ public class TestOccService {
 		String id = UUID.randomUUID().toString();
 		
 		//call function
-		occService.delete(id);
+		occupationService.delete(id);
 		
 		//verify
-		verify(occDao).delete(id);
+		verify(occupationDao).delete(id);
 	}
 }
 

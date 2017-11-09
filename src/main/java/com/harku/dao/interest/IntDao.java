@@ -13,7 +13,7 @@ import com.harku.rowMapper.interest.IntMapper;
 @Repository
 public class IntDao {
 	@Autowired
-	private JdbcTemplate jdbcObj;
+	private JdbcTemplate jdbcTemplate;
 	
 	private final String tableName = "interest";
 	
@@ -31,7 +31,7 @@ public class IntDao {
 		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
 		if(filterStr.length() > 0) sqlStr += " where " + filterStr;
 		
-		return jdbcObj.queryForObject(sqlStr, paramList.toArray(), Integer.class);
+		return jdbcTemplate.queryForObject(sqlStr, paramList.toArray(), Integer.class);
 	}
 	
 	public void create(IntModel newData) {
@@ -41,7 +41,7 @@ public class IntDao {
 		
 		Object[] paramList = {newData.getId(), newData.getName(), newData.getState()};
 		
-		jdbcObj.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr, paramList);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class IntDao {
 		
 		sqlStr		 += " order by name";
 		
-		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcObj.query(sqlStr, paramList.toArray(), new IntMapper()));
+		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new IntMapper()));
 		
 		return tableList;
 	}
@@ -91,7 +91,7 @@ public class IntDao {
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcObj.query(sqlStr, paramList.toArray(), new IntMapper()));
+		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new IntMapper()));
 		
 		return tableList;
 	}
@@ -103,14 +103,14 @@ public class IntDao {
 		
 		Object[] paramList = {data.getName(), data.getState(), data.getId()};
 		
-		jdbcObj.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr, paramList);
 	}
 	
 	public void delete(String id) {
 		String sqlStr = "delete from " + tableName +
 						" where id = ?";
 		
-		jdbcObj.update(sqlStr, new Object[] {id});
+		jdbcTemplate.update(sqlStr, new Object[] {id});
 	}
 	
 	/**

@@ -19,7 +19,7 @@ import com.harku.service.occ.OccService;
 @RequestMapping("/occ")
 public class OccRestController {
 	@Autowired
-	private OccService dbService;
+	private OccService occupationService;
 	
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class OccRestController {
     	rstMap.put("id", id);
     	
     	//check data
-    	if(dbService.getOcc(id) == null) {
+    	if(occupationService.getOcc(id) == null) {
 			rstMap.put("errMsg", "No occupation matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
 		}
@@ -53,7 +53,7 @@ public class OccRestController {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	dbService.update(id, name, state.equals("1"));
+    	occupationService.update(id, name, state.equals("1"));
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -79,7 +79,7 @@ public class OccRestController {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	dbService.createOcc(name, state.equals("1"));
+    	occupationService.createOcc(name, state.equals("1"));
     	
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
     }
@@ -108,12 +108,12 @@ public class OccRestController {
     	if(state != null) filter.setState(state.equals("1"));
     	
     	//check page range
-    	totalPage = dbService.getTotalPage(filter);
+    	totalPage = occupationService.getTotalPage(filter);
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
 		//set result
-		tableList = dbService.getPage(page, filter);
+		tableList = occupationService.getPage(page, filter);
 		rstMap.put("list", tableList);
     	rstMap.put("totalPage", totalPage);
     	
@@ -129,7 +129,7 @@ public class OccRestController {
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<OccModel> GetOcc(@RequestParam String id) {
 		
-    	OccModel occupation = dbService.getOcc(id);
+    	OccModel occupation = occupationService.getOcc(id);
     	if(occupation == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(occupation);
@@ -153,12 +153,12 @@ public class OccRestController {
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		rstMap.put("id", id);
 		
-		if(dbService.getOcc(id) == null) {
+		if(occupationService.getOcc(id) == null) {
 			rstMap.put("errMsg", "No occupation matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
 		}
 		
-    	dbService.delete(id);
+    	occupationService.delete(id);
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 }

@@ -13,7 +13,7 @@ import com.harku.rowMapper.occ.OccMapper;
 @Repository
 public class OccDao {
 	@Autowired
-	private JdbcTemplate jdbcObj;
+	private JdbcTemplate jdbcTemplate;
 	
 	private final String tableName = "occ";
 
@@ -31,7 +31,7 @@ public class OccDao {
 		ArrayList<Object> paramList = (ArrayList<Object>)handledFilter.get("paramList");
 		if(filterStr.length() > 0) sqlStr += " where " + filterStr;
 		
-		return jdbcObj.queryForObject(sqlStr, paramList.toArray(), Integer.class);
+		return jdbcTemplate.queryForObject(sqlStr, paramList.toArray(), Integer.class);
 	}
 	
 	public void create(OccModel newData) {
@@ -41,7 +41,7 @@ public class OccDao {
 		
 		Object[] paramList = {newData.getId(), newData.getName(), newData.getState()};
 
-		jdbcObj.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr, paramList);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class OccDao {
 		
 		sqlStr		 += " order by name";
 		
-		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcObj.query(sqlStr, paramList.toArray(), new OccMapper()));
+		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new OccMapper()));
 		
 		return tableList;
 	}
@@ -91,7 +91,7 @@ public class OccDao {
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcObj.query(sqlStr, paramList.toArray(), new OccMapper()));
+		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new OccMapper()));
 		
 		return tableList;
 	}
@@ -103,14 +103,14 @@ public class OccDao {
 		
 		Object[] paramList = {data.getName(), data.getState(), data.getId()};
 		
-		jdbcObj.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr, paramList);
 	}
 	
 	public void delete(String id) {
 		String sqlStr = "delete from " + tableName +
 						" where id = ?";
 		
-		jdbcObj.update(sqlStr, new Object[] {id});
+		jdbcTemplate.update(sqlStr, new Object[] {id});
 	}
 	
 	/**

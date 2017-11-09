@@ -34,10 +34,10 @@ public class TestUserChangePassword {
 	private UsersModel userWithoutAccount;
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@Autowired
 	@InjectMocks
@@ -134,9 +134,9 @@ public class TestUserChangePassword {
 	}
 	
 	private void setStubs() {
-		when(UAS.getAccById(userTestData.getId())).thenReturn(userTestData);
-		when(UAS.isAccExist(userTestData.getAccount())).thenReturn(true);
+		when(userAccService.getAccById(userTestData.getId())).thenReturn(userTestData);
+		when(userAccService.isAccExist(userTestData.getAccount())).thenReturn(true);
 		
-		when(UAS.getAccById(userWithoutAccount.getId())).thenReturn(userWithoutAccount);
+		when(userAccService.getAccById(userWithoutAccount.getId())).thenReturn(userWithoutAccount);
 	}
 }

@@ -27,19 +27,19 @@ import com.harku.test.util.RandomData;
 @Transactional
 public class TestUserAccDao {
 	@Autowired
-	private UserAccDao userAccDao;
+	private UserAccDao userAccountDao;
 	
 	@Test
 	public void testCreate() {
-		userAccDao.create(RandomData.genUser());
+		userAccountDao.create(RandomData.genUser());
 	}
 	
 	@Test
 	public void testReadOne() {
 		UsersModel newUser = RandomData.genUser();
-		userAccDao.create(newUser);
+		userAccountDao.create(newUser);
 		
-		UsersModel readUser = userAccDao.read(new UserFilterModel()).get(0);
+		UsersModel readUser = userAccountDao.read(new UserFilterModel()).get(0);
 		
 		assertEquals(newUser.getAccount(), readUser.getAccount());
 	}
@@ -51,12 +51,12 @@ public class TestUserAccDao {
 		//create users and record their accounts
 		for(int i=0; i<100; ++i) {
 			UsersModel newUser = RandomData.genUser();
-			userAccDao.create(newUser);
+			userAccountDao.create(newUser);
 			accountSet.add(newUser.getAccount());
 		}
 		
 		//read and get account set
-		List<UsersModel> readUserList = userAccDao.read(new UserFilterModel());
+		List<UsersModel> readUserList = userAccountDao.read(new UserFilterModel());
 		Set<String> readAccountSet = new HashSet<String>();
 		for(UsersModel user : readUserList) readAccountSet.add(user.getAccount());
 		
@@ -68,7 +68,7 @@ public class TestUserAccDao {
 	public void testUpdate() {
 		//create random data
 		UsersModel newData = RandomData.genUser();
-		userAccDao.create(newData);
+		userAccountDao.create(newData);
 		
 		//update
 		String newAccount = "testUpdateAccount";
@@ -83,11 +83,11 @@ public class TestUserAccDao {
 		setData.setState(newState);
 		setData.setSignInTime(newSignInTime);
 		setData.setToken(newToken);
-		userAccDao.update(setData);
+		userAccountDao.update(setData);
 		
 		//read
 		UserFilterModel filter = new UserFilterModel();
-		UsersModel readUser = userAccDao.read(filter).get(0);
+		UsersModel readUser = userAccountDao.read(filter).get(0);
 		assertEquals(newAccount   , readUser.getAccount());
 		assertEquals(newPassword  , readUser.getPassword());
 		assertEquals(newState     , readUser.getState());
@@ -102,13 +102,13 @@ public class TestUserAccDao {
 		//create random data
 		for(int i=0; i<100; ++i) {
 			UsersModel newData = RandomData.genUser();
-			userAccDao.create(newData);
+			userAccountDao.create(newData);
 			idList.add(newData.getId());
 		}
 		
 		//delete
-		for(String id : idList) userAccDao.delete(id);
+		for(String id : idList) userAccountDao.delete(id);
 		
-		assertTrue(userAccDao.read(new UserFilterModel()).isEmpty());
+		assertTrue(userAccountDao.read(new UserFilterModel()).isEmpty());
 	}
 }

@@ -32,9 +32,9 @@ public class UserRestController {
 	private static final int workload = 12;
 	
 	@Autowired
-	private UsersService dbService;
+	private UsersService usersServcie;
 	@Autowired
-	private UserAccService UAS;
+	private UserAccService userAccountService;
 	
 	/**
 	 * 
@@ -96,7 +96,7 @@ public class UserRestController {
     	
     	//check data
     		//id
-    	UsersModel user = dbService.getUser(id);
+    	UsersModel user = usersServcie.getUser(id);
     	if(user == null) {
     		rstMap.put("errMsg", "No such user id.");
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
@@ -136,7 +136,7 @@ public class UserRestController {
     	newData.setInterest(interest);
     	newData.setOccupation(occupation);
     	newData.setState(state.equals("1"));
-    	dbService.update(newData);
+    	usersServcie.update(newData);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -177,12 +177,12 @@ public class UserRestController {
     	filter.setInterest(interest);
     	
     	//check page range
-    	totalPage = dbService.getTotalPage(filter);
+    	totalPage = usersServcie.getTotalPage(filter);
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
 		//set result
-		tableList = dbService.getPage(page, filter);
+		tableList = usersServcie.getPage(page, filter);
 		rstMap.put("list", tableList); 
 		rstMap.put("totalPage", totalPage);
 		
@@ -201,12 +201,12 @@ public class UserRestController {
 		if(LOGIN_INFO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		
 		//get id by token in the cookie
-		UsersModel acc = UAS.getAccByToken(LOGIN_INFO);
+		UsersModel acc = userAccountService.getAccByToken(LOGIN_INFO);
 		if(acc == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		String id = acc.getId();
 		
 		//get user by id
-		UsersModel user = dbService.getUser(id);
+		UsersModel user = usersServcie.getUser(id);
 		user.eraseSecretInfo();
 		
 		//response
@@ -222,7 +222,7 @@ public class UserRestController {
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<UsersModel> GetUser(@RequestParam String id) {
 		
-		UsersModel user = dbService.getUser(id);
+		UsersModel user = usersServcie.getUser(id);
 		if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	user.eraseSecretInfo();
     	
@@ -248,7 +248,7 @@ public class UserRestController {
 		rstMap.put("id", id);
 		
 		//get the user by id
-		UsersModel user = dbService.getUser(id);
+		UsersModel user = usersServcie.getUser(id);
 		if(user == null) {
 			rstMap.put("errMsg", "No user matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
@@ -258,7 +258,7 @@ public class UserRestController {
 		String photoName = user.getPhotoName();
 		PhotoService.delete(photoName);
 		
-		dbService.delete(id);
+		usersServcie.delete(id);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -287,7 +287,7 @@ public class UserRestController {
 		rstMap.put("id", id);
 		
 		//check data
-    	UsersModel originalAcc = UAS.getAccById(id);
+    	UsersModel originalAcc = userAccountService.getAccById(id);
     	String errMsg = checkAccountData(originalAcc, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
@@ -301,7 +301,7 @@ public class UserRestController {
     	if(originalAcc.getAccount() == null)
     		originalAcc.setAccount(account);
     	originalAcc.setPassword(password);
-    	UAS.updateAcc(originalAcc);
+    	userAccountService.updateAcc(originalAcc);
     	
 		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -316,7 +316,7 @@ public class UserRestController {
     		if(account == null) {
     			return "The user with the id doesn't have a account, and you can't create a new account without an account name.";
     		}
-    		else if(UAS.isAccExist(account)) {
+    		else if(userAccountService.isAccExist(account)) {
     			return "The account name already exists.";
     		}
     	}

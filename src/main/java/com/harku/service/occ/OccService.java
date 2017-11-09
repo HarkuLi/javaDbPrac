@@ -12,7 +12,7 @@ import com.harku.model.occ.OccModel;
 @Service
 public class OccService {
 	@Autowired
-	private OccDao dao;
+	private OccDao occupationDao;
 	
 	private final int ENTRY_PER_PAGE = 10;
 	
@@ -22,7 +22,7 @@ public class OccService {
 		newData.setId(UUID.randomUUID().toString());
 		newData.setName(name);
 		newData.setState(state);
-		dao.create(newData);
+		occupationDao.create(newData);
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class OccService {
 	public OccModel getOcc(String id) {
 		OccModel filter = new OccModel();
 		filter.setId(id);
-		ArrayList<OccModel> occList = dao.read(filter, 0, 1);
+		ArrayList<OccModel> occList = occupationDao.read(filter, 0, 1);
 		
 		if(occList.isEmpty()) return null;
 		return occList.get(0);
@@ -42,7 +42,7 @@ public class OccService {
 	public ArrayList<OccModel> getList() {
 		OccModel filter = new OccModel();
 		filter.setState(true);
-		return dao.read(filter);
+		return occupationDao.read(filter);
 	}
 	
 	public ArrayList<OccModel> getPage(int page, OccModel filter) {
@@ -50,11 +50,11 @@ public class OccService {
 		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
-		return dao.read(filter, skipNum, ENTRY_PER_PAGE);
+		return occupationDao.read(filter, skipNum, ENTRY_PER_PAGE);
 	}
 	
 	public int getTotalPage(OccModel filter) {
-		int rowNum = dao.getRowNum(filter);
+		int rowNum = occupationDao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
@@ -66,10 +66,10 @@ public class OccService {
 		newData.setId(id);
 		newData.setName(name);
 		newData.setState(state);
-		dao.update(newData);
+		occupationDao.update(newData);
 	}
 	
 	public void delete(String id) {
-		dao.delete(id);
+		occupationDao.delete(id);
 	}
 }

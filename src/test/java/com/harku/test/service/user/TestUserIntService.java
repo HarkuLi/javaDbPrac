@@ -24,11 +24,11 @@ import com.harku.test.util.RandomData;
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserIntService {
 	@Mock
-	private UserIntDao userIntDao;
+	private UserIntDao userInterestDao;
 	
 	@Autowired
 	@InjectMocks
-	private UserIntService UIS;
+	private UserIntService userInterestService;
 	
 	@Test
 	public void testSaveInterests() {
@@ -42,9 +42,9 @@ public class TestUserIntService {
 		}
 		
 		//call function
-		UIS.saveInterests(userId, interests);
+		userInterestService.saveInterests(userId, interests);
 		
-		verify(userIntDao, times(interestNum)).create(anyString(), anyString());
+		verify(userInterestDao, times(interestNum)).create(anyString(), anyString());
 	}
 	
 	@Test
@@ -53,10 +53,10 @@ public class TestUserIntService {
 		ArrayList<String> interests = new ArrayList<String>(RandomData.genInterestSet(5, 10));
 		
 		//set Stub
-		when(userIntDao.read(userId)).thenReturn(interests);
+		when(userInterestDao.read(userId)).thenReturn(interests);
 		
 		//call function
-		String[] rst = UIS.getInterests(userId);
+		String[] rst = userInterestService.getInterests(userId);
 		
 		assertTrue(Arrays.equals(interests.toArray(new String[0]), rst));
 	}
@@ -67,10 +67,10 @@ public class TestUserIntService {
 		String[] interests = RandomData.genInterestSet(5, 10).toArray(new String[0]);
 		
 		//call function
-		UIS.updateInterests(userId, interests);
+		userInterestService.updateInterests(userId, interests);
 		
-		verify(userIntDao).delete(userId);
-		verify(userIntDao, times(interests.length)).create(anyString(), anyString());
+		verify(userInterestDao).delete(userId);
+		verify(userInterestDao, times(interests.length)).create(anyString(), anyString());
 	}
 	
 	@Test
@@ -78,8 +78,8 @@ public class TestUserIntService {
 		String userId = UUID.randomUUID().toString();
 		
 		//call function
-		UIS.delInterests(userId);
+		userInterestService.delInterests(userId);
 		
-		verify(userIntDao).delete(userId);
+		verify(userInterestDao).delete(userId);
 	}
 }

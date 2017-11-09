@@ -43,10 +43,10 @@ public class TestSignUpAction {
 	private final String existingAccountName = "existingAccountName";
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccountService;
 	
 	@Autowired
 	@InjectMocks
@@ -117,7 +117,7 @@ public class TestSignUpAction {
 		
 		//delete the created test photo
 		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
-		verify(US).createUser(captor.capture());
+		verify(usersService).createUser(captor.capture());
 		UsersModel capturedData = captor.getValue();
 		PhotoService.delete(capturedData.getPhotoName());
 	}
@@ -234,7 +234,7 @@ public class TestSignUpAction {
 	}
 	
 	private void setStubs() {
-		when(UAS.isAccExist(randomUser.getAccount())).thenReturn(false);
-		when(UAS.isAccExist(existingAccountName)).thenReturn(true);
+		when(userAccountService.isAccExist(randomUser.getAccount())).thenReturn(false);
+		when(userAccountService.isAccExist(existingAccountName)).thenReturn(true);
 	}
 }

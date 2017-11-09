@@ -19,7 +19,7 @@ import com.harku.service.interest.IntService;
 @RequestMapping("/interest")
 public class IntRestController {
 	@Autowired
-	private IntService dbService;
+	private IntService interestService;
 	
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class IntRestController {
     	rstMap.put("id", id);
 		
     	//check data
-		if(dbService.getInterest(id) == null) {
+		if(interestService.getInterest(id) == null) {
 			rstMap.put("errMsg", "No interest matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
 		}
@@ -53,7 +53,7 @@ public class IntRestController {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	dbService.update(id, name, state.equals("1"));
+    	interestService.update(id, name, state.equals("1"));
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -79,7 +79,7 @@ public class IntRestController {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	dbService.createInt(name, state.equals("1"));
+    	interestService.createInt(name, state.equals("1"));
     	
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
     }
@@ -108,12 +108,12 @@ public class IntRestController {
     	if(state != null) filter.setState(state.equals("1"));
     	
     	//check page range
-    	totalPage = dbService.getTotalPage(filter);
+    	totalPage = interestService.getTotalPage(filter);
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
 		//set result
-		tableList = dbService.getPage(page, filter);
+		tableList = interestService.getPage(page, filter);
 		rstMap.put("list", tableList);
     	rstMap.put("totalPage", totalPage);
     	
@@ -129,7 +129,7 @@ public class IntRestController {
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<IntModel> GetInterest(@RequestParam String id) {
 		
-		IntModel interest = dbService.getInterest(id);
+		IntModel interest = interestService.getInterest(id);
     	if(interest == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(interest);
@@ -153,12 +153,12 @@ public class IntRestController {
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		rstMap.put("id", id);
 		
-		if(dbService.getInterest(id) == null) {
+		if(interestService.getInterest(id) == null) {
 			rstMap.put("errMsg", "No interest matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
 		}
 		
-    	dbService.delete(id);
+    	interestService.delete(id);
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 }

@@ -23,11 +23,11 @@ import com.harku.test.util.RandomData;
 @Transactional
 public class TestOccDao {
 	@Autowired
-	private OccDao occDao;
+	private OccDao occupationDao;
 	
 	@Test
 	public void testCreate() {
-		occDao.create(RandomData.genOcc());
+		occupationDao.create(RandomData.genOcc());
 	}
 	
 	@Test
@@ -39,14 +39,14 @@ public class TestOccDao {
 		for(int i=0; i<10; ++i) {
 			OccModel newOcc = RandomData.genOcc();
 			newOcc.setName(occNamePattern + RandomData.genStr(5, 10));
-			occDao.create(newOcc);
+			occupationDao.create(newOcc);
 			idList.add(newOcc.getId());
 		}
 		
 		//read
 		OccModel filter = new OccModel();
 		filter.setName("testOcc");
-		List<OccModel> readOccList = occDao.read(filter, 0, 10);
+		List<OccModel> readOccList = occupationDao.read(filter, 0, 10);
 		for(OccModel occ : readOccList) assertTrue(idList.contains(occ.getId()));
 	}
 	
@@ -57,12 +57,12 @@ public class TestOccDao {
 		//create
 		for(int i=0; i<100; ++i) {
 			OccModel newOcc = RandomData.genOcc();
-			occDao.create(newOcc);
+			occupationDao.create(newOcc);
 			idList.add(newOcc.getId());
 		}
 		
 		//read
-		List<OccModel> readOccList = occDao.read(new OccModel());
+		List<OccModel> readOccList = occupationDao.read(new OccModel());
 		for(OccModel occ : readOccList) assertTrue(idList.contains(occ.getId()));
 	}
 	
@@ -73,18 +73,18 @@ public class TestOccDao {
 		//create
 		for(int i=0; i<createNum; ++i) {
 			OccModel newOcc = RandomData.genOcc();
-			occDao.create(newOcc);
+			occupationDao.create(newOcc);
 		}
 		
 		//read
-		assertEquals(createNum, occDao.getRowNum(new OccModel()));
+		assertEquals(createNum, occupationDao.getRowNum(new OccModel()));
 	}
 	
 	@Test
 	public void testUpdate() {
 		//create
 		OccModel occ = RandomData.genOcc();
-		occDao.create(occ);
+		occupationDao.create(occ);
 		
 		//update
 		String newName = "test update name";
@@ -93,10 +93,10 @@ public class TestOccDao {
 		updateData.setId(occ.getId());
 		updateData.setName(newName);
 		updateData.setState(newState);
-		occDao.update(updateData);
+		occupationDao.update(updateData);
 		
 		//verify
-		OccModel readOcc = occDao.read(new OccModel()).get(0);
+		OccModel readOcc = occupationDao.read(new OccModel()).get(0);
 		assertEquals(newName, readOcc.getName());
 		assertEquals(newState, readOcc.getState());
 	}
@@ -109,15 +109,15 @@ public class TestOccDao {
 		//create
 		for(int i=0; i<createNum; ++i) {
 			OccModel newOcc = RandomData.genOcc();
-			occDao.create(newOcc);
+			occupationDao.create(newOcc);
 			idList.add(newOcc.getId());
 		}
 		
 		//delete
-		for(String id : idList) occDao.delete(id);
+		for(String id : idList) occupationDao.delete(id);
 		
 		//verify
-		List<OccModel> readOccList = occDao.read(new OccModel());
+		List<OccModel> readOccList = occupationDao.read(new OccModel());
 		assertTrue(readOccList.isEmpty());
 	}
 }

@@ -12,7 +12,7 @@ import com.harku.model.interest.IntModel;
 @Service
 public class IntService {
 	@Autowired
-	private IntDao dao;
+	private IntDao interestDao;
 	
 	private final int ENTRY_PER_PAGE = 10;
 	
@@ -22,7 +22,7 @@ public class IntService {
 		newData.setId(UUID.randomUUID().toString());
 		newData.setName(name);
 		newData.setState(state);
-		dao.create(newData);
+		interestDao.create(newData);
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class IntService {
 	public IntModel getInterest(String id) {
 		IntModel filter = new IntModel();
 		filter.setId(id);
-		ArrayList<IntModel> interestList = dao.read(filter, 0, 1);
+		ArrayList<IntModel> interestList = interestDao.read(filter, 0, 1);
 		
 		if(interestList.isEmpty()) return null;
 		return interestList.get(0);
@@ -44,17 +44,17 @@ public class IntService {
 		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
-		return dao.read(filter, skipNum, ENTRY_PER_PAGE);
+		return interestDao.read(filter, skipNum, ENTRY_PER_PAGE);
 	}
 	
 	public ArrayList<IntModel> getList() {
 		IntModel filter = new IntModel();
 		filter.setState(true);
-		return dao.read(filter);
+		return interestDao.read(filter);
 	}
 	
 	public int getTotalPage(IntModel filter) {
-		int rowNum = dao.getRowNum(filter);
+		int rowNum = interestDao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
@@ -66,10 +66,10 @@ public class IntService {
 		newData.setId(id);
 		newData.setName(name);
 		newData.setState(state);
-		dao.update(newData);
+		interestDao.update(newData);
 	}
 	
 	public void delete(String id) {
-		dao.delete(id);
+		interestDao.delete(id);
 	}
 }

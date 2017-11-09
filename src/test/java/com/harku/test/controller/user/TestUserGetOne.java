@@ -34,10 +34,10 @@ public class TestUserGetOne {
 	private UsersModel userTestData;
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@Autowired
 	@InjectMocks
@@ -81,6 +81,6 @@ public class TestUserGetOne {
 	}
 	
 	private void setStubs() {
-		when(US.getUser(userTestData.getId())).thenReturn(userTestData);
+		when(usersService.getUser(userTestData.getId())).thenReturn(userTestData);
 	}
 }

@@ -25,9 +25,9 @@ import com.harku.service.user.UsersService;
 public class SignRestController {
 	private static final int workload = 12;
 	@Autowired
-	private UserAccService UAS;
+	private UserAccService UserAccountService;
 	@Autowired
-	private UsersService dbService;
+	private UsersService usersService;
 	
 	/**
 	 * response:
@@ -95,7 +95,7 @@ public class SignRestController {
     	newData.setInterest(interest);
     	newData.setOccupation(occupation);
     	newData.setState(state.equals("1"));
-    	dbService.createUser(newData);
+    	usersService.createUser(newData);
     	
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
 	}
@@ -110,7 +110,7 @@ public class SignRestController {
     	}
     	
     	//check account name
-    	if(UAS.isAccExist(account)) {
+    	if(UserAccountService.isAccExist(account)) {
     		return "The account name already exists.";
     	}
     	

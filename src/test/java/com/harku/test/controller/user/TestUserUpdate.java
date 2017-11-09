@@ -42,10 +42,10 @@ public class TestUserUpdate {
 	private UsersModel userTestData;
 	
 	@Mock
-	private UsersService US;
+	private UsersService usersService;
 	
 	@Mock
-	private UserAccService UAS;
+	private UserAccService userAccService;
 	
 	@Autowired
 	@InjectMocks
@@ -112,7 +112,7 @@ public class TestUserUpdate {
 		
 		//delete the created test photo
 		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
-		verify(US).update(captor.capture());
+		verify(usersService).update(captor.capture());
 		UsersModel capturedData = captor.getValue();
 		PhotoService.delete(capturedData.getPhotoName());
 	}
@@ -201,7 +201,7 @@ public class TestUserUpdate {
 	}
 	
 	private void setStubs() {
-		when(US.getUser(userTestData.getId())).thenReturn(userTestData);
+		when(usersService.getUser(userTestData.getId())).thenReturn(userTestData);
 	}
 }
 

@@ -16,14 +16,14 @@ import com.harku.service.user.UserAccService;
 @Component
 public class SignInInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
-	private UserAccService UAS;
+	private UserAccService userAccountService;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
 		
 		//check token
 		HashMap<String, String> cookie = cookieHandle(req.getCookies());
-		if(!(cookie != null && UAS.checkToken(cookie.get("LOGIN_INFO")))) {
+		if(!(cookie != null && userAccountService.checkToken(cookie.get("LOGIN_INFO")))) {
 			res.sendRedirect(ConstantConfig.SIGN_IN_ROUTE);
 			return false;
 		}
