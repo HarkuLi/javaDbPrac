@@ -41,26 +41,34 @@ public class TestUserAccDao {
 		
 		UsersModel readUser = userAccountDao.read(new UserFilterModel()).get(0);
 		
+		assertEquals(newUser.getId(), readUser.getId());
 		assertEquals(newUser.getAccount(), readUser.getAccount());
 	}
 	
 	@Test
 	public void testReadMany() {
+		Set<String> idSet = new HashSet<String>();
 		Set<String> accountSet = new HashSet<String>();
 		
 		//create users and record their accounts
 		for(int i=0; i<100; ++i) {
 			UsersModel newUser = RandomData.genUser();
 			userAccountDao.create(newUser);
+			idSet.add(newUser.getId());
 			accountSet.add(newUser.getAccount());
 		}
 		
 		//read and get account set
 		List<UsersModel> readUserList = userAccountDao.read(new UserFilterModel());
+		Set<String> readIdSet = new HashSet<String>();
 		Set<String> readAccountSet = new HashSet<String>();
-		for(UsersModel user : readUserList) readAccountSet.add(user.getAccount());
+		for(UsersModel user : readUserList) {
+			readIdSet.add(user.getId());
+			readAccountSet.add(user.getAccount());
+		}
 		
 		//compare the read set and original set
+		assertTrue(readIdSet.equals(idSet));
 		assertTrue(readAccountSet.equals(accountSet));
 	}
 	

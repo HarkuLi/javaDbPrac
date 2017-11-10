@@ -4,24 +4,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
-import com.harku.rowMapper.user.UserMapper;
 
 @Repository
 public class UsersDao{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	private final String tableName = "user";
+	
+	private final RowMapper<UsersModel> userRowMapper = new BeanPropertyRowMapper<UsersModel>(UsersModel.class);
+	
 	/**
 	 * @param filter {UserFilterModel}
 	 * @return {int} total number of rows
 	 */
 	public int getRowNum(UserFilterModel filter) {
-		String sqlStr = "select count(id) from users";
+		String sqlStr = "select count(id) from " + tableName;
 		
 		//handle the filter
 		HashMap<String, Object> handledFilter = filterHandle(filter);
@@ -34,7 +39,8 @@ public class UsersDao{
 	}
 	
 	public void create(UsersModel newData) {
-		String sqlStr = "insert into users (id, name, age, birth, photoName, occupation)";
+		String sqlStr = "insert into " + tableName;
+		sqlStr += " (id, name, age, birth, photo_name, occupation)";
 		sqlStr += " values (?, ?, ?, ?, ?, ?)";
 		
 		Object[] paramList = {newData.getId(), newData.getName(), newData.getAge(),
@@ -51,7 +57,7 @@ public class UsersDao{
 	 * @return {ArrayList<UsersModel>} a list of user object
 	 */
 	public ArrayList<UsersModel> read(UserFilterModel filter, int skipNum, int readNum) {
-		String sqlStr = "select * from users";
+		String sqlStr = "select * from " + tableName;
 		
 		//handle the filter
 		HashMap<String, Object> handledFilter = filterHandle(filter);
@@ -67,13 +73,13 @@ public class UsersDao{
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new UserMapper()));
+		ArrayList<UsersModel> tableList = new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), userRowMapper));
 		
 		return tableList;
 	}
 	
 	public void update(UsersModel setData) {
-		String sqlStr = "update users";
+		String sqlStr = "update " + tableName;
 		
 		//handle the data to set
 		String id = setData.getId();
@@ -91,7 +97,7 @@ public class UsersDao{
 	}
 	
 	public void delete(String id) {
-		String sqlStr = "delete from users" +
+		String sqlStr = "delete from " + tableName +
 						" where id = ?";
 		
 		jdbcTemplate.update(sqlStr, new Object[] {id});
@@ -134,7 +140,7 @@ public class UsersDao{
 		}
 		if(photoName != null) {
 			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "photoName = ?";
+			queryStr += "photo_name = ?";
 			paramList.add(photoName);
 		}
 		if(occupation != null) {

@@ -37,37 +37,37 @@ public class AppConfigTest {
 	}
 	
 	private void prepareTables(JdbcTemplate jdbcObj) {
-		//"users" table
-		String sqlStr = "create table users(";
+		//"user" table
+		String sqlStr = "create table user(";
 		sqlStr += "id varchar(40) not null, ";
 		sqlStr += "name varchar(40) not null, ";
 		sqlStr += "age int not null, ";
 		sqlStr += "birth date not null, ";
-		sqlStr += "photoName varchar(100), ";
+		sqlStr += "photo_name varchar(100), ";
 		sqlStr += "occupation varchar(40) not null, ";
 		sqlStr += "primary key (id));";
 		jdbcObj.execute(sqlStr);
 		
 		//"userInterest" table
 		sqlStr  = "create table userInterest(";
-		sqlStr += "userId varchar(40), ";
+		sqlStr += "id varchar(40), ";
 		sqlStr += "interest varchar(40));";
 		jdbcObj.execute(sqlStr);
 		
 		//"userAccount" table
 		sqlStr  = "create table userAccount(";
-		sqlStr += "userId varchar(40) not null, ";
+		sqlStr += "id varchar(40) not null, ";
 		sqlStr += "account varchar(32), ";
 		sqlStr += "password varchar(60), ";
 		sqlStr += "state boolean default true, ";
-		sqlStr += "signInTime bigint, ";
+		sqlStr += "sign_in_time bigint, ";
 		sqlStr += "token varchar(100), ";
 		sqlStr += "unique (account), ";
-		sqlStr += "primary key (userId));";
+		sqlStr += "primary key (id));";
 		jdbcObj.execute(sqlStr);
 		
-		//"occ" table
-		sqlStr  = "create table occ(";
+		//"occupation" table
+		sqlStr  = "create table occupation(";
 		sqlStr += "id varchar(40) not null, ";
 		sqlStr += "name varchar(40) not null, ";
 		sqlStr += "state boolean not null, ";

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
-import com.harku.rowMapper.user.UserAccMapper;
 
 @Repository
 public class UserAccDao {
@@ -17,10 +18,12 @@ public class UserAccDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	private final String tableName = "userAccount";
+	
+	private final RowMapper<UsersModel> userAccountRowMapper = new BeanPropertyRowMapper<UsersModel>(UsersModel.class);
 
 	public void create(UsersModel newData) {
 		String sqlStr = "insert into " + tableName;
-		sqlStr	     += " (userId, account, password, state)";
+		sqlStr	     += " (id, account, password, state)";
 		sqlStr 		 += " values (?, ?, ?, ?)";
 		
 		Object[] paramList = {newData.getId(), newData.getAccount(), newData.getPassword(), newData.getState()};
@@ -40,7 +43,7 @@ public class UserAccDao {
 		if(filterStr.length() != 0) sqlStr += " where " + filterStr;
 		
 		ArrayList<UsersModel> rstList = 
-				new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new UserAccMapper()));
+				new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), userAccountRowMapper));
 		
 		return rstList;
 	}
@@ -56,7 +59,7 @@ public class UserAccDao {
 		ArrayList<String> paramList = (ArrayList<String>)handledSetData.get("paramList");
 		if(setDataStr.length() == 0) return;	//new data is null
 		sqlStr += " set " + setDataStr;
-		sqlStr += " where userId = ?";
+		sqlStr += " where id = ?";
 		
 		paramList.add(userId);
 		
@@ -65,7 +68,7 @@ public class UserAccDao {
 
 	public void delete(String userId) {
 		String sqlStr = "delete from " + tableName +
-						" where userId = ?";
+						" where id = ?";
 		
 		jdbcTemplate.update(sqlStr, new Object[] {userId});
 	}
@@ -107,7 +110,7 @@ public class UserAccDao {
 		}
 		if(signInTime != null) {
 			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "signInTime = ?";
+			queryStr += "sign_in_time = ?";
 			paramList.add(signInTime);
 		}
 		if(token != null) {
@@ -147,7 +150,7 @@ public class UserAccDao {
 		}
 		if(userId != null) {
 			if(queryStr.length() != 0) queryStr += " and ";
-			queryStr += "userId = ?";
+			queryStr += "id = ?";
 			paramList.add(userId);
 		}
 		if(token != null) {

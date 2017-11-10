@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.harku.model.occ.OccModel;
-import com.harku.rowMapper.occ.OccMapper;
 
 @Repository
 public class OccDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private final String tableName = "occ";
+	private final String tableName = "occupation";
 
+	private final RowMapper<OccModel> occupationRowMapper = new BeanPropertyRowMapper<OccModel>(OccModel.class);
+	
 	/**
 	 * @param filter {OccModel}
 	 * @return {int} total number of rows, and return -1 when the table doesn't exist
@@ -62,7 +65,7 @@ public class OccDao {
 		
 		sqlStr		 += " order by name";
 		
-		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new OccMapper()));
+		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), occupationRowMapper));
 		
 		return tableList;
 	}
@@ -91,7 +94,7 @@ public class OccDao {
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new OccMapper()));
+		ArrayList<OccModel> tableList = new ArrayList<OccModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), occupationRowMapper));
 		
 		return tableList;
 	}

@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.harku.model.interest.IntModel;
-import com.harku.rowMapper.interest.IntMapper;
 
 @Repository
 public class IntDao {
@@ -16,6 +17,8 @@ public class IntDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	private final String tableName = "interest";
+	
+	private final RowMapper<IntModel> interestRowMapper = new BeanPropertyRowMapper<IntModel>(IntModel.class);
 	
 	/**
 	 * @param filter {IntModel}
@@ -62,7 +65,7 @@ public class IntDao {
 		
 		sqlStr		 += " order by name";
 		
-		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new IntMapper()));
+		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), interestRowMapper));
 		
 		return tableList;
 	}
@@ -91,7 +94,7 @@ public class IntDao {
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), new IntMapper()));
+		ArrayList<IntModel> tableList = new ArrayList<IntModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), interestRowMapper));
 		
 		return tableList;
 	}
