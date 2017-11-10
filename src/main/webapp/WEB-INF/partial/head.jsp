@@ -16,4 +16,4 @@
 
 <!-- custom file -->
 <link rel="stylesheet" type="text/css" href="/javaDbPrac/css/global.css">
-<script src="/javaDbPrac/js/global.js"></script>
+<script src="/javaDbPrac/js/datepickerLoader.js"></script>

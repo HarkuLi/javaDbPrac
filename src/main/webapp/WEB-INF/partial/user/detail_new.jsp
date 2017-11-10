@@ -73,3 +73,5 @@
 <button type="submit" id="user_create" class="btn btn-default btn-sm center-block"><spring:message code="submit.text" /></button>
 <div class="blank_block"></div>
 
+<script src="/javaDbPrac/js/datepickerLoader.js"></script>
+

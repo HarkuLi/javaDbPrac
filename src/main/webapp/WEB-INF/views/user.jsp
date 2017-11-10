@@ -48,15 +48,9 @@
 			</div>
 			<!-- pop up content -->
 			<div class="popup_content">
-				<form id="popup_form_new" class="form-horizontal center-block" enctype="multipart/form-data">
-					<jsp:include page="/WEB-INF/partial/user/detail_new.jsp"></jsp:include>
-				</form>
-				<form id="popup_form_edit" class="form-horizontal center-block" enctype="multipart/form-data">
-					<jsp:include page="/WEB-INF/partial/user/detail_edit.jsp"></jsp:include>
-				</form>
-				<form id="popup_form_chpw" class="form-horizontal center-block" enctype="multipart/form-data">
-					<jsp:include page="/WEB-INF/partial/user/change_password.jsp"></jsp:include>
-				</form>
+				<form id="popup_form_new" class="form-horizontal center-block" enctype="multipart/form-data"></form>
+				<form id="popup_form_edit" class="form-horizontal center-block" enctype="multipart/form-data"></form>
+				<form id="popup_form_chpw" class="form-horizontal center-block" enctype="multipart/form-data"></form>
 			</div>
 		</div>
 	</div>

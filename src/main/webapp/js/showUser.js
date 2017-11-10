@@ -82,7 +82,19 @@ $(() => {
   });
   
   $("#new_btn").on("click", () => {
-  	switchForm($("#popup_form_new"));
+		if(processing) return;
+		processing = true;
+		
+		loadNewUserForm()
+  		.then(() => {
+  			switchForm($("#popup_form_new"));
+			})
+			.catch(error => {
+				alert(error);
+			})
+			.then(() => {
+				processing = false;
+			});
   });
   
   $(".close_btn").on("click", function(){
@@ -94,14 +106,23 @@ $(() => {
   	
   	var self = this;
   	processing = true;
-  	$("body").css("cursor", "progress");
-  	edit(self)
+		$("body").css("cursor", "progress");
+		
+		loadEditUserForm()
+			.then(() => {
+				return edit(self);
+			})
   		.then(() => {
   			//show edit form
   			switchForm($("#popup_form_edit"));
-    		$("body").css("cursor", "");
+			})
+			.catch(error => {
+				alert(error);
+			})
+			.then(() => {
+				$("body").css("cursor", "");
     		processing = false;
-    	});
+			});
   });
   
   $("#data_table").on("click", ".delete", function(){
@@ -134,11 +155,22 @@ $(() => {
     	});
   });
   
-  $("#change_password").on("click", (event) => {
-  	event.preventDefault();
-  	
-  	editPw();
-  	switchForm($("#popup_form_chpw"));
+  $("#popup_form_edit").on("click", "#change_password", (event) => {
+		event.preventDefault();
+		if(processing) return;
+		processing = true;
+		
+		loadChangePasswordForm()
+			.then(() => {
+				editPw();
+				switchForm($("#popup_form_chpw"));
+			})
+			.catch(error => {
+				alert(error);
+			})
+			.then(() => {
+				processing = false;
+			});
   });
   
   $("#popup_form_chpw").on("click", "[type='submit']", () => {
@@ -387,9 +419,6 @@ function edit(self){
 					}
 				}
 			}
-		})
-		.catch(error => {
-			console.log(error);
 		});
 }
 
@@ -1037,7 +1066,98 @@ function updatePassword(passedData){
 	});
 }
 
+/**
+ * 
+ * @return {Promise}
+ */
+function loadNewUserForm(){
+	return new Promise((resolve, reject) => {
+		//assume there are input elements in the form
+		//therefore, we can check whether the form has been loaded by checking the number of input elements
+		if($("#popup_form_new").find("input").length) {
+			resolve(false);
+			return;
+		}
 
+		$("#popup_form_new").load(`${URLBase}/user/new_form`, (res, status, xhr) => {
+			if(status !== "success") {
+  			reject("failed to load the content.");
+  			return;
+  		}
+  		if(xhr.status !== 200) {
+  			reject("failed to load the content: " + res.errMsg);
+  			return;
+  		}
+  		resolve(true);
+		});
+	})
+	.then(isLoad => {
+		if(isLoad){
+			//load the occupation and interest lists
+			return initialization();
+		}
+	});
+}
+
+/**
+ * 
+ * @return {Promise}
+ */
+function loadEditUserForm(){
+	return new Promise((resolve, reject) => {
+		//assume there are input elements in the form
+		//therefore, we can check whether the form has been loaded by checking the number of input elements
+		if($("#popup_form_edit").find("input").length) {
+			resolve(false);
+			return;
+		}
+
+		$("#popup_form_edit").load(`${URLBase}/user/edit_form`, (res, status, xhr) => {
+			if(status !== "success") {
+  			reject("failed to load the content.");
+  			return;
+  		}
+  		if(xhr.status !== 200) {
+  			reject("failed to load the content: " + res.errMsg);
+  			return;
+  		}
+  		resolve(true);
+		});
+	})
+	.then(isLoad => {
+		if(isLoad){
+			//load the occupation and interest lists
+			return initialization();
+		}
+	});
+}
+
+/**
+ * 
+ * @return {Promise}
+ */
+function loadChangePasswordForm(){
+	return new Promise((resolve, reject) => {
+		//assume there are input elements in the form
+		//therefore, we can check whether the form has been loaded by checking the number of input elements
+		if($("#popup_form_chpw").find("input").length) {
+			resolve(false);
+			return;
+		}
+
+		$("#popup_form_chpw").load(`${URLBase}/user/change_password_form`, (res, status, xhr) => {
+			if(status !== "success") {
+  			reject("failed to load the content.");
+  			return;
+  		}
+  		if(xhr.status !== 200) {
+  			reject("failed to load the content: " + res.errMsg);
+  			return;
+  		}
+  		resolve(true);
+		});
+	});
+}
 
 
 
