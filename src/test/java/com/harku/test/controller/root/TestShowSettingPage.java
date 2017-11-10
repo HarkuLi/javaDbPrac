@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.WebConfig;
 import com.harku.controller.root.RootPageController;
-import com.harku.test.config.ViewResolverTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -26,7 +25,7 @@ public class TestShowSettingPage {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(new RootPageController())
-				.setViewResolvers(ViewResolverTest.genResolver())
+				.setViewResolvers(new WebConfig().viewResolver())
 				.build();
 	}
 	

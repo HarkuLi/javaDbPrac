@@ -30,7 +30,6 @@ import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
-import com.harku.test.config.ViewResolverTest;
 import com.harku.test.util.RandomData;
 import com.harku.validator.user.AccountValidator;
 
@@ -61,7 +60,7 @@ public class TestSignInPage {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(SPController)
-				.setViewResolvers(ViewResolverTest.genResolver())
+				.setViewResolvers(new WebConfig().viewResolver())
 				.build();
 		
 		setTestData();

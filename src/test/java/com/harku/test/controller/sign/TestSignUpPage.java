@@ -22,7 +22,6 @@ import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
-import com.harku.test.config.ViewResolverTest;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,7 +42,7 @@ public class TestSignUpPage {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(SPController)
-				.setViewResolvers(ViewResolverTest.genResolver())
+				.setViewResolvers(new WebConfig().viewResolver())
 				.build();
 		
 		setTestData();
