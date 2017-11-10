@@ -14,11 +14,12 @@ public class UserIntDao {
 	private final String tableName = "userInterest";
 	
 	public void create(String userId, String interest) {
-		String sqlStr = "insert into " + tableName;
-		sqlStr	     += " (id, interest)";
-		sqlStr 		 += " values (?, ?)";
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("insert into ");
+		sqlStr.append(tableName);
+		sqlStr.append(" (id, interest) values (?, ?)");
 		
-		jdbcTemplate.update(sqlStr, userId, interest);
+		jdbcTemplate.update(sqlStr.toString(), userId, interest);
 	}
 	
 	/**
@@ -27,19 +28,22 @@ public class UserIntDao {
 	 * @return {List<String>} return a list of interest id of the user
 	 */
 	public List<String> read(String userId) {
-		String sqlStr = "select interest" +
-				        " from " + tableName +
-			            " where id = ?";
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("select interest from ");
+		sqlStr.append(tableName);
+		sqlStr.append(" where id = ?");
 		
-		List<String> rstList = jdbcTemplate.queryForList(sqlStr, String.class, userId);
+		List<String> rstList = jdbcTemplate.queryForList(sqlStr.toString(), String.class, userId);
 		
 		return rstList;
 	}
 
 	public void delete(String userId) {
-		String sqlStr = "delete from " + tableName +
-						" where id = ?";
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("delete from ");
+		sqlStr.append(tableName);
+		sqlStr.append(" where id = ?");
 		
-		jdbcTemplate.update(sqlStr, new Object[] {userId});
+		jdbcTemplate.update(sqlStr.toString(), new Object[] {userId});
 	}
 }

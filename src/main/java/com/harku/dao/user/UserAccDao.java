@@ -2,6 +2,8 @@ package com.harku.dao.user;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -22,70 +24,81 @@ public class UserAccDao {
 	private final RowMapper<UsersModel> userAccountRowMapper = new BeanPropertyRowMapper<UsersModel>(UsersModel.class);
 
 	public void create(UsersModel newData) {
-		String sqlStr = "insert into " + tableName;
-		sqlStr	     += " (id, account, password, state)";
-		sqlStr 		 += " values (?, ?, ?, ?)";
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("insert into ");
+		sqlStr.append(tableName);
+		sqlStr.append(" (id, account, password, state)");
+		sqlStr.append(" values (?, ?, ?, ?)");
 		
 		Object[] paramList = {newData.getId(), newData.getAccount(), newData.getPassword(), newData.getState()};
 		
-		jdbcTemplate.update(sqlStr, paramList);
+		jdbcTemplate.update(sqlStr.toString(), paramList);
 	}
 	
 	public ArrayList<UsersModel> read(UserFilterModel filter) {
-		String sqlStr = "select *" +
-				        " from " + tableName;
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("select * from ");
+		sqlStr.append(tableName);
 		
 		//handle the filter
-		HashMap<String, Object> handledFilter = filterHandle(filter);
+		Map<String, Object> handledFilter = filterHandle(filter);
 		String filterStr = (String)handledFilter.get("queryStr");
 		@SuppressWarnings("unchecked")
-		ArrayList<String> paramList = (ArrayList<String>)handledFilter.get("paramList");
-		if(filterStr.length() != 0) sqlStr += " where " + filterStr;
+		List<String> paramList = (List<String>)handledFilter.get("paramList");
+		if(filterStr.length() != 0) {
+			sqlStr.append(" where ");
+			sqlStr.append(filterStr);
+		}
 		
 		ArrayList<UsersModel> rstList = 
-				new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr, paramList.toArray(), userAccountRowMapper));
+				new ArrayList<UsersModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), userAccountRowMapper));
 		
 		return rstList;
 	}
 	
 	public void update(UsersModel setData) {
-		String sqlStr = "update " + tableName;
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("update ");
+		sqlStr.append(tableName);
 
 		//handle the data to set
 		String userId = setData.getId();
-		HashMap<String, Object> handledSetData = setDataHandle(setData);
+		Map<String, Object> handledSetData = setDataHandle(setData);
 		String setDataStr = (String)handledSetData.get("queryStr");
 		@SuppressWarnings("unchecked")
-		ArrayList<String> paramList = (ArrayList<String>)handledSetData.get("paramList");
+		List<String> paramList = (List<String>)handledSetData.get("paramList");
 		if(setDataStr.length() == 0) return;	//new data is null
-		sqlStr += " set " + setDataStr;
-		sqlStr += " where id = ?";
+		sqlStr.append(" set ");
+		sqlStr.append(setDataStr);
+		sqlStr.append(" where id = ?");
 		
 		paramList.add(userId);
 		
-		jdbcTemplate.update(sqlStr, paramList.toArray());
+		jdbcTemplate.update(sqlStr.toString(), paramList.toArray());
 	}
 
 	public void delete(String userId) {
-		String sqlStr = "delete from " + tableName +
-						" where id = ?";
+		StringBuffer sqlStr = new StringBuffer();
+		sqlStr.append("delete from ");
+		sqlStr.append(tableName);
+		sqlStr.append(" where id = ?");
 		
-		jdbcTemplate.update(sqlStr, new Object[] {userId});
+		jdbcTemplate.update(sqlStr.toString(), new Object[] {userId});
 	}
 	
 	/**
 	 * 
 	 * @param setData {UsersModel}
-	 * @return {HashMap<String, Object>}
+	 * @return {Map<String, Object>}
 	 *   {
 	 *     queryStr: String
-	 *     paramList: ArrayList<Object>,
+	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private HashMap<String, Object> setDataHandle(UsersModel setData) {
-		String queryStr = "";
-		ArrayList<Object> paramList = new ArrayList<Object>();
-		HashMap<String, Object> rst = new HashMap<String, Object>();
+	private Map<String, Object> setDataHandle(UsersModel setData) {
+		StringBuffer queryStr = new StringBuffer();
+		List<Object> paramList = new ArrayList<Object>();
+		Map<String, Object> rst = new HashMap<String, Object>();
 		
 		String account = setData.getAccount();
 		String password = setData.getPassword();
@@ -94,32 +107,32 @@ public class UserAccDao {
 		String token = setData.getToken();
 		
 		if(account != null) {
-			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "account = ?";
+			if(queryStr.length() != 0) queryStr.append(", ");
+			queryStr.append("account = ?");
 			paramList.add(account);
 		}
 		if(password != null) {
-			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "password = ?";
+			if(queryStr.length() != 0) queryStr.append(", ");
+			queryStr.append("password = ?");
 			paramList.add(password);
 		}
 		if(state != null) {
-			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "state = ?";
+			if(queryStr.length() != 0) queryStr.append(", ");
+			queryStr.append("state = ?");
 			paramList.add(state);
 		}
 		if(signInTime != null) {
-			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "sign_in_time = ?";
+			if(queryStr.length() != 0) queryStr.append(", ");
+			queryStr.append("sign_in_time = ?");
 			paramList.add(signInTime);
 		}
 		if(token != null) {
-			if(queryStr.length() != 0) queryStr += ", ";
-			queryStr += "token = ?";
+			if(queryStr.length() != 0) queryStr.append(", ");
+			queryStr.append("token = ?");
 			paramList.add(token);
 		}
 		
-		rst.put("queryStr", queryStr);
+		rst.put("queryStr", queryStr.toString());
 		rst.put("paramList", paramList);
 		return rst;
 	}
@@ -127,16 +140,16 @@ public class UserAccDao {
 	/**
 	 * 
 	 * @param filter {UserFilterModel}
-	 * @return {HashMap<String, Object>}
+	 * @return {Map<String, Object>}
 	 *   {
 	 *     queryStr: String
-	 *     paramList: ArrayList<Object>,
+	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private HashMap<String, Object> filterHandle(UserFilterModel filter) {
-		String queryStr = "";
-		ArrayList<Object> paramList = new ArrayList<Object>();
-		HashMap<String, Object> rst = new HashMap<String, Object>();
+	private Map<String, Object> filterHandle(UserFilterModel filter) {
+		StringBuffer queryStr = new StringBuffer();
+		List<Object> paramList = new ArrayList<Object>();
+		Map<String, Object> rst = new HashMap<String, Object>();
 		
 		String account = filter.getAccount();
 		String userId = filter.getId();
@@ -144,22 +157,22 @@ public class UserAccDao {
 		
 		//get filters
 		if(account != null) {
-			if(queryStr.length() != 0) queryStr += " and ";
-			queryStr += "account = ?";
+			if(queryStr.length() != 0) queryStr.append(" and ");
+			queryStr.append("account = ?");
 			paramList.add(account);
 		}
 		if(userId != null) {
-			if(queryStr.length() != 0) queryStr += " and ";
-			queryStr += "id = ?";
+			if(queryStr.length() != 0) queryStr.append(" and ");
+			queryStr.append("id = ?");
 			paramList.add(userId);
 		}
 		if(token != null) {
-			if(queryStr.length() != 0) queryStr += " and ";
-			queryStr += "token = ?";
+			if(queryStr.length() != 0) queryStr.append(" and ");
+			queryStr.append("token = ?");
 			paramList.add(token);
 		}
 		
-		rst.put("queryStr", queryStr);
+		rst.put("queryStr", queryStr.toString());
 		rst.put("paramList", paramList);
 		
 		return rst;
