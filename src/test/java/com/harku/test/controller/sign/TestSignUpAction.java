@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -28,8 +29,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.controller.sign.SignRestController;
 import com.harku.model.user.UsersModel;
+import com.harku.service.occ.OccService;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
@@ -47,6 +50,9 @@ public class TestSignUpAction {
 	
 	@Mock
 	private UserAccService userAccountService;
+	
+	@Mock
+	private OccService occupationService;
 	
 	@Autowired
 	@InjectMocks
@@ -75,7 +81,7 @@ public class TestSignUpAction {
 	 * @throws Exception 
 	 */
 	@Test
-	public void createUserBasic() throws Exception {
+	public void basic() throws Exception {
 		MvcResult result 
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.param("account"		, randomUser.getAccount())
@@ -95,7 +101,7 @@ public class TestSignUpAction {
 	}
 	
 	@Test
-	public void createUserWithPhoto() throws Exception {
+	public void withPhoto() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.file("photo", defaultPhoto)
@@ -123,7 +129,7 @@ public class TestSignUpAction {
 	}
 	
 	@Test
-	public void createUserWithInterest() throws Exception {
+	public void withInterest() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.param("account"		, randomUser.getAccount())
@@ -144,7 +150,7 @@ public class TestSignUpAction {
 	}
 	
 	@Test
-	public void createUserPhotoWithoutPhotoType() throws Exception {
+	public void photoWithoutPhotoType() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.file("photo", defaultPhoto)		
@@ -166,15 +172,15 @@ public class TestSignUpAction {
 	}
 	
 	@Test
-	public void createUserWithInvalidAge() throws Exception {
-		String invalidAge = RandomData.genStr(3, 5);
+	public void notNumberAge() throws Exception {
+		String notNumberAge = RandomData.genStr(3, 5);
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.param("account"		, randomUser.getAccount())
 							.param("password"		, randomUser.getPassword())
 							.param("passwordCheck"	, randomUser.getPassword())
 							.param("name"			, randomUser.getName())
-							.param("age"			, invalidAge)
+							.param("age"			, notNumberAge)
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
 							.param("state"			, randomUser.getState()?"1":"0"))
@@ -188,7 +194,52 @@ public class TestSignUpAction {
 	}
 	
 	@Test
-	public void createUserWithExistingAccountName() throws Exception {
+	public void negativeAge() throws Exception {
+		int negativeAge = (int)(Math.random()*20 - 21);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, randomUser.getAccount())
+							.param("password"		, randomUser.getPassword())
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, randomUser.getName())
+							.param("age"			, Integer.toString(negativeAge))
+							.param("birth"			, randomUser.getBirth())
+							.param("occupation"		, randomUser.getOccupation())
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(randomUser.getAccount(), res.get("account"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void tooLongAccount() throws Exception {
+		int invalidLength = ConstantConfig.MAX_ACCOUNT_LENGTH + 1;
+		String tooLongAccount = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, tooLongAccount)
+							.param("password"		, randomUser.getPassword())
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, randomUser.getName())
+							.param("age"			, randomUser.getAge().toString())
+							.param("birth"			, randomUser.getBirth())
+							.param("occupation"		, randomUser.getOccupation())
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(tooLongAccount, res.get("account"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void existingAccountName() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.param("account"		, existingAccountName)
@@ -209,7 +260,30 @@ public class TestSignUpAction {
 	}
 	
 	@Test
-	public void createUserWithWrongPasswordCheck() throws Exception {
+	public void tooLongPassword() throws Exception {
+		int invalidLength = ConstantConfig.MAX_PASSWORD_LENGTH + 1;
+		String tooLongPassword = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, randomUser.getAccount())
+							.param("password"		, tooLongPassword)
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, randomUser.getName())
+							.param("age"			, randomUser.getAge().toString())
+							.param("birth"			, randomUser.getBirth())
+							.param("occupation"		, randomUser.getOccupation())
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(randomUser.getAccount(), res.get("account"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void wrongPasswordCheck() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
 							.param("account"		, randomUser.getAccount())
@@ -229,6 +303,93 @@ public class TestSignUpAction {
 		assertNotNull(res.get("errMsg"));
 	}
 	
+	@Test
+	public void tooLongName() throws Exception {
+		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
+		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, randomUser.getAccount())
+							.param("password"		, randomUser.getPassword())
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, tooLongName)
+							.param("age"			, randomUser.getAge().toString())
+							.param("birth"			, randomUser.getBirth())
+							.param("occupation"		, randomUser.getOccupation())
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(randomUser.getAccount(), res.get("account"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void invalidBirth() throws Exception {
+		String invalidBirth = RandomData.genStr(11, 20);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, randomUser.getAccount())
+							.param("password"		, randomUser.getPassword())
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, randomUser.getName())
+							.param("age"			, randomUser.getAge().toString())
+							.param("birth"			, invalidBirth)
+							.param("occupation"		, randomUser.getOccupation())
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(randomUser.getAccount(), res.get("account"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void notExistingOccupation() throws Exception {
+		String notExistingOccupation = UUID.randomUUID().toString();
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, randomUser.getAccount())
+							.param("password"		, randomUser.getPassword())
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, randomUser.getName())
+							.param("age"			, randomUser.getAge().toString())
+							.param("birth"			, randomUser.getBirth())
+							.param("occupation"		, notExistingOccupation)
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(randomUser.getAccount(), res.get("account"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void otherOccupation() throws Exception {
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/sign_up/action")
+							.param("account"		, randomUser.getAccount())
+							.param("password"		, randomUser.getPassword())
+							.param("passwordCheck"	, randomUser.getPassword())
+							.param("name"			, randomUser.getName())
+							.param("age"			, randomUser.getAge().toString())
+							.param("birth"			, randomUser.getBirth())
+							.param("occupation"		, "other")
+							.param("state"			, randomUser.getState()?"1":"0"))
+					 .andExpect(status().isCreated())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(randomUser.getAccount(), res.get("account"));
+	}
+	
 	private void setTestData() {
 		randomUser = RandomData.genUser();
 	}
@@ -236,5 +397,9 @@ public class TestSignUpAction {
 	private void setStubs() {
 		when(userAccountService.isAccExist(randomUser.getAccount())).thenReturn(false);
 		when(userAccountService.isAccExist(existingAccountName)).thenReturn(true);
+		when(occupationService.getOcc(randomUser.getOccupation())).thenReturn(RandomData.genOcc());
 	}
 }
+
+
+

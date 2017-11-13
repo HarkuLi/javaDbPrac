@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.harku.config.ConstantConfig;
 import com.harku.model.user.UserFilterModel;
 import com.harku.model.user.UsersModel;
+import com.harku.service.occ.OccService;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
@@ -32,9 +34,11 @@ public class UserRestController {
 	private static final int workload = 12;
 	
 	@Autowired
-	private UsersService usersServcie;
+	private UsersService usersService;
 	@Autowired
 	private UserAccService userAccountService;
+	@Autowired
+	private OccService occupationService;
 	
 	/**
 	 * 
@@ -90,24 +94,28 @@ public class UserRestController {
 		@RequestParam String state) {
 		
     	Map<String, Object> rstMap = new HashMap<String, Object>();
+    	StringBuffer errMsg = new StringBuffer();
+    	UsersModel newData = new UsersModel();
     	String newPhotoName = null;
     	
     	rstMap.put("id", id);
     	
     	//check data
-    		//id
-    	UsersModel user = usersServcie.getUser(id);
-    	if(user == null) {
-    		rstMap.put("errMsg", "No such user id.");
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+    	newData.setId(id);
+    	newData.setName(name);
+    	try {
+    		newData.setAge(Integer.parseInt(age));
+    	} catch(Exception e) {
+    		errMsg.append("Wrong input for age.\n");
     	}
-    		//age
-    	String pattern = "^\\d+$";
-    	Pattern r = Pattern.compile(pattern);
-    	Matcher m = r.matcher(age);
-    	if(!m.find()) {
-	    	rstMap.put("errMsg", "Wrong input for age.");
-	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		newData.setBirth(birth);
+		newData.setInterest(interest);
+    	newData.setOccupation(occupation);
+    	newData.setState(state.equals("1"));
+    	errMsg.append(checkUserData(newData));
+    	if(errMsg.length() != 0) {
+    		rstMap.put("errMsg", errMsg.toString());
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	//update photo
@@ -125,18 +133,8 @@ public class UserRestController {
 		}
 		
 		//call service function
-    	UsersModel newData = new UsersModel();
-    	newData.setId(id);
-    	newData.setName(name);
-    	newData.setAge(Integer.parseInt(age));
-		newData.setBirth(birth);
-    	if(newPhotoName != null) {
-    		newData.setPhotoName(newPhotoName);
-    	}
-    	newData.setInterest(interest);
-    	newData.setOccupation(occupation);
-    	newData.setState(state.equals("1"));
-    	usersServcie.update(newData);
+		newData.setPhotoName(newPhotoName);
+    	usersService.update(newData);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -177,12 +175,12 @@ public class UserRestController {
     	filter.setInterest(interest);
     	
     	//check page range
-    	totalPage = usersServcie.getTotalPage(filter);
+    	totalPage = usersService.getTotalPage(filter);
 		if(page < 1) page = 1;
 		else if(page > totalPage) page = totalPage;
 		
 		//set result
-		tableList = usersServcie.getPage(page, filter);
+		tableList = usersService.getPage(page, filter);
 		rstMap.put("list", tableList); 
 		rstMap.put("totalPage", totalPage);
 		
@@ -206,7 +204,7 @@ public class UserRestController {
 		String id = acc.getId();
 		
 		//get user by id
-		UsersModel user = usersServcie.getUser(id);
+		UsersModel user = usersService.getUser(id);
 		user.eraseSecretInfo();
 		
 		//response
@@ -222,7 +220,7 @@ public class UserRestController {
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<UsersModel> GetUser(@RequestParam String id) {
 		
-		UsersModel user = usersServcie.getUser(id);
+		UsersModel user = usersService.getUser(id);
 		if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	user.eraseSecretInfo();
     	
@@ -248,7 +246,7 @@ public class UserRestController {
 		rstMap.put("id", id);
 		
 		//get the user by id
-		UsersModel user = usersServcie.getUser(id);
+		UsersModel user = usersService.getUser(id);
 		if(user == null) {
 			rstMap.put("errMsg", "No user matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
@@ -258,7 +256,7 @@ public class UserRestController {
 		String photoName = user.getPhotoName();
 		PhotoService.delete(photoName);
 		
-		usersServcie.delete(id);
+		usersService.delete(id);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -327,5 +325,37 @@ public class UserRestController {
     	}
     	
     	return null;
+	}
+	
+	private String checkUserData(UsersModel user) {
+		StringBuffer errMsg = new StringBuffer();
+		
+		//id
+		String id = user.getId();
+		if(id != null) {
+			UsersModel getUser = usersService.getUser(id);
+	    	if(getUser == null) errMsg.append("No such user id.\n");
+		}
+		
+		//name
+		if(user.getName().length() > ConstantConfig.MAX_NAME_LENGTH)
+			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
+		
+		//age
+		Integer age = user.getAge();
+		if(age != null && age < 0) errMsg.append("The age shouldn't be lower than 0.\n");
+		
+		//birth
+    	String patternStr = "^\\d{1,4}-\\d{2}-\\d{2}$";
+    	Pattern pattern = Pattern.compile(patternStr);
+    	Matcher matcher = pattern.matcher(user.getBirth());
+    	if(!matcher.find()) errMsg.append("Wrong format for birth.\n");
+    	
+		//occupation
+    	String occ = user.getOccupation();
+		if(!occ.equals("other") && occupationService.getOcc(occ) == null)
+			errMsg.append("No such occupation.\n");
+		
+		return errMsg.toString();
 	}
 }

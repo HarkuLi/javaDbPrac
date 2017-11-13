@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -28,8 +29,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
 import com.harku.model.user.UsersModel;
+import com.harku.service.occ.OccService;
 import com.harku.service.photo.PhotoService;
 import com.harku.service.user.UserAccService;
 import com.harku.service.user.UsersService;
@@ -46,6 +49,9 @@ public class TestUserUpdate {
 	
 	@Mock
 	private UserAccService userAccService;
+	
+	@Mock
+	private OccService occupationService;
 	
 	@Autowired
 	@InjectMocks
@@ -74,7 +80,7 @@ public class TestUserUpdate {
 	 * @throws Exception 
 	 */
 	@Test
-	public void updateUserBasic() throws Exception {
+	public void basic() throws Exception {
 		MvcResult result 
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.param("id"			, userTestData.getId())
@@ -92,7 +98,7 @@ public class TestUserUpdate {
 	}
 	
 	@Test
-	public void updateUserWithPhoto() throws Exception {
+	public void withPhoto() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.file("photo", defaultPhoto)
@@ -118,7 +124,7 @@ public class TestUserUpdate {
 	}
 	
 	@Test
-	public void updateUserWithInterest() throws Exception {
+	public void withInterest() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.param("id"			, userTestData.getId())
@@ -137,7 +143,7 @@ public class TestUserUpdate {
 	}
 	
 	@Test
-	public void updateUserPhotoWithoutPhotoType() throws Exception {
+	public void photoWithoutPhotoType() throws Exception {
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.file("photo", defaultPhoto)		
@@ -157,7 +163,7 @@ public class TestUserUpdate {
 	}
 	
 	@Test
-	public void updateNotExistingUser() throws Exception {
+	public void notExistingUser() throws Exception {
 		UsersModel notExistingUser = RandomData.genUser();
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
@@ -177,13 +183,112 @@ public class TestUserUpdate {
 	}
 	
 	@Test
-	public void updateUserWithInvalidAge() throws Exception {
-		String invalidAge = RandomData.genStr(3, 5);
+	public void notNumberAge() throws Exception {
+		String notNumberAge = RandomData.genStr(3, 5);
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.param("id"			, userTestData.getId())
 							.param("name"		, userTestData.getName())
-							.param("age"		, invalidAge)
+							.param("age"		, notNumberAge)
+							.param("birth"		, userTestData.getBirth())
+							.param("occupation"	, userTestData.getOccupation())
+							.param("state"		, userTestData.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void negativeAge() throws Exception {
+		int negativeAge = (int)(Math.random()*20 - 21);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
+							.param("id"			, userTestData.getId())
+							.param("name"		, userTestData.getName())
+							.param("age"		, Integer.toString(negativeAge))
+							.param("birth"		, userTestData.getBirth())
+							.param("occupation"	, userTestData.getOccupation())
+							.param("state"		, userTestData.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void invalidBirth() throws Exception {
+		String invalidBirth = RandomData.genStr(11, 20);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
+							.param("id"			, userTestData.getId())
+							.param("name"		, userTestData.getName())
+							.param("age"		, userTestData.getAge().toString())
+							.param("birth"		, invalidBirth)
+							.param("occupation"	, userTestData.getOccupation())
+							.param("state"		, userTestData.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void notExistingOccupation() throws Exception {
+		String notExistingOccupation = UUID.randomUUID().toString();
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
+							.param("id"			, userTestData.getId())
+							.param("name"		, userTestData.getName())
+							.param("age"		, userTestData.getAge().toString())
+							.param("birth"		, userTestData.getBirth())
+							.param("occupation"	, notExistingOccupation)
+							.param("state"		, userTestData.getState()?"1":"0"))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void otherOccupation() throws Exception {
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
+							.param("id"			, userTestData.getId())
+							.param("name"		, userTestData.getName())
+							.param("age"		, userTestData.getAge().toString())
+							.param("birth"		, userTestData.getBirth())
+							.param("occupation"	, "other")
+							.param("state"		, userTestData.getState()?"1":"0"))
+					 .andExpect(status().isOk())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+	}
+	
+	@Test
+	public void tooLongName() throws Exception {
+		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
+		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
+							.param("id"			, userTestData.getId())
+							.param("name"		, tooLongName)
+							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
 							.param("state"		, userTestData.getState()?"1":"0"))
@@ -202,6 +307,7 @@ public class TestUserUpdate {
 	
 	private void setStubs() {
 		when(usersService.getUser(userTestData.getId())).thenReturn(userTestData);
+		when(occupationService.getOcc(userTestData.getOccupation())).thenReturn(RandomData.genOcc());
 	}
 }
 
