@@ -48,8 +48,8 @@
 			</div>
 			<!-- pop up content -->
 			<div class="popup_content">
-				<form id="popup_form_new" class="form-horizontal center-block" enctype="multipart/form-data"></form>
-				<form id="popup_form_edit" class="form-horizontal center-block" enctype="multipart/form-data"></form>
+				<form id="popup_form_new" class="center-block" enctype="multipart/form-data"></form>
+				<form id="popup_form_edit" class="center-block" enctype="multipart/form-data"></form>
 				<form id="popup_form_chpw" class="form-horizontal center-block" enctype="multipart/form-data"></form>
 			</div>
 		</div>
