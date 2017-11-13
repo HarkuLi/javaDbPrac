@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.harku.config.ConstantConfig;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
 import com.harku.validator.user.AccountValidator;
@@ -80,7 +81,7 @@ public class SignPageController {
 		//set cookie
 		Cookie cookie = new Cookie("LOGIN_INFO", token);
 		cookie.setMaxAge(UserAccService.EXPIRE_TIME_SEC);
-		cookie.setPath("/javaDbPrac");
+		cookie.setPath(ConstantConfig.ROOT_ROUTE);
 		res.addCookie(cookie);
 		
 		return "redirect:/user/page";
@@ -102,7 +103,7 @@ public class SignPageController {
 		
 		Cookie cookie = new Cookie("LOGIN_INFO", "");
 		cookie.setMaxAge(0);
-		cookie.setPath("/javaDbPrac");
+		cookie.setPath(ConstantConfig.ROOT_ROUTE);
 		res.addCookie(cookie);
 		return "redirect:/sign_in/page";
 	}

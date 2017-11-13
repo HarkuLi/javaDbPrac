@@ -9,5 +9,7 @@ public class ConstantConfig {
 	
 	public static final Locale[] SUPPORTED_LOCALES = {Locale.US, Locale.TAIWAN, Locale.JAPAN};
 	
-	public static final String SIGN_IN_ROUTE = "/javaDbPrac/sign_in/page";
+	public static final String ROOT_ROUTE = "/javaDbPrac";
+	
+	public static final String SIGN_IN_ROUTE = ROOT_ROUTE + "/sign_in/page";
 }
