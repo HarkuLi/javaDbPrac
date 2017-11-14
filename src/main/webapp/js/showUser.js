@@ -72,7 +72,10 @@ $(() => {
   	event.preventDefault();
   	
   	if(processing) return;
-  	if(!isFillAll($("#popup_form_new"))) return alert("You have some fields not filled.");
+  	
+  	var checkFill = checkFillAll($("#popup_form_new"));
+  	if(!checkFill.isFilled)
+  		return alert("You have some fields not filled:\n" + checkFill.blankList.toString());
   	
   	processing = true;
   	newUser()
@@ -145,7 +148,10 @@ $(() => {
   	event.preventDefault();
   	
   	if(processing) return;
-  	if(!isFillAll($("#popup_form_edit"))) return alert("You have some fields not filled.");
+  	
+  	var checkFill = checkFillAll($("#popup_form_edit"));
+  	if(!checkFill.isFilled)
+  		return alert("You have some fields not filled:\n" + checkFill.blankList.toString());
   	
   	var self = this;
   	processing = true;
@@ -177,7 +183,10 @@ $(() => {
   	event.preventDefault();
   	
   	if(processing) return;
-  	if(!isFillAll($("#popup_form_chpw"))) return alert("You have some fields not filled.");
+  	
+  	var checkFill = checkFillAll($("#popup_form_chpw"));
+  	if(!checkFill.isFilled)
+  		return alert("You have some fields not filled:\n" + checkFill.blankList.toString());
   	
   	processing = true;
   	changePw()
@@ -456,24 +465,31 @@ function isChecked(checkEleList){
 
 /**
  * @param form {Object} jquery element
- * @return {Boolean}
+ * @return {isFilled: Boolean, blankList: Array<String>}
  */
-function isFillAll(form){
+function checkFillAll(form){
 	const exceptList = ["id", "photo", "photoName", "interest[]", "state"];
 	
-	var inputList = $(form).find("[name]");
-	
-	for(let ele of inputList){
-		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
-		if(!$(ele).prop("value").length) return false;
-	}
+	var resultObj = {
+			isFilled: true,
+			blankList: []
+	};
 	
 	//check state field
 	if($(form).find("[name='state']").length){
-		if(!isChecked($(form).find("[name='state']"))) return false;
+		if(!isChecked($(form).find("[name='state']"))) resultObj.blankList.push("state");
 	}
 	
-	return true;
+	//check other fields
+	var inputList = $(form).find("[name]");
+	for(let ele of inputList){
+		if(exceptList.indexOf($(ele).prop("name")) !== -1) continue;
+		if(!$(ele).prop("value").length) resultObj.blankList.push($(ele).prop("name"));
+	}
+	
+	if(resultObj.blankList.length) resultObj.isFilled = false;
+	
+	return resultObj;
 }
 
 /**
