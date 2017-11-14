@@ -277,7 +277,7 @@ public class UserRestController {
 	@RequestMapping(value = "/change_password", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Map<String, Object>> ChangePassword(
 		@RequestParam String id,
-		@RequestParam(required = false) String account,
+		@RequestParam String account,
 		@RequestParam String password,
 		@RequestParam String passwordCheck) {
 		
@@ -304,23 +304,21 @@ public class UserRestController {
 		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
-	private String checkAccountData(UsersModel originalAcc, String account, String password, String passwordCheck) {
-		if(originalAcc == null) {
+	private String checkAccountData(UsersModel originalAccount, String account, String password, String passwordCheck) {
+		if(originalAccount == null) {
 			return "No account matches the id.";
 		}
 		
 		//check account name
-    	if(originalAcc.getAccount() == null) {
-    		if(account == null) {
-    			return "The user with the id doesn't have a account, and you can't create a new account without an account name.";
-    		}
-    		else if(userAccountService.isAccExist(account)) {
-    			return "The account name already exists.";
-    		}
-    	}
+		if(account.length() > ConstantConfig.MAX_ACCOUNT_LENGTH)
+			return "The account can't be longer than " + ConstantConfig.MAX_ACCOUNT_LENGTH + " characters.\n";
+		else if(originalAccount.getAccount() == null && userAccountService.isAccExist(account))
+   			return "The account name already exists.";
     	
     	//check whether the password is equal to the checked password
-    	if(!passwordCheck.equals(password)) {
+    	if(password.length() > ConstantConfig.MAX_PASSWORD_LENGTH)
+    		return "The password can't be longer than " + ConstantConfig.MAX_PASSWORD_LENGTH + " characters.\n";
+    	else if(!passwordCheck.equals(password)) {
     		return "The checked password doesn't match.";
     	}
     	

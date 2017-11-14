@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
 import com.harku.model.user.UsersModel;
 import com.harku.service.user.UserAccService;
@@ -57,6 +58,7 @@ public class TestUserChangePassword {
 	public void changeSuccessfully() throws Exception {
 		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
 											.param("id", userTestData.getId())
+											.param("account", userTestData.getAccount())
 											.param("password", "newPassword")
 											.param("passwordCheck", "newPassword"))
 				.andExpect(status().isOk())
@@ -72,6 +74,7 @@ public class TestUserChangePassword {
 		String notExistingId = UUID.randomUUID().toString();
 		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
 											.param("id", notExistingId)
+											.param("account", "account")
 											.param("password", "newPassword")
 											.param("passwordCheck", "newPassword"))
 				.andExpect(status().isBadRequest())
@@ -83,17 +86,12 @@ public class TestUserChangePassword {
 	}
 	
 	@Test
-	public void createAccountWithoutAccountName() throws Exception {
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
+	public void withoutAccountName() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
 											.param("id", userWithoutAccount.getId())
 											.param("password", "newPassword")
 											.param("passwordCheck", "newPassword"))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andReturn();
-				
-		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
-		assertEquals(userWithoutAccount.getId(), res.get("id"));
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -115,12 +113,47 @@ public class TestUserChangePassword {
 	public void checkPasswordNotMatched() throws Exception {
 		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
 											.param("id", userTestData.getId())
+											.param("account", userTestData.getAccount())
 											.param("password", "newPassword")
 											.param("passwordCheck", "wrongPasswordCheck"))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
 
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+	}
+	
+	@Test
+	public void tooLongAccount() throws Exception {
+		int invalidLength = ConstantConfig.MAX_ACCOUNT_LENGTH + 1;
+		String tooLongAccount = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
+											.param("id", userTestData.getId())
+											.param("account", tooLongAccount)
+											.param("password", "newPassword")
+											.param("passwordCheck", "newPassword"))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andReturn();
+				
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+	}
+	
+	@Test
+	public void tooLongPassword() throws Exception {
+		int invalidLength = ConstantConfig.MAX_PASSWORD_LENGTH + 1;
+		String tooLongPassword = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/change_password")
+											.param("id", userTestData.getId())
+											.param("account", userTestData.getAccount())
+											.param("password", tooLongPassword)
+											.param("passwordCheck", tooLongPassword))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andReturn();
+				
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(userTestData.getId(), res.get("id"));
 	}

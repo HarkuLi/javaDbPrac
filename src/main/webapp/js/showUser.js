@@ -200,6 +200,9 @@ $(() => {
  * @return {Promise} return true if success
  */
 function changePw(){
+	//enable the element to pass
+	$("#popup_form_chpw").find("[name='account']").prop("disabled", false);
+	
 	var passedData = new FormData($("#popup_form_chpw")[0]);
 	return updatePassword(passedData)
 		.then(() => {
@@ -1035,6 +1038,7 @@ function getUser(id){
  * @param passedData {Object}
  * 			{
  * 				id: String,
+ * 				account: String,
  *				password: String,
  *				passwordCheck: String
  * 			}
