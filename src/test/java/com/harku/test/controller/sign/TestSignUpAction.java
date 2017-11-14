@@ -31,28 +31,28 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.sign.SignRestController;
-import com.harku.model.UsersModel;
-import com.harku.service.OccService;
+import com.harku.model.UserModel;
+import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
-import com.harku.service.UserAccService;
-import com.harku.service.UsersService;
+import com.harku.service.UserAccountService;
+import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestSignUpAction {
 	private static byte[] defaultPhoto;
 	private MockMvc mockMvc;
-	private UsersModel randomUser;
+	private UserModel randomUser;
 	private final String existingAccountName = "existingAccountName";
 	
 	@Mock
-	private UsersService usersService;
+	private UserService usersService;
 	
 	@Mock
-	private UserAccService userAccountService;
+	private UserAccountService userAccountService;
 	
 	@Mock
-	private OccService occupationService;
+	private OccupationService occupationService;
 	
 	@Autowired
 	@InjectMocks
@@ -122,9 +122,9 @@ public class TestSignUpAction {
 		assertEquals(randomUser.getAccount(), res.get("account"));
 		
 		//delete the created test photo
-		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
+		ArgumentCaptor<UserModel> captor = ArgumentCaptor.forClass(UserModel.class);
 		verify(usersService).createUser(captor.capture());
-		UsersModel capturedData = captor.getValue();
+		UserModel capturedData = captor.getValue();
 		PhotoService.delete(capturedData.getPhotoName());
 	}
 	

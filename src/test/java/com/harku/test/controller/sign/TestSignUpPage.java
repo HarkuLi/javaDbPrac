@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
-import com.harku.model.UsersModel;
-import com.harku.service.UserAccService;
+import com.harku.model.UserModel;
+import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,11 +29,11 @@ import com.harku.test.util.RandomData;
 @ContextConfiguration(classes = WebConfig.class)
 public class TestSignUpPage {
 	private MockMvc mockMvc;
-	private UsersModel userTestData;
+	private UserModel userTestData;
 	private final String invalidToken = "invalidToken";
 	
 	@Mock
-	private UserAccService userAccService;
+	private UserAccountService userAccService;
 	
 	@InjectMocks
 	private SignPageController SPController;

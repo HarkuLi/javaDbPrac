@@ -31,27 +31,27 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
-import com.harku.model.UsersModel;
-import com.harku.service.OccService;
+import com.harku.model.UserModel;
+import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
-import com.harku.service.UserAccService;
-import com.harku.service.UsersService;
+import com.harku.service.UserAccountService;
+import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserUpdate {
 	private static byte[] defaultPhoto;
 	private MockMvc mockMvc;
-	private UsersModel userTestData;
+	private UserModel userTestData;
 	
 	@Mock
-	private UsersService usersService;
+	private UserService usersService;
 	
 	@Mock
-	private UserAccService userAccService;
+	private UserAccountService userAccService;
 	
 	@Mock
-	private OccService occupationService;
+	private OccupationService occupationService;
 	
 	@Autowired
 	@InjectMocks
@@ -117,9 +117,9 @@ public class TestUserUpdate {
 		assertEquals(userTestData.getId(), res.get("id"));
 		
 		//delete the created test photo
-		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
+		ArgumentCaptor<UserModel> captor = ArgumentCaptor.forClass(UserModel.class);
 		verify(usersService).update(captor.capture());
-		UsersModel capturedData = captor.getValue();
+		UserModel capturedData = captor.getValue();
 		PhotoService.delete(capturedData.getPhotoName());
 	}
 	
@@ -164,7 +164,7 @@ public class TestUserUpdate {
 	
 	@Test
 	public void notExistingUser() throws Exception {
-		UsersModel notExistingUser = RandomData.genUser();
+		UserModel notExistingUser = RandomData.genUser();
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.param("id"			, notExistingUser.getId())

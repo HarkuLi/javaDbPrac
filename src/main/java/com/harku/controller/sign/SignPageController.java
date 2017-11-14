@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.UsersModel;
-import com.harku.service.UserAccService;
+import com.harku.model.UserModel;
+import com.harku.service.UserAccountService;
 
 @Controller
 public class SignPageController {
 	@Autowired
-	private UserAccService UserAccountService;
+	private UserAccountService userAccountService;
 	
 	@Autowired
 	private AccountValidator accountValidator;
@@ -37,18 +37,18 @@ public class SignPageController {
 	public String ShowSingInPage(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO, ModelMap model) {
 		
 		//check token, and redirect to user page if signed in
-		if(LOGIN_INFO != null && UserAccountService.checkToken(LOGIN_INFO)) {
+		if(LOGIN_INFO != null && userAccountService.checkToken(LOGIN_INFO)) {
 			return "redirect:/user/page";
 		}
 		
-		UsersModel user = new UsersModel();
+		UserModel user = new UserModel();
 		model.addAttribute("account_form", user);
 		
 		return "views/sign_in";
 	}
 	
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.POST)
-	public String SingInAction(@Valid @ModelAttribute("account_form") UsersModel user, Errors errors, ModelMap model, HttpServletResponse res) {
+	public String SingInAction(@Valid @ModelAttribute("account_form") UserModel user, Errors errors, ModelMap model, HttpServletResponse res) {
 		
 		//error generated in the validator
 		if(errors.hasErrors()) {
@@ -58,7 +58,7 @@ public class SignPageController {
 		
 		String account = user.getAccount();
 		String password = user.getPassword();
-		UsersModel acc = UserAccountService.getAcc(account);
+		UserModel acc = userAccountService.getAcc(account);
 		
 		if(acc == null)	errors.rejectValue("account", "account.noMatch");
 		else if(!acc.getState())	errors.rejectValue("account", "account.noMatch");
@@ -75,11 +75,11 @@ public class SignPageController {
 		//store the sign in info.
 		acc.setSignInTime(signInTime);
 		acc.setToken(token);
-		UserAccountService.updateAcc(acc);
+		userAccountService.updateAcc(acc);
 		
 		//set cookie
 		Cookie cookie = new Cookie("LOGIN_INFO", token);
-		cookie.setMaxAge(UserAccService.EXPIRE_TIME_SEC);
+		cookie.setMaxAge(UserAccountService.EXPIRE_TIME_SEC);
 		cookie.setPath(ConstantConfig.ROOT_ROUTE);
 		res.addCookie(cookie);
 		
@@ -90,7 +90,7 @@ public class SignPageController {
 	public String ShowSingUpPage(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO) {
 		
 		//check token, and redirect to user page if signed in
-		if(LOGIN_INFO != null && UserAccountService.checkToken(LOGIN_INFO)) {
+		if(LOGIN_INFO != null && userAccountService.checkToken(LOGIN_INFO)) {
 			return "redirect:/user/page";
 		}
 		

@@ -29,8 +29,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.AccountValidator;
 import com.harku.controller.sign.SignPageController;
-import com.harku.model.UsersModel;
-import com.harku.service.UserAccService;
+import com.harku.model.UserModel;
+import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,9 +38,9 @@ import com.harku.test.util.RandomData;
 @ContextConfiguration(classes = WebConfig.class)
 public class TestSignInPage {
 	private MockMvc mockMvc;
-	private UsersModel userTestData;
-	private UsersModel disabledUser;
-	private UsersModel enabledUser;
+	private UserModel userTestData;
+	private UserModel disabledUser;
+	private UserModel enabledUser;
 	private String disabledUserPassword;
 	private String enabledUserPassword;
 	private final String invalidToken = "invalidToken";
@@ -48,7 +48,7 @@ public class TestSignInPage {
 	private final String signInPageURL = "/WEB-INF/views/sign_in.jsp";
 	
 	@Mock
-	private UserAccService userAccountService;
+	private UserAccountService userAccountService;
 	
 	@Spy
 	private AccountValidator accountValidator = new AccountValidator();
@@ -115,9 +115,9 @@ public class TestSignInPage {
 				.andReturn();
 		
 		String tokenInCookie = result.getResponse().getCookie("LOGIN_INFO").getValue();
-		ArgumentCaptor<UsersModel> captor = ArgumentCaptor.forClass(UsersModel.class);
+		ArgumentCaptor<UserModel> captor = ArgumentCaptor.forClass(UserModel.class);
 		verify(userAccountService).updateAcc(captor.capture());
-		UsersModel updatedAccount = captor.getValue();
+		UserModel updatedAccount = captor.getValue();
 		//the token of the account passed to the DB must be equal to the token in the cookie
 		assertEquals(updatedAccount.getToken(), tokenInCookie);
 	}

@@ -23,22 +23,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
-import com.harku.model.UsersModel;
-import com.harku.service.UserAccService;
-import com.harku.service.UsersService;
+import com.harku.model.UserModel;
+import com.harku.service.UserAccountService;
+import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserChangePassword {
 	private MockMvc mockMvc;
-	private UsersModel userTestData;
-	private UsersModel userWithoutAccount;
+	private UserModel userTestData;
+	private UserModel userWithoutAccount;
 	
 	@Mock
-	private UsersService usersService;
+	private UserService usersService;
 	
 	@Mock
-	private UserAccService userAccService;
+	private UserAccountService userAccService;
 	
 	@Autowired
 	@InjectMocks

@@ -13,8 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.harku.dao.IntDao;
-import com.harku.model.IntModel;
+import com.harku.dao.InterestDao;
+import com.harku.model.InterestModel;
 import com.harku.test.config.AppConfigTest;
 import com.harku.test.util.RandomData;
 
@@ -23,7 +23,7 @@ import com.harku.test.util.RandomData;
 @Transactional
 public class TestInterestDao {
 	@Autowired
-	private IntDao interestDao;
+	private InterestDao interestDao;
 	
 	@Test
 	public void testCreate() {
@@ -37,17 +37,17 @@ public class TestInterestDao {
 		
 		//create
 		for(int i=0; i<10; ++i) {
-			IntModel newInterest = RandomData.genInterest();
+			InterestModel newInterest = RandomData.genInterest();
 			newInterest.setName(interestNamePattern + RandomData.genStr(5, 10));
 			interestDao.create(newInterest);
 			idList.add(newInterest.getId());
 		}
 		
 		//read
-		IntModel filter = new IntModel();
+		InterestModel filter = new InterestModel();
 		filter.setName("testInterest");
-		List<IntModel> readInterestList = interestDao.read(filter, 0, 10);
-		for(IntModel interest : readInterestList) assertTrue(idList.contains(interest.getId()));
+		List<InterestModel> readInterestList = interestDao.read(filter, 0, 10);
+		for(InterestModel interest : readInterestList) assertTrue(idList.contains(interest.getId()));
 	}
 	
 	@Test
@@ -56,14 +56,14 @@ public class TestInterestDao {
 		
 		//create
 		for(int i=0; i<100; ++i) {
-			IntModel newInterest = RandomData.genInterest();
+			InterestModel newInterest = RandomData.genInterest();
 			interestDao.create(newInterest);
 			idList.add(newInterest.getId());
 		}
 		
 		//read
-		List<IntModel> readInterestList = interestDao.read(new IntModel());
-		for(IntModel interest : readInterestList) assertTrue(idList.contains(interest.getId()));
+		List<InterestModel> readInterestList = interestDao.read(new InterestModel());
+		for(InterestModel interest : readInterestList) assertTrue(idList.contains(interest.getId()));
 	}
 	
 	@Test
@@ -72,31 +72,31 @@ public class TestInterestDao {
 		
 		//create
 		for(int i=0; i<createNum; ++i) {
-			IntModel newInterest = RandomData.genInterest();
+			InterestModel newInterest = RandomData.genInterest();
 			interestDao.create(newInterest);
 		}
 		
 		//read
-		assertEquals(createNum, interestDao.getRowNum(new IntModel()));
+		assertEquals(createNum, interestDao.getRowNum(new InterestModel()));
 	}
 	
 	@Test
 	public void testUpdate() {
 		//create
-		IntModel interest = RandomData.genInterest();
+		InterestModel interest = RandomData.genInterest();
 		interestDao.create(interest);
 		
 		//update
 		String newName = "test update name";
 		Boolean newState = !interest.getState();
-		IntModel updateData = new IntModel();
+		InterestModel updateData = new InterestModel();
 		updateData.setId(interest.getId());
 		updateData.setName(newName);
 		updateData.setState(newState);
 		interestDao.update(updateData);
 		
 		//verify
-		IntModel readInterest = interestDao.read(new IntModel()).get(0);
+		InterestModel readInterest = interestDao.read(new InterestModel()).get(0);
 		assertEquals(newName, readInterest.getName());
 		assertEquals(newState, readInterest.getState());
 	}
@@ -108,7 +108,7 @@ public class TestInterestDao {
 		
 		//create
 		for(int i=0; i<createNum; ++i) {
-			IntModel newInterest = RandomData.genInterest();
+			InterestModel newInterest = RandomData.genInterest();
 			interestDao.create(newInterest);
 			idList.add(newInterest.getId());
 		}
@@ -117,7 +117,7 @@ public class TestInterestDao {
 		for(String id : idList) interestDao.delete(id);
 		
 		//verify
-		List<IntModel> readInterestList = interestDao.read(new IntModel());
+		List<InterestModel> readInterestList = interestDao.read(new InterestModel());
 		assertTrue(readInterestList.isEmpty());
 	}
 }

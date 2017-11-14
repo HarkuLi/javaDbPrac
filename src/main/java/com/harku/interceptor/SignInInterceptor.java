@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.harku.config.ConstantConfig;
-import com.harku.service.UserAccService;
+import com.harku.service.UserAccountService;
 
 @Component
 public class SignInInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
-	private UserAccService userAccountService;
+	private UserAccountService userAccountService;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {

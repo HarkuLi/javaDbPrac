@@ -28,8 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.user.UserRestController;
 import com.harku.service.PhotoService;
-import com.harku.service.UserAccService;
-import com.harku.service.UsersService;
+import com.harku.service.UserAccountService;
+import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,10 +37,10 @@ public class TestUserPhoto {
 	private MockMvc mockMvc;
 	
 	@Mock
-	private UsersService usersService;
+	private UserService usersService;
 	
 	@Mock
-	private UserAccService userAccService;
+	private UserAccountService userAccService;
 	
 	@Autowired
 	@InjectMocks

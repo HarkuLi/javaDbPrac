@@ -19,8 +19,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harku.config.ConstantConfig;
 import com.harku.interceptor.SignInInterceptor;
-import com.harku.model.UsersModel;
-import com.harku.service.UserAccService;
+import com.harku.model.UserModel;
+import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,7 +29,7 @@ public class TestSignInInterceptor {
 	private Object handler = new Object();
 	
 	@Mock
-	private UserAccService userAccountService;
+	private UserAccountService userAccountService;
 	
 	@Mock
 	private HttpServletRequest req;
@@ -43,7 +43,7 @@ public class TestSignInInterceptor {
 	@Test
 	public void signedIn() throws Exception {
 		//set test data
-		final UsersModel signedInUser = RandomData.genUser();
+		final UserModel signedInUser = RandomData.genUser();
 		final Cookie LOGIN_INFO = new Cookie("LOGIN_INFO", signedInUser.getToken());
 		final Cookie[] cookies = {LOGIN_INFO};
 		

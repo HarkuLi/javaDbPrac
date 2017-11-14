@@ -22,18 +22,18 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.publicAPI.PublicRestController;
-import com.harku.model.InterestModel;
-import com.harku.service.InterestService;
+import com.harku.model.OccupationModel;
+import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestPublicGetInterestList {
+public class TestPublicGetOccupationList {
 	private MockMvc mockMvc;
-	private ArrayList<InterestModel> interestList;
-	private int interestNum;
+	private ArrayList<OccupationModel> occupationList;
+	private int occupationNum;
 	
 	@Mock
-	private InterestService interestService;
+	private OccupationService occupationService;
 	
 	@InjectMocks
 	private PublicRestController PRController;
@@ -50,25 +50,25 @@ public class TestPublicGetInterestList {
 	
 	@Test
 	public void getList() throws Exception {
-		MvcResult result = mockMvc.perform(get("/public/get_interest_list"))
+		MvcResult result = mockMvc.perform(get("/public/get_occ_list"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
 		JSONArray resList = (JSONArray) res.get("list");
-		assertEquals(interestNum, resList.length());
+		assertEquals(occupationNum, resList.length());
 	}
 	
 	private void setTestData() {
-		interestList = new ArrayList<InterestModel>();
-		interestNum = (int)(Math.random()*20);
-		for(int i=0; i<interestNum; ++i) {
-			interestList.add(RandomData.genInterest());
+		occupationList = new ArrayList<OccupationModel>();
+		occupationNum = (int)(Math.random()*20);
+		for(int i=0; i<occupationNum; ++i) {
+			occupationList.add(RandomData.genOcc());
 		}
 	}
 	
 	private void setStubs() {
-		when(interestService.getList()).thenReturn(interestList);
+		when(occupationService.getList()).thenReturn(occupationList);
 	}
 }

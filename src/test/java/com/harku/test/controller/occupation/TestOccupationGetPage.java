@@ -1,4 +1,4 @@
-package com.harku.test.controller.interest;
+package com.harku.test.controller.occupation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,29 +26,29 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.harku.controller.interest.InterestRestController;
-import com.harku.model.InterestModel;
-import com.harku.service.InterestService;
+import com.harku.controller.occupation.OccupationRestController;
+import com.harku.model.OccupationModel;
+import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestInterestGetPage {
+public class TestOccupationGetPage {
 	private MockMvc mockMvc;
 	private final int totalPage = 2;
-	private ArrayList<InterestModel> page1List;
-	private ArrayList<InterestModel> page2List;
-	private InterestModel filterMatchNothing;
+	private ArrayList<OccupationModel> page1List;
+	private ArrayList<OccupationModel> page2List;
+	private OccupationModel filterMatchNothing;
 	
 	@Mock
-	private InterestService interestService;
+	private OccupationService occupationService;
 	
 	@InjectMocks
-	private InterestRestController intRestController;
+	private OccupationRestController occupationRestController;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(intRestController)
+				.standaloneSetup(occupationRestController)
 				.build();
 		
 		setTestData();
@@ -58,7 +58,7 @@ public class TestInterestGetPage {
 	@Test
 	public void getPageOne() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
 							.param("page", "1"))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -66,15 +66,15 @@ public class TestInterestGetPage {
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
 		JSONArray resList = (JSONArray) res.get("list");
-		JSONObject resInterest = (JSONObject)resList.get(0);
-		assertEquals(page1List.get(0).getId(), resInterest.get("id"));
+		JSONObject resOccupation = (JSONObject)resList.get(0);
+		assertEquals(page1List.get(0).getId(), resOccupation.get("id"));
 		assertEquals(totalPage, res.get("totalPage"));
 	}
 	
 	@Test
 	public void getPageZero() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
 							.param("page", "0"))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -93,7 +93,7 @@ public class TestInterestGetPage {
 		int page = -(int)(Math.random()*10 + 1);
 		
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
 							.param("page", Integer.toString(page)))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -110,7 +110,7 @@ public class TestInterestGetPage {
 	@Test
 	public void getPageLargerThanTotalPage() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
 							.param("page", Integer.toString(totalPage+5)))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -126,16 +126,16 @@ public class TestInterestGetPage {
 	
 	@Test
 	public void noOneMatchFilter() throws Exception {
-		when(interestService.getTotalPage(argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
+		when(occupationService.getTotalPage(argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
 													&& filter.getState() == filterMatchNothing.getState())))
 			.thenReturn(0);
 		
-		when(interestService.getPage(anyInt(), argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
+		when(occupationService.getPage(anyInt(), argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
 													&& filter.getState() == filterMatchNothing.getState())))
-			.thenReturn(new ArrayList<InterestModel>());
+			.thenReturn(new ArrayList<OccupationModel>());
 		
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
 							.param("page", "1")
 							.param("name", filterMatchNothing.getName())
 							.param("state", filterMatchNothing.getState()?"1":"0"))
@@ -150,16 +150,16 @@ public class TestInterestGetPage {
 	}
 	
 	private void setTestData() {
-		page1List = new ArrayList<InterestModel>();
-		page1List.add(RandomData.genInterest());
-		page2List = new ArrayList<InterestModel>();
-		page2List.add(RandomData.genInterest());
-		filterMatchNothing = RandomData.genInterest();
+		page1List = new ArrayList<OccupationModel>();
+		page1List.add(RandomData.genOcc());
+		page2List = new ArrayList<OccupationModel>();
+		page2List.add(RandomData.genOcc());
+		filterMatchNothing = RandomData.genOcc();
 	}
 	
 	private void setStubs() {
-		when(interestService.getTotalPage(any(InterestModel.class))).thenReturn(totalPage);
-		when(interestService.getPage(eq(1), any(InterestModel.class))).thenReturn(page1List);
-		when(interestService.getPage(eq(2), any(InterestModel.class))).thenReturn(page2List);
+		when(occupationService.getTotalPage(any(OccupationModel.class))).thenReturn(totalPage);
+		when(occupationService.getPage(eq(1), any(OccupationModel.class))).thenReturn(page1List);
+		when(occupationService.getPage(eq(2), any(OccupationModel.class))).thenReturn(page2List);
 	}
 }

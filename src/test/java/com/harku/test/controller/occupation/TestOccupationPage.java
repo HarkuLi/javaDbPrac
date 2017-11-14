@@ -1,4 +1,4 @@
-package com.harku.test.controller.interest;
+package com.harku.test.controller.occupation;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,25 +13,25 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.WebConfig;
-import com.harku.controller.interest.InterestPageController;
+import com.harku.controller.occupation.OccupationPageController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = WebConfig.class)
-public class TestInterestPage {
+public class TestOccupationPage {
 	private MockMvc mockMvc;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(new InterestPageController())
+				.standaloneSetup(new OccupationPageController())
 				.setViewResolvers(new WebConfig().viewResolver())
 				.build();
 	}
 	
 	@Test
 	public void showPage() throws Exception {
-		mockMvc.perform(get("/interest/page"))
+		mockMvc.perform(get("/occ/page"))
 				.andExpect(status().isOk());
 	}
 }

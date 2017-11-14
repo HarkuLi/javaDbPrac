@@ -1,4 +1,4 @@
-package com.harku.test.controller.user;
+package com.harku.test.controller.occupation;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -14,38 +14,32 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.harku.controller.user.UserRestController;
-import com.harku.model.UserModel;
-import com.harku.service.UserAccountService;
-import com.harku.service.UserService;
+import com.harku.controller.occupation.OccupationRestController;
+import com.harku.model.OccupationModel;
+import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestUserDel {
+public class TestOccupationGetOne {
 	private MockMvc mockMvc;
-	private UserModel userTestData;
+	private OccupationModel existingOccupation;
 	
 	@Mock
-	private UserService usersService;
+	private OccupationService occupationService;
 	
-	@Mock
-	private UserAccountService userAccService;
-	
-	@Autowired
 	@InjectMocks
-	private UserRestController URController;
+	private OccupationRestController occupationRestController;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(URController)
+				.standaloneSetup(occupationRestController)
 				.build();
 		
 		setTestData();
@@ -54,34 +48,29 @@ public class TestUserDel {
 	
 	@Test
 	public void existingId() throws Exception {
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/del")
-											.param("id", userTestData.getId()))
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_one")
+											.param("id", existingOccupation.getId()))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
-		assertEquals(userTestData.getId(), res.get("id"));
+		assertEquals(existingOccupation.getId(), res.get("id"));
 	}
 	
 	@Test
 	public void notExistingId() throws Exception {
 		String notExistingId = UUID.randomUUID().toString();
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/del")
-											.param("id", notExistingId))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andReturn();
-				
-		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
-		assertEquals(notExistingId, res.get("id"));
+		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_one")
+						.param("id", notExistingId))
+				.andExpect(status().isNotFound());
 	}
 	
 	private void setTestData() {
-		userTestData = RandomData.genUser();
+		existingOccupation = RandomData.genOcc();
 	}
 	
 	private void setStubs() {
-		when(usersService.getUser(userTestData.getId())).thenReturn(userTestData);
+		when(occupationService.getOcc(existingOccupation.getId())).thenReturn(existingOccupation);
 	}
 }

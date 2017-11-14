@@ -1,4 +1,4 @@
-package com.harku.test.controller.interest;
+package com.harku.test.controller.occupation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,26 +24,26 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
-import com.harku.controller.interest.InterestRestController;
-import com.harku.model.InterestModel;
-import com.harku.service.InterestService;
+import com.harku.controller.occupation.OccupationRestController;
+import com.harku.model.OccupationModel;
+import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestInterestUpdate {
+public class TestOccupationUpdate {
 	private MockMvc mockMvc;
-	private InterestModel existingInterest;
+	private OccupationModel existingOccupation;
 	
 	@Mock
-	private InterestService interestService;
+	private OccupationService occupationService;
 	
 	@InjectMocks
-	private InterestRestController interestRestController;
+	private OccupationRestController occupationRestController;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(interestRestController)
+				.standaloneSetup(occupationRestController)
 				.build();
 		
 		setTestData();
@@ -53,26 +53,26 @@ public class TestInterestUpdate {
 	@Test
 	public void basic() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
-							.param("id"    , existingInterest.getId())
-							.param("name"  , existingInterest.getName())
-							.param("state" , existingInterest.getState()?"1":"0"))
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+							.param("id"    , existingOccupation.getId())
+							.param("name"  , existingOccupation.getName())
+							.param("state" , existingOccupation.getState()?"1":"0"))
 					.andExpect(status().isOk())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
-		assertEquals(existingInterest.getId(), res.get("id"));
+		assertEquals(existingOccupation.getId(), res.get("id"));
 	}
 	
 	@Test
 	public void invalidId() throws Exception {
 		String invalidId = "invalidId";
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
 							.param("id"    , invalidId)
-							.param("name"  , existingInterest.getName())
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("name"  , existingOccupation.getName())
+							.param("state" , existingOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -87,16 +87,16 @@ public class TestInterestUpdate {
 		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
 		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
-							.param("id"    , existingInterest.getId())
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+							.param("id"    , existingOccupation.getId())
 							.param("name"  , tooLongName)
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("state" , existingOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
-		assertEquals(existingInterest.getId(), res.get("id"));
+		assertEquals(existingOccupation.getId(), res.get("id"));
 		assertNotNull(res.get("errMsg"));
 	}
 	
@@ -105,32 +105,32 @@ public class TestInterestUpdate {
 		String existingName = "existingName";
 		
 		//set Stubs
-		ArrayList<InterestModel> list = new ArrayList<InterestModel>();
-		InterestModel interest = RandomData.genInterest();
-		interest.setName(existingName);
-		list.add(interest);
-		when(interestService.getPage(eq(1), argThat(filter -> filter.getName().equals(existingName))))
+		ArrayList<OccupationModel> list = new ArrayList<OccupationModel>();
+		OccupationModel occupation = RandomData.genOcc();
+		occupation.setName(existingName);
+		list.add(occupation);
+		when(occupationService.getPage(eq(1), argThat(filter -> filter.getName().equals(existingName))))
 			.thenReturn(list);
 		
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
-							.param("id"    , existingInterest.getId())
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+							.param("id"    , existingOccupation.getId())
 							.param("name"  , existingName)
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("state" , existingOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
-		assertEquals(existingInterest.getId(), res.get("id"));
+		assertEquals(existingOccupation.getId(), res.get("id"));
 		assertNotNull(res.get("errMsg"));
 	}
 	
 	private void setTestData() {
-		existingInterest = RandomData.genInterest();
+		existingOccupation = RandomData.genOcc();
 	}
 	
 	private void setStubs() {
-		when(interestService.getInterest(existingInterest.getId())).thenReturn(existingInterest);
+		when(occupationService.getOcc(existingOccupation.getId())).thenReturn(existingOccupation);
 	}
 }

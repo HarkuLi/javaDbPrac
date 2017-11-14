@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.IntModel;
-import com.harku.model.OccModel;
-import com.harku.service.IntService;
-import com.harku.service.OccService;
+import com.harku.model.InterestModel;
+import com.harku.model.OccupationModel;
+import com.harku.service.InterestService;
+import com.harku.service.OccupationService;
 
 @RestController
 @RequestMapping("/public")
 public class PublicRestController {
 	@Autowired
-	private OccService occupationService;
+	private OccupationService occupationService;
 	@Autowired
-	private IntService interestService;
+	private InterestService interestService;
 	@Autowired
 	private LocaleResolver localeResolver;
 	
@@ -46,7 +46,7 @@ public class PublicRestController {
 	@RequestMapping(value = "/get_occ_list", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Map<String, Object>> GetOccList() {
 		
-		ArrayList<OccModel> occList = occupationService.getList();
+		ArrayList<OccupationModel> occList = occupationService.getList();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	rstMap.put("list", occList);
     	
@@ -65,7 +65,7 @@ public class PublicRestController {
 	@RequestMapping(value = "/get_interest_list", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Map<String, Object>> GetIntList() {
 		
-		ArrayList<IntModel> interestList = interestService.getList();
+		ArrayList<InterestModel> interestList = interestService.getList();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	rstMap.put("list", interestList);
     	

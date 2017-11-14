@@ -26,23 +26,23 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.user.UserRestController;
 import com.harku.model.UserFilterModel;
-import com.harku.model.UsersModel;
-import com.harku.service.UserAccService;
-import com.harku.service.UsersService;
+import com.harku.model.UserModel;
+import com.harku.service.UserAccountService;
+import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserGetPage {
 	private final int totalPage = 2;
-	private ArrayList<UsersModel> page1List;
-	private ArrayList<UsersModel> page2List;
+	private ArrayList<UserModel> page1List;
+	private ArrayList<UserModel> page2List;
 	private MockMvc mockMvc;
 	
 	@Mock
-	private UsersService usersService;
+	private UserService usersService;
 	
 	@Mock
-	private UserAccService userAccService;
+	private UserAccountService userAccService;
 	
 	@Autowired
 	@InjectMocks
@@ -128,9 +128,9 @@ public class TestUserGetPage {
 	}
 	
 	private void setTestData() {
-		page1List = new ArrayList<UsersModel>();
+		page1List = new ArrayList<UserModel>();
 		page1List.add(RandomData.genUser());
-		page2List = new ArrayList<UsersModel>();
+		page2List = new ArrayList<UserModel>();
 		page2List.add(RandomData.genUser());
 	}
 	

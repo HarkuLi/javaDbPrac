@@ -17,21 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.UsersModel;
-import com.harku.service.OccService;
+import com.harku.model.UserModel;
+import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
-import com.harku.service.UserAccService;
-import com.harku.service.UsersService;
+import com.harku.service.UserAccountService;
+import com.harku.service.UserService;
 
 @RestController
 public class SignRestController {
 	private static final int workload = 12;
 	@Autowired
-	private UserAccService userAccountService;
+	private UserAccountService userAccountService;
 	@Autowired
-	private UsersService usersService;
+	private UserService usersService;
 	@Autowired
-	private OccService occupationService;
+	private OccupationService occupationService;
 	
 	/**
 	 * response:
@@ -63,7 +63,7 @@ public class SignRestController {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		StringBuffer errMsg = new StringBuffer();
-		UsersModel newData = new UsersModel();
+		UserModel newData = new UserModel();
 		String photoName = null;
 		
 		rstMap.put("account", account);
@@ -109,7 +109,7 @@ public class SignRestController {
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
 	}
 	
-	private String checkUserData(UsersModel user,  String passwordCheck) {
+	private String checkUserData(UserModel user,  String passwordCheck) {
 		StringBuffer errMsg = new StringBuffer();
 		
 		//name

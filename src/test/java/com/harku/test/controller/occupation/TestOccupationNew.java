@@ -1,4 +1,4 @@
-package com.harku.test.controller.interest;
+package com.harku.test.controller.occupation;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -20,26 +20,26 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
-import com.harku.controller.interest.InterestRestController;
-import com.harku.model.InterestModel;
-import com.harku.service.InterestService;
+import com.harku.controller.occupation.OccupationRestController;
+import com.harku.model.OccupationModel;
+import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestInterestNew {
+public class TestOccupationNew {
 	private MockMvc mockMvc;
-	private InterestModel randomInterest;
+	private OccupationModel randomOccupation;
 	
 	@Mock
-	private InterestService interestService;
+	private OccupationService occupationService;
 	
 	@InjectMocks
-	private InterestRestController interestRestController;
+	private OccupationRestController occupationRestController;
 	
 	@Before
 	public void init() {
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(interestRestController)
+				.standaloneSetup(occupationRestController)
 				.build();
 		
 		setTestData();
@@ -47,9 +47,9 @@ public class TestInterestNew {
 	
 	@Test
 	public void basic() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/new")
-						.param("name"  , randomInterest.getName())
-						.param("state" , randomInterest.getState()?"1":"0"))
+		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/new")
+						.param("name"  , randomOccupation.getName())
+						.param("state" , randomOccupation.getState()?"1":"0"))
 				.andExpect(status().isCreated());
 	}
 	
@@ -58,9 +58,9 @@ public class TestInterestNew {
 		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
 		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/new")
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/new")
 							.param("name"  , tooLongName)
-							.param("state" , randomInterest.getState()?"1":"0"))
+							.param("state" , randomOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -72,13 +72,13 @@ public class TestInterestNew {
 	@Test
 	public void existingName() throws Exception {
 		String existingName = "existingName";
-		when(interestService.getTotalPage(argThat(filter -> filter.getName().equals(existingName))))
+		when(occupationService.getTotalPage(argThat(filter -> filter.getName().equals(existingName))))
 			.thenReturn(1);
 		
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/new")
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/new")
 							.param("name"  , existingName)
-							.param("state" , randomInterest.getState()?"1":"0"))
+							.param("state" , randomOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -88,6 +88,6 @@ public class TestInterestNew {
 	}
 	
 	private void setTestData() {
-		randomInterest = RandomData.genInterest();
+		randomOccupation = RandomData.genOcc();
 	}
 }
