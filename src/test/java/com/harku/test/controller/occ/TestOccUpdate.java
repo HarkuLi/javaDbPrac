@@ -1,9 +1,14 @@
 package com.harku.test.controller.occ;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 import org.junit.Before;
@@ -18,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.controller.occ.OccRestController;
 import com.harku.model.occ.OccModel;
 import com.harku.service.occ.OccService;
@@ -73,21 +79,51 @@ public class TestOccUpdate {
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(invalidId, res.get("id"));
+		assertNotNull(res.get("errMsg"));
 	}
 	
 	@Test
-	public void invalidState() throws Exception {
-		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+	public void tooLongName() throws Exception {
+		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
+		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
+		MvcResult result =
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
 							.param("id"    , existingOccupation.getId())
-							.param("name"  , existingOccupation.getName())
-							.param("state" , "invalidState"))
+							.param("name"  , tooLongName)
+							.param("state" , existingOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
 		
 		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
 		assertEquals(existingOccupation.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void existingName() throws Exception {
+		String existingName = "existingName";
+		
+		//set Stubs
+		ArrayList<OccModel> list = new ArrayList<OccModel>();
+		OccModel occupation = RandomData.genOcc();
+		occupation.setName(existingName);
+		list.add(occupation);
+		when(occupationService.getPage(eq(1), argThat(filter -> filter.getName().equals(existingName))))
+			.thenReturn(list);
+		
+		MvcResult result =
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+							.param("id"    , existingOccupation.getId())
+							.param("name"  , existingName)
+							.param("state" , existingOccupation.getState()?"1":"0"))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					.andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(existingOccupation.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
 	}
 	
 	private void setTestData() {

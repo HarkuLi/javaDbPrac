@@ -2,6 +2,7 @@ package com.harku.controller.occ;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.harku.config.ConstantConfig;
 import com.harku.model.occ.OccModel;
 import com.harku.service.occ.OccService;
 
@@ -42,15 +44,28 @@ public class OccRestController {
 		
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	rstMap.put("id", id);
+    	StringBuffer errMsg = new StringBuffer();
     	
     	//check data
-    	if(occupationService.getOcc(id) == null) {
-			rstMap.put("errMsg", "No occupation matches the id.");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+    	OccModel nameFilter = new OccModel();
+    	nameFilter.setName(name);
+			//id
+		if(occupationService.getOcc(id) == null)
+			errMsg.append("No occupation matches the id.");
+			//name
+		if(name.length() > ConstantConfig.MAX_NAME_LENGTH)
+			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
+		else {
+			List<OccModel> occupationList = occupationService.getPage(1, nameFilter);
+			//There is an another occupation with the same name.
+			//In other words, there is an occupation with the name,
+			//and the occupation isn't the current updated one.
+			if(occupationList.size() > 0 && !occupationList.get(0).getId().equals(id))
+				errMsg.append("The name is already used.\n");
 		}
-    	if(!state.equals("0") && !state.equals("1")) {
-	    	rstMap.put("errMsg", "Wrong input for state.");
-	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		if(errMsg.length() != 0) {
+    		rstMap.put("errMsg", errMsg.toString());
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	occupationService.update(id, name, state.equals("1"));
@@ -72,11 +87,21 @@ public class OccRestController {
 		@RequestParam String state) {
     	
 		Map<String, Object> rstMap = new HashMap<String, Object>();
+		
+		StringBuffer errMsg = new StringBuffer();
     	
     	//check data
-    	if(!state.equals("0") && !state.equals("1")) {
-	    	rstMap.put("errMsg", "Wrong input for state.");
-	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
+		OccModel nameFilter = new OccModel();
+    	nameFilter.setName(name);
+		if(name.length() > ConstantConfig.MAX_NAME_LENGTH) {
+			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
+		}
+		else if(occupationService.getTotalPage(nameFilter) > 0) {
+			errMsg.append("The name is already used.\n");
+		}
+    	if(errMsg.length() != 0) {
+    		rstMap.put("errMsg", errMsg.toString());
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
     	occupationService.createOcc(name, state.equals("1"));
