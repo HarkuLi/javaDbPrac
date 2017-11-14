@@ -25,8 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.occ.OccRestController;
-import com.harku.model.occ.OccModel;
-import com.harku.service.occ.OccService;
+import com.harku.model.OccModel;
+import com.harku.service.OccService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)

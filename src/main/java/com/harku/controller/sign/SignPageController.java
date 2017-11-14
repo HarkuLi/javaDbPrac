@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.user.UsersModel;
-import com.harku.service.user.UserAccService;
-import com.harku.validator.user.AccountValidator;
+import com.harku.model.UsersModel;
+import com.harku.service.UserAccService;
 
 @Controller
 public class SignPageController {

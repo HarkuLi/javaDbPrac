@@ -9,9 +9,9 @@ import java.util.UUID;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.harku.model.interest.IntModel;
-import com.harku.model.occ.OccModel;
-import com.harku.model.user.UsersModel;
+import com.harku.model.IntModel;
+import com.harku.model.OccModel;
+import com.harku.model.UsersModel;
 
 public class RandomData {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

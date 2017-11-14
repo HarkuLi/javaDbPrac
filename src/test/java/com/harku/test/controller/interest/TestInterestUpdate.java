@@ -25,8 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.interest.IntRestController;
-import com.harku.model.interest.IntModel;
-import com.harku.service.interest.IntService;
+import com.harku.model.IntModel;
+import com.harku.service.IntService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -27,11 +27,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.WebConfig;
+import com.harku.controller.sign.AccountValidator;
 import com.harku.controller.sign.SignPageController;
-import com.harku.model.user.UsersModel;
-import com.harku.service.user.UserAccService;
+import com.harku.model.UsersModel;
+import com.harku.service.UserAccService;
 import com.harku.test.util.RandomData;
-import com.harku.validator.user.AccountValidator;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration

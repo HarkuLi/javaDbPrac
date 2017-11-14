@@ -27,9 +27,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.user.UserRestController;
-import com.harku.service.photo.PhotoService;
-import com.harku.service.user.UserAccService;
-import com.harku.service.user.UsersService;
+import com.harku.service.PhotoService;
+import com.harku.service.UserAccService;
+import com.harku.service.UsersService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)

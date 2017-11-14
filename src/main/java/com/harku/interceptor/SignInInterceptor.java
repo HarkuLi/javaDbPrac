@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.harku.config.ConstantConfig;
-import com.harku.service.user.UserAccService;
+import com.harku.service.UserAccService;
 
 @Component
 public class SignInInterceptor extends HandlerInterceptorAdapter {

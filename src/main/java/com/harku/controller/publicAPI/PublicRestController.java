@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.interest.IntModel;
-import com.harku.model.occ.OccModel;
-import com.harku.service.interest.IntService;
-import com.harku.service.occ.OccService;
+import com.harku.model.IntModel;
+import com.harku.model.OccModel;
+import com.harku.service.IntService;
+import com.harku.service.OccService;
 
 @RestController
 @RequestMapping("/public")

@@ -31,11 +31,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.sign.SignRestController;
-import com.harku.model.user.UsersModel;
-import com.harku.service.occ.OccService;
-import com.harku.service.photo.PhotoService;
-import com.harku.service.user.UserAccService;
-import com.harku.service.user.UsersService;
+import com.harku.model.UsersModel;
+import com.harku.service.OccService;
+import com.harku.service.PhotoService;
+import com.harku.service.UserAccService;
+import com.harku.service.UsersService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)

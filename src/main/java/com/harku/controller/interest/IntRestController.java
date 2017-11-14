@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.interest.IntModel;
-import com.harku.service.interest.IntService;
+import com.harku.model.IntModel;
+import com.harku.service.IntService;
 
 @RestController
 @RequestMapping("/interest")

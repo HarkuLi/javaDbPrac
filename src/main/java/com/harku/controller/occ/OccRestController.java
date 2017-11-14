@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.occ.OccModel;
-import com.harku.service.occ.OccService;
+import com.harku.model.OccModel;
+import com.harku.service.OccService;
 
 @RestController
 @RequestMapping("/occ")

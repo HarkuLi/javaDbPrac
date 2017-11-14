@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.user.UserFilterModel;
-import com.harku.model.user.UsersModel;
-import com.harku.service.occ.OccService;
-import com.harku.service.photo.PhotoService;
-import com.harku.service.user.UserAccService;
-import com.harku.service.user.UsersService;
+import com.harku.model.UserFilterModel;
+import com.harku.model.UsersModel;
+import com.harku.service.OccService;
+import com.harku.service.PhotoService;
+import com.harku.service.UserAccService;
+import com.harku.service.UsersService;
 
 @RestController
 @RequestMapping("/user")
