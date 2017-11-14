@@ -182,7 +182,7 @@ function renderInterestList(){
  */
 function getOccList(){
 	return new Promise((resolve, reject) => {
-		$.get(`${URLBase}/public/get_occ_list`, (data, status, xhr) => {
+		$.get(`${URLBase}/public/get_occupation_list`, (data, status, xhr) => {
 			if(status !== "success") {
 				reject("get status: " + status);
 				return;

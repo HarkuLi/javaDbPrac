@@ -47,7 +47,7 @@ public class TestOccupationNew {
 	
 	@Test
 	public void basic() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/new")
+		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 						.param("name"  , randomOccupation.getName())
 						.param("state" , randomOccupation.getState()?"1":"0"))
 				.andExpect(status().isCreated());
@@ -58,7 +58,7 @@ public class TestOccupationNew {
 		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
 		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/new")
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 							.param("name"  , tooLongName)
 							.param("state" , randomOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())
@@ -76,7 +76,7 @@ public class TestOccupationNew {
 			.thenReturn(1);
 		
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/new")
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 							.param("name"  , existingName)
 							.param("state" , randomOccupation.getState()?"1":"0"))
 					.andExpect(status().isBadRequest())

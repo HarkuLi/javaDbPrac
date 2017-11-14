@@ -479,7 +479,7 @@ function pageNumDisp(totalPage){
  */
 function doDel(id){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/occ/del`, {id}, (data, status, xhr) => {
+		$.post(`${URLBase}/occupation/del`, {id}, (data, status, xhr) => {
       if(status !== "success") {
 				reject("post status: " + status);
 				return;
@@ -503,7 +503,7 @@ function doDel(id){
  */
 function doUpdate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/occ/update`, passedData, (data, status, xhr) => {
+		$.post(`${URLBase}/occupation/update`, passedData, (data, status, xhr) => {
 			if(status !== "success") {
 				reject("post status: " + status);
 				return;
@@ -527,7 +527,7 @@ function doUpdate(passedData){
  */
 function doCreate(passedData){
 	return new Promise((resolve, reject) => {
-		$.post(`${URLBase}/occ/new`, passedData, (data, status, xhr) => {
+		$.post(`${URLBase}/occupation/new`, passedData, (data, status, xhr) => {
       if(status !== "success") {
 				reject("post status: " + status);
 			}
@@ -558,7 +558,7 @@ function getList(page){
   }
   
   return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/occ/get_page`, passedData, (data, status, xhr) => {
+    $.post(`${URLBase}/occupation/get_page`, passedData, (data, status, xhr) => {
       if(status !== "success") {
 				reject("post status: " + status);
 				return;
@@ -582,7 +582,7 @@ function getList(page){
  */
 function getOcc(id){
 	return new Promise((resolve, reject) => {
-    $.post(`${URLBase}/occ/get_one`, {id}, (data, status, xhr) => {
+    $.post(`${URLBase}/occupation/get_one`, {id}, (data, status, xhr) => {
       if(status !== "success") {
 				reject("post status: " + status);
 				return;

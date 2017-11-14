@@ -18,7 +18,7 @@ import com.harku.model.OccupationModel;
 import com.harku.service.OccupationService;
 
 @RestController
-@RequestMapping("/occ")
+@RequestMapping("/occupation")
 public class OccupationRestController {
 	@Autowired
 	private OccupationService occupationService;

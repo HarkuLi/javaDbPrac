@@ -53,7 +53,7 @@ public class TestOccupationUpdate {
 	@Test
 	public void basic() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , existingOccupation.getId())
 							.param("name"  , existingOccupation.getName())
 							.param("state" , existingOccupation.getState()?"1":"0"))
@@ -69,7 +69,7 @@ public class TestOccupationUpdate {
 	public void invalidId() throws Exception {
 		String invalidId = "invalidId";
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , invalidId)
 							.param("name"  , existingOccupation.getName())
 							.param("state" , existingOccupation.getState()?"1":"0"))
@@ -87,7 +87,7 @@ public class TestOccupationUpdate {
 		int invalidLength = ConstantConfig.MAX_NAME_LENGTH + 1;
 		String tooLongName = RandomData.genStr(invalidLength, invalidLength);
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , existingOccupation.getId())
 							.param("name"  , tooLongName)
 							.param("state" , existingOccupation.getState()?"1":"0"))
@@ -113,7 +113,7 @@ public class TestOccupationUpdate {
 			.thenReturn(list);
 		
 		MvcResult result =
-			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/update")
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , existingOccupation.getId())
 							.param("name"  , existingName)
 							.param("state" , existingOccupation.getState()?"1":"0"))

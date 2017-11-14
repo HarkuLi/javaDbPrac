@@ -13,7 +13,7 @@
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav">
 				<li id="nav_user"><a href="/javaDbPrac/user/page"><spring:message code="user.text" text="user" /></a></li>
-				<li id="nav_occ"><a href="/javaDbPrac/occ/page"><spring:message code="occupation.text" text="occupation" /></a></li>
+				<li id="nav_occ"><a href="/javaDbPrac/occupation/page"><spring:message code="occupation.text" text="occupation" /></a></li>
 				<li id="nav_interest"><a href="/javaDbPrac/interest/page"><spring:message code="interest.text" text="interest" /></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">

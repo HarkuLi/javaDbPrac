@@ -31,7 +31,7 @@ public class TestOccupationPage {
 	
 	@Test
 	public void showPage() throws Exception {
-		mockMvc.perform(get("/occ/page"))
+		mockMvc.perform(get("/occupation/page"))
 				.andExpect(status().isOk());
 	}
 }

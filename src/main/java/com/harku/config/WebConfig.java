@@ -75,7 +75,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(signInInterceptor)
-				.addPathPatterns("/user/*", "/occ/*", "/interest/*");
+				.addPathPatterns("/user/*", "/occupation/*", "/interest/*");
 		registry.addInterceptor(localeChangeInterceptor());
 	}
 	

@@ -58,7 +58,7 @@ public class TestOccupationGetPage {
 	@Test
 	public void getPageOne() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/get_page")
 							.param("page", "1"))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -74,7 +74,7 @@ public class TestOccupationGetPage {
 	@Test
 	public void getPageZero() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/get_page")
 							.param("page", "0"))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -93,7 +93,7 @@ public class TestOccupationGetPage {
 		int page = -(int)(Math.random()*10 + 1);
 		
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/get_page")
 							.param("page", Integer.toString(page)))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -110,7 +110,7 @@ public class TestOccupationGetPage {
 	@Test
 	public void getPageLargerThanTotalPage() throws Exception {
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/get_page")
 							.param("page", Integer.toString(totalPage+5)))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -135,7 +135,7 @@ public class TestOccupationGetPage {
 			.thenReturn(new ArrayList<OccupationModel>());
 		
 		MvcResult result
-			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/get_page")
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/get_page")
 							.param("page", "1")
 							.param("name", filterMatchNothing.getName())
 							.param("state", filterMatchNothing.getState()?"1":"0"))

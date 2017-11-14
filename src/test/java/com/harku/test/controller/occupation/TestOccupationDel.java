@@ -48,7 +48,7 @@ public class TestOccupationDel {
 	
 	@Test
 	public void existingId() throws Exception {
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/del")
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/del")
 											.param("id", existingOccupation.getId()))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ public class TestOccupationDel {
 	@Test
 	public void notExistingId() throws Exception {
 		String notExistingId = UUID.randomUUID().toString();
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occ/del")
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/del")
 											.param("id", notExistingId))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))

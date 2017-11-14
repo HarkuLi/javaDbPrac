@@ -43,7 +43,7 @@ public class PublicRestController {
 	 *   list: Array<Object>
 	 * }
 	 */
-	@RequestMapping(value = "/get_occ_list", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/get_occupation_list", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Map<String, Object>> GetOccList() {
 		
 		ArrayList<OccupationModel> occList = occupationService.getList();

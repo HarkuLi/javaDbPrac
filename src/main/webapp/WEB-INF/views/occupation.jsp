@@ -61,7 +61,7 @@
 			</div>
 			<!-- form for new occupation -->
 			<form id="popup_form" class="form-horizontal text-center">
-				<jsp:include page="/WEB-INF/partial/occ/detail.jsp"></jsp:include>
+				<jsp:include page="/WEB-INF/partial/occupation/detail.jsp"></jsp:include>
 			</form>
 		</div>
 	</div>
@@ -78,6 +78,6 @@
 		</table>
 	</div>
 	
-	<script src="/javaDbPrac/js/occ.js"></script>
+	<script src="/javaDbPrac/js/occupation.js"></script>
 </body>
 </html>

@@ -50,7 +50,7 @@ public class TestPublicGetOccupationList {
 	
 	@Test
 	public void getList() throws Exception {
-		MvcResult result = mockMvc.perform(get("/public/get_occ_list"))
+		MvcResult result = mockMvc.perform(get("/public/get_occupation_list"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
