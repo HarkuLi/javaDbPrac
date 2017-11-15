@@ -9,7 +9,7 @@
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/user.css">	
-	<title><spring:message code="user.text" /></title>
+	<title><spring:message code="user" /></title>
 </head>
 <body>
 	<!-- navigation bar -->
@@ -19,7 +19,7 @@
 	<div class="container filter">
 		<form class="form-horizontal">
 			<fieldset>
-				<legend><spring:message code="filter.text" /></legend>
+				<legend><spring:message code="filter" /></legend>
 				<jsp:include page="/WEB-INF/partial/user/filter.jsp"></jsp:include>
 			</fieldset>
 		</form>
@@ -35,7 +35,7 @@
 		</div>
 		
 		<!-- new users -->
-		<button type="button" id="new_btn" class="btn btn-primary btn-sm pull-left"><spring:message code="new.text" /></button><br>
+		<button type="button" id="new_btn" class="btn btn-primary btn-sm pull-left"><spring:message code="new" /></button><br>
 	</div>
 	<br>
 	
@@ -59,14 +59,14 @@
 	<div class="container">
 		<table id="data_table" class="table table-hover">
 			<tr>
-				<th><spring:message code="photo.text" /></th>
-				<th><spring:message code="account.text" /></th>
-				<th><spring:message code="name.text" /></th>
-				<th><spring:message code="age.text" /></th>
-				<th><spring:message code="birth.text" /></th>
-				<th><spring:message code="occupation.text" /></th>
-				<th><spring:message code="interest.text" /></th>
-				<th><spring:message code="state.text" /></th>
+				<th><spring:message code="photo" /></th>
+				<th><spring:message code="account" /></th>
+				<th><spring:message code="name" /></th>
+				<th><spring:message code="age" /></th>
+				<th><spring:message code="birth" /></th>
+				<th><spring:message code="occupation" /></th>
+				<th><spring:message code="interest" /></th>
+				<th><spring:message code="state" /></th>
 				<th></th>
 				<th></th>
 			</tr>

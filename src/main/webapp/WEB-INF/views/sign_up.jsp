@@ -7,7 +7,7 @@
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/sign_up.css">	
-	<title><spring:message code="signUp.text" text="Sign Up" /></title>
+	<title><spring:message code="signUp" text="Sign Up" /></title>
 </head>
 <body>
 	<!-- navigation bar -->

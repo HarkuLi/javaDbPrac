@@ -7,7 +7,7 @@
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
 	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/setting.css">
-	<title><spring:message code="setting.text" /></title>
+	<title><spring:message code="setting" /></title>
 </head>
 <body>
 	<!-- navigation bar -->
@@ -18,17 +18,17 @@
 		<div class="panel panel-success center-block">
 			<form class="form-horizontal" id="setting_form" enctype="multipart/form-data">
 				<div class="form-group">
-					<label class="control-label col-md-3"><spring:message code="language.text" />:</label>
+					<label class="control-label col-md-3"><spring:message code="language" />:</label>
 					<div class="col-md-9">
 						<select class="form-control" name="language">
-							<option value="zh_TW"><spring:message code="chinese_taiwan.text" /></option>
-							<option value="en_US"><spring:message code="english_america.text" /></option>
-							<option value="ja_JP"><spring:message code="japanese.text" /></option>
+							<option value="zh_TW"><spring:message code="chinese_taiwan" /></option>
+							<option value="en_US"><spring:message code="english_america" /></option>
+							<option value="ja_JP"><spring:message code="japanese" /></option>
 						</select>
 					</div>
 				</div>
 				<button type="submit" id="save_setting" class="btn btn-default btn-sm center-block">
-					<spring:message code="save.text" />
+					<spring:message code="save" />
 				</button>
 			</form>
 		</div>
