@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice(basePackages = {"com.harku.controller"})
 public class GlobalControllerAdvice {
@@ -31,6 +32,12 @@ public class GlobalControllerAdvice {
 		Map<String, Object> msg = new HashMap<String, Object>();
 		msg.put("errMsg", "there are some errors in the server.");
 		return msg;
+	}
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(value = NoHandlerFoundException.class)
+	public String notFoundPageHandler(HttpServletRequest req, HttpServletResponse res, Exception e) {
+		return "views/not_found";
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

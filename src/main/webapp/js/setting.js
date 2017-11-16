@@ -33,7 +33,10 @@ $(() => {
 ///////////////
 
 function initialization(){
-	selectCurrentLanguage();
+	selectCurrentLanguage()
+		.then(() => {
+			return loadi18n();
+		});
 }
 
 /**
@@ -113,7 +116,20 @@ function getCurrentLanguage(){
 	});
 }
 
-
+function loadi18n(){
+	return new Promise((resolve, reject) => {
+		jQuery.i18n.properties({
+	    name:'messages', 
+	    path:'resources/', 
+	    mode:'map',
+	    language: 'zh_TW',
+	    async: true,
+	    callback: function() {
+	    	resolve();
+	    }
+		});
+	});
+}
 
 
 
