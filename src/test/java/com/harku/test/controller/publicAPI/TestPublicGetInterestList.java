@@ -22,14 +22,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.publicAPI.PublicRestController;
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 import com.harku.service.InterestService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestPublicGetInterestList {
 	private MockMvc mockMvc;
-	private ArrayList<InterestModel> interestList;
+	private ArrayList<Interest> interestList;
 	private int interestNum;
 	
 	@Mock
@@ -61,7 +61,7 @@ public class TestPublicGetInterestList {
 	}
 	
 	private void setTestData() {
-		interestList = new ArrayList<InterestModel>();
+		interestList = new ArrayList<Interest>();
 		interestNum = (int)(Math.random()*20);
 		for(int i=0; i<interestNum; ++i) {
 			interestList.add(RandomData.genInterest());

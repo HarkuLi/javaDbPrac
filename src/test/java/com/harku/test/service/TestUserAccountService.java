@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.harku.dao.UserAccountDao;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
@@ -33,7 +33,7 @@ public class TestUserAccountService {
 	
 	@Test
 	public void testSaveAcc() {
-		UserModel newData = new UserModel();
+		User newData = new User();
 		
 		//call function
 		userAccountService.saveAcc(newData);
@@ -43,8 +43,8 @@ public class TestUserAccountService {
 	
 	@Test
 	public void testIsAccExist_exist() {
-		ArrayList<UserModel> accList = new ArrayList<UserModel>();
-		accList.add(new UserModel());
+		ArrayList<User> accList = new ArrayList<User>();
+		accList.add(new User());
 		String existAcc = RandomData.genStr(1, 32);
 		
 		//set Stub
@@ -56,7 +56,7 @@ public class TestUserAccountService {
 	
 	@Test
 	public void testIsAccExist_notExist() {
-		ArrayList<UserModel> emptyList = new ArrayList<UserModel>();
+		ArrayList<User> emptyList = new ArrayList<User>();
 		String notExistAcc = RandomData.genStr(1, 32);
 		
 		//set Stub
@@ -68,8 +68,8 @@ public class TestUserAccountService {
 	
 	@Test
 	public void testGetAcc() {
-		UserModel acc = RandomData.genUser();
-		ArrayList<UserModel> accList = new ArrayList<UserModel>();
+		User acc = RandomData.genUser();
+		ArrayList<User> accList = new ArrayList<User>();
 		accList.add(acc);
 		
 		//set Stub
@@ -77,15 +77,15 @@ public class TestUserAccountService {
 			.thenReturn(accList);
 		
 		//call function
-		UserModel getAcc = userAccountService.getAcc(acc.getAccount());
+		User getAcc = userAccountService.getAcc(acc.getAccount());
 		
 		assertEquals(acc.getId(), getAcc.getId());
 	}
 	
 	@Test
 	public void testGetAccById() {
-		UserModel acc = RandomData.genUser();
-		ArrayList<UserModel> accList = new ArrayList<UserModel>();
+		User acc = RandomData.genUser();
+		ArrayList<User> accList = new ArrayList<User>();
 		accList.add(acc);
 		
 		//set Stub
@@ -93,15 +93,15 @@ public class TestUserAccountService {
 			.thenReturn(accList);
 		
 		//call function
-		UserModel getAcc = userAccountService.getAccById(acc.getId());
+		User getAcc = userAccountService.getAccById(acc.getId());
 		
 		assertEquals(acc.getId(), getAcc.getId());
 	}
 	
 	@Test
 	public void testGetAccByToken() {
-		UserModel acc = RandomData.genUser();
-		ArrayList<UserModel> accList = new ArrayList<UserModel>();
+		User acc = RandomData.genUser();
+		ArrayList<User> accList = new ArrayList<User>();
 		accList.add(acc);
 		
 		//set Stub
@@ -109,7 +109,7 @@ public class TestUserAccountService {
 			.thenReturn(accList);
 		
 		//call function
-		UserModel getAcc = userAccountService.getAccByToken(acc.getToken());
+		User getAcc = userAccountService.getAccByToken(acc.getToken());
 		
 		assertEquals(acc.getId(), getAcc.getId());
 	}
@@ -117,7 +117,7 @@ public class TestUserAccountService {
 	@Test
 	public void testCheckToken_validToken() {
 		int deviationSec = 5;
-		UserModel acc = RandomData.genUser();
+		User acc = RandomData.genUser();
 		
 		//set valid sign in time
 		long currentTime = System.currentTimeMillis();
@@ -125,7 +125,7 @@ public class TestUserAccountService {
 		long validRandomTime = (long)(Math.random()*(UserAccountService.EXPIRE_TIME_SEC - deviationSec)*1000 + earliestValidTime);
 		acc.setSignInTime(validRandomTime);
 		
-		ArrayList<UserModel> accList = new ArrayList<UserModel>();
+		ArrayList<User> accList = new ArrayList<User>();
 		accList.add(acc);
 		
 		//set Stub
@@ -139,7 +139,7 @@ public class TestUserAccountService {
 	public void testCheckToken_notExistToken() {
 		String notExistToken = "not existing token";
 		
-		ArrayList<UserModel> emptyAccList = new ArrayList<UserModel>();
+		ArrayList<User> emptyAccList = new ArrayList<User>();
 		
 		//set Stub
 		when(userAccountDao.read(argThat(filter -> filter.getToken().equals(notExistToken))))
@@ -151,7 +151,7 @@ public class TestUserAccountService {
 	@Test
 	public void testCheckToken_expiredToken() {
 		int deviationSec = 5;
-		UserModel acc = RandomData.genUser();
+		User acc = RandomData.genUser();
 		
 		//set expired sign in time
 		long currentTime = System.currentTimeMillis();
@@ -159,7 +159,7 @@ public class TestUserAccountService {
 		long expiredRandomTime = (long)(Math.random()*(earliestValidTime-deviationSec*2*1000));
 		acc.setSignInTime(expiredRandomTime);
 		
-		ArrayList<UserModel> accList = new ArrayList<UserModel>();
+		ArrayList<User> accList = new ArrayList<User>();
 		accList.add(acc);
 		
 		//set Stub
@@ -171,7 +171,7 @@ public class TestUserAccountService {
 	
 	@Test
 	public void testUpdateAcc() {
-		UserModel setData = new UserModel();
+		User setData = new User();
 		
 		//call function
 		userAccountService.updateAcc(setData);

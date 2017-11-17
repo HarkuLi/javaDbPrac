@@ -9,9 +9,9 @@ import java.util.UUID;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.harku.model.InterestModel;
-import com.harku.model.OccupationModel;
-import com.harku.model.UserModel;
+import com.harku.model.Interest;
+import com.harku.model.Occupation;
+import com.harku.model.User;
 
 public class RandomData {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -31,7 +31,7 @@ public class RandomData {
 		return rst;
 	}
 	
-	public static UserModel genUser() {
+	public static User genUser() {
 		String id         = UUID.randomUUID().toString();
 		String account    = genStr(32, 32);
 		String password   = BCrypt.hashpw(genStr(20, 20), BCrypt.gensalt(workload));
@@ -45,7 +45,7 @@ public class RandomData {
 		Long signInTime   = (long)(Math.random()*System.currentTimeMillis());
 		String token      = genToken();
 		
-		UserModel newData = new UserModel();
+		User newData = new User();
 		newData.setId(id);
 		newData.setAccount(account);
 		newData.setPassword(password);
@@ -61,24 +61,24 @@ public class RandomData {
 		return newData;
 	}
 	
-	public static OccupationModel genOcc() {
+	public static Occupation genOcc() {
 		String id     = UUID.randomUUID().toString();
 		String name   = genStr(40, 40);
 		Boolean state = new Random().nextBoolean();
 		
-		OccupationModel newData = new OccupationModel();
+		Occupation newData = new Occupation();
 		newData.setId(id);
 		newData.setName(name);
 		newData.setState(state);
 		return newData;
 	}
 	
-	public static InterestModel genInterest() {
+	public static Interest genInterest() {
 		String id     = UUID.randomUUID().toString();
 		String name   = genStr(40, 40);
 		Boolean state = new Random().nextBoolean();
 		
-		InterestModel newData = new InterestModel();
+		Interest newData = new Interest();
 		newData.setId(id);
 		newData.setName(name);
 		newData.setState(state);

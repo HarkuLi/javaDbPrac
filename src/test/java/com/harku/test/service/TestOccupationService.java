@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.harku.dao.OccupationDao;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
@@ -33,7 +33,7 @@ public class TestOccupationService {
 	
 	@Test
 	public void testCreateOcc() {
-		OccupationModel occ = RandomData.genOcc();
+		Occupation occ = RandomData.genOcc();
 		
 		//call function
 		occupationService.createOcc(occ.getName(), occ.getState());
@@ -45,8 +45,8 @@ public class TestOccupationService {
 	
 	@Test
 	public void testGetOcc() {
-		OccupationModel occ = RandomData.genOcc();
-		ArrayList<OccupationModel> occList = new ArrayList<OccupationModel>();
+		Occupation occ = RandomData.genOcc();
+		ArrayList<Occupation> occList = new ArrayList<Occupation>();
 		occList.add(occ);
 		
 		//set Stub
@@ -54,7 +54,7 @@ public class TestOccupationService {
 			.thenReturn(occList);
 		
 		//call function
-		OccupationModel getOcc = occupationService.getOcc(occ.getId());
+		Occupation getOcc = occupationService.getOcc(occ.getId());
 		
 		//verify
 		assertEquals(occ.getName(), getOcc.getName());
@@ -65,7 +65,7 @@ public class TestOccupationService {
 	public void testGetList() {
 		//generate List
 		int occNum = (int)(Math.random()*10 + 10);
-		ArrayList<OccupationModel> occList = new ArrayList<OccupationModel>();
+		ArrayList<Occupation> occList = new ArrayList<Occupation>();
 		for(int i=0; i<occNum; ++i) occList.add(RandomData.genOcc());
 		
 		//set Stub
@@ -78,22 +78,22 @@ public class TestOccupationService {
 	
 	@Test
 	public void testGetPage() {
-		OccupationModel filter = new OccupationModel();
+		Occupation filter = new Occupation();
 		int entryPerPage = 10;
 		int page = (int)(Math.random()*10 +1);
 		int skipNum = entryPerPage * (page - 1);
 		
 		//generate return value for Stub
 		int listNum = (int)(Math.random()*10 +1);
-		ArrayList<OccupationModel> occList = new ArrayList<OccupationModel>();
-		for(int i=0; i<listNum; ++i) occList.add(new OccupationModel());
+		ArrayList<Occupation> occList = new ArrayList<Occupation>();
+		for(int i=0; i<listNum; ++i) occList.add(new Occupation());
 		
 		//set Stub
 		when(occupationDao.read(filter, skipNum, entryPerPage))
 			.thenReturn(occList);
 		
 		//call function
-		ArrayList<OccupationModel> getList = occupationService.getPage(page, filter);
+		ArrayList<Occupation> getList = occupationService.getPage(page, filter);
 		
 		//verify
 		assertEquals(occList, getList);
@@ -101,7 +101,7 @@ public class TestOccupationService {
 	
 	@Test
 	public void testGetTotalPage() {
-		OccupationModel filter = new OccupationModel();
+		Occupation filter = new Occupation();
 		int entryPerPage = 10;
 		int rowNum = (int)(Math.random()*100 +10);
 		int totalPage = (int) Math.ceil((double) rowNum / entryPerPage);
@@ -115,7 +115,7 @@ public class TestOccupationService {
 	
 	@Test
 	public void testUpdate() {
-		OccupationModel occupation = RandomData.genOcc();
+		Occupation occupation = RandomData.genOcc();
 		String id = occupation.getId();
 		String name = occupation.getName();
 		Boolean state = occupation.getState();

@@ -22,8 +22,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.harku.dao.UserDao;
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 import com.harku.service.UserAccountService;
 import com.harku.service.UserInterestService;
 import com.harku.service.UserService;
@@ -31,8 +31,8 @@ import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserService {
-	private static UserModel userTestData;
-	private static UserModel userAccountTestData;
+	private static User userTestData;
+	private static User userAccountTestData;
 	private static String[] interestsTestData;
 	
 	@Mock
@@ -55,7 +55,7 @@ public class TestUserService {
 	
 	@Test
 	public void testCreateUser() {
-		UserModel newData = RandomData.genUser();
+		User newData = RandomData.genUser();
 		String id = usersService.createUser(newData);
 		
 		assertNotNull(id);
@@ -67,16 +67,16 @@ public class TestUserService {
 	@Test
 	public void testGetUser() {
 		//set stub
-		ArrayList<UserModel> userList = new ArrayList<UserModel>();
-		userList.add(new UserModel(userTestData));
+		ArrayList<User> userList = new ArrayList<User>();
+		userList.add(new User(userTestData));
 		
-		when(userDao.read(ArgumentMatchers.any(UserFilterModel.class),
+		when(userDao.read(ArgumentMatchers.any(UserFilter.class),
 						  ArgumentMatchers.anyInt(),
 						  ArgumentMatchers.anyInt())).thenReturn(userList);
 		when(userInterestService.getInterests(userTestData.getId())).thenReturn(interestsTestData);
 		when(userAccountService.getAccById(userTestData.getId())).thenReturn(userAccountTestData);
 		
-		UserModel user = usersService.getUser(userTestData.getId());
+		User user = usersService.getUser(userTestData.getId());
 		assertEquals(userTestData.getName(), user.getName());
 		assertEquals(userAccountTestData.getAccount(), user.getAccount());
 		assertEquals(userAccountTestData.getPassword(), user.getPassword());
@@ -96,14 +96,14 @@ public class TestUserService {
 	public void testGetPage() {
 		//set stub
 		int userNum = (int)(Math.random()*50 + 50);
-		ArrayList<UserModel> userList = new ArrayList<UserModel>();
+		ArrayList<User> userList = new ArrayList<User>();
 		for(int i=0; i<userNum; ++i) userList.add(RandomData.genUser());
-		when(userAccountService.getAccById(ArgumentMatchers.anyString())).thenReturn(new UserModel());
-		when(userDao.read(ArgumentMatchers.any(UserFilterModel.class),
+		when(userAccountService.getAccById(ArgumentMatchers.anyString())).thenReturn(new User());
+		when(userDao.read(ArgumentMatchers.any(UserFilter.class),
 						  ArgumentMatchers.anyInt(),
 						  ArgumentMatchers.anyInt())).thenReturn(userList);
 		
-		usersService.getPage(1, new UserFilterModel());
+		usersService.getPage(1, new UserFilter());
 		verify(userInterestService, times(userNum)).getInterests(ArgumentMatchers.anyString());
 		verify(userAccountService, times(userNum)).getAccById(ArgumentMatchers.anyString());
 	}
@@ -111,12 +111,12 @@ public class TestUserService {
 	@Test
 	public void testGetInvalidPage() {
 		int page = -(int)(Math.random()*10);
-		assertTrue(usersService.getPage(page, new UserFilterModel()).isEmpty());
+		assertTrue(usersService.getPage(page, new UserFilter()).isEmpty());
 	}
 	
 	@Test
 	public void testGetTotalPage() {
-		UserFilterModel filter = new UserFilterModel();
+		UserFilter filter = new UserFilter();
 		
 		usersService.getTotalPage(filter);
 		
@@ -125,7 +125,7 @@ public class TestUserService {
 	
 	@Test
 	public void testUpdate() {
-		UserModel user = RandomData.genUser();
+		User user = RandomData.genUser();
 		
 		usersService.update(user);
 		
@@ -148,7 +148,7 @@ public class TestUserService {
 	private void prepareTestData() {
 		userTestData = RandomData.genUser();
 		
-		userAccountTestData = new UserModel();
+		userAccountTestData = new User();
 		userAccountTestData.setAccount(userTestData.getAccount());
 		userAccountTestData.setPassword(userTestData.getPassword());
 		userAccountTestData.setState(userTestData.getState());

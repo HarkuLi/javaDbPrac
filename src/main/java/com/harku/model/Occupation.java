@@ -1,6 +1,6 @@
 package com.harku.model;
 
-public class OccupationModel {
+public class Occupation {
 	private String id;
 	private String name;
 	private Boolean state;

@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.harku.dao.InterestDao;
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 import com.harku.service.InterestService;
 import com.harku.test.util.RandomData;
 
@@ -33,7 +33,7 @@ public class TestInterestService {
 	
 	@Test
 	public void testCreateInt() {
-		InterestModel interest = RandomData.genInterest();
+		Interest interest = RandomData.genInterest();
 		
 		//call function
 		interestService.createInt(interest.getName(), interest.getState());
@@ -45,8 +45,8 @@ public class TestInterestService {
 	
 	@Test
 	public void testGetInterest() {
-		InterestModel interest = RandomData.genInterest();
-		ArrayList<InterestModel> interestList = new ArrayList<InterestModel>();
+		Interest interest = RandomData.genInterest();
+		ArrayList<Interest> interestList = new ArrayList<Interest>();
 		interestList.add(interest);
 		
 		//set Stub
@@ -54,7 +54,7 @@ public class TestInterestService {
 			.thenReturn(interestList);
 		
 		//call function
-		InterestModel getInterest = interestService.getInterest(interest.getId());
+		Interest getInterest = interestService.getInterest(interest.getId());
 		
 		//verify
 		assertEquals(interest.getName(), getInterest.getName());
@@ -65,7 +65,7 @@ public class TestInterestService {
 	public void testGetList() {
 		//generate List
 		int interestNum = (int)(Math.random()*10 + 10);
-		ArrayList<InterestModel> interestList = new ArrayList<InterestModel>();
+		ArrayList<Interest> interestList = new ArrayList<Interest>();
 		for(int i=0; i<interestNum; ++i) interestList.add(RandomData.genInterest());
 		
 		//set Stub
@@ -78,22 +78,22 @@ public class TestInterestService {
 	
 	@Test
 	public void testGetPage() {
-		InterestModel filter = new InterestModel();
+		Interest filter = new Interest();
 		int entryPerPage = 10;
 		int page = (int)(Math.random()*10 +1);
 		int skipNum = entryPerPage * (page - 1);
 		
 		//generate return value for Stub
 		int listNum = (int)(Math.random()*10 +1);
-		ArrayList<InterestModel> interestList = new ArrayList<InterestModel>();
-		for(int i=0; i<listNum; ++i) interestList.add(new InterestModel());
+		ArrayList<Interest> interestList = new ArrayList<Interest>();
+		for(int i=0; i<listNum; ++i) interestList.add(new Interest());
 		
 		//set Stub
 		when(interestDao.read(filter, skipNum, entryPerPage))
 			.thenReturn(interestList);
 		
 		//call function
-		ArrayList<InterestModel> getList = interestService.getPage(page, filter);
+		ArrayList<Interest> getList = interestService.getPage(page, filter);
 		
 		//verify
 		assertEquals(interestList, getList);
@@ -101,7 +101,7 @@ public class TestInterestService {
 	
 	@Test
 	public void testGetTotalPage() {
-		InterestModel filter = new InterestModel();
+		Interest filter = new Interest();
 		int entryPerPage = 10;
 		int rowNum = (int)(Math.random()*100 +10);
 		int totalPage = (int) Math.ceil((double) rowNum / entryPerPage);
@@ -115,7 +115,7 @@ public class TestInterestService {
 	
 	@Test
 	public void testUpdate() {
-		InterestModel interest = RandomData.genInterest();
+		Interest interest = RandomData.genInterest();
 		String id = interest.getId();
 		String name = interest.getName();
 		Boolean state = interest.getState();

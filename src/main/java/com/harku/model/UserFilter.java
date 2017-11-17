@@ -1,6 +1,6 @@
 package com.harku.model;
 
-public class UserFilterModel
+public class UserFilter
 {
     private String id;
 

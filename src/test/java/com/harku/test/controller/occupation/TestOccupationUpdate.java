@@ -25,14 +25,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.occupation.OccupationRestController;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestOccupationUpdate {
 	private MockMvc mockMvc;
-	private OccupationModel existingOccupation;
+	private Occupation existingOccupation;
 	
 	@Mock
 	private OccupationService occupationService;
@@ -105,8 +105,8 @@ public class TestOccupationUpdate {
 		String existingName = "existingName";
 		
 		//set Stubs
-		ArrayList<OccupationModel> list = new ArrayList<OccupationModel>();
-		OccupationModel occupation = RandomData.genOcc();
+		ArrayList<Occupation> list = new ArrayList<Occupation>();
+		Occupation occupation = RandomData.genOcc();
 		occupation.setName(existingName);
 		list.add(occupation);
 		when(occupationService.getPage(eq(1), argThat(filter -> filter.getName().equals(existingName))))

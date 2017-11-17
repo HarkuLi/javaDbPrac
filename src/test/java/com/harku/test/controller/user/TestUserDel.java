@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.user.UserRestController;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.UserAccountService;
 import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
@@ -30,7 +30,7 @@ import com.harku.test.util.RandomData;
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserDel {
 	private MockMvc mockMvc;
-	private UserModel userTestData;
+	private User userTestData;
 	
 	@Mock
 	private UserService usersService;

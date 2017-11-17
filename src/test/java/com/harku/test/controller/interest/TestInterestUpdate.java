@@ -25,14 +25,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.interest.InterestRestController;
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 import com.harku.service.InterestService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestInterestUpdate {
 	private MockMvc mockMvc;
-	private InterestModel existingInterest;
+	private Interest existingInterest;
 	
 	@Mock
 	private InterestService interestService;
@@ -105,8 +105,8 @@ public class TestInterestUpdate {
 		String existingName = "existingName";
 		
 		//set Stubs
-		ArrayList<InterestModel> list = new ArrayList<InterestModel>();
-		InterestModel interest = RandomData.genInterest();
+		ArrayList<Interest> list = new ArrayList<Interest>();
+		Interest interest = RandomData.genInterest();
 		interest.setName(existingName);
 		list.add(interest);
 		when(interestService.getPage(eq(1), argThat(filter -> filter.getName().equals(existingName))))

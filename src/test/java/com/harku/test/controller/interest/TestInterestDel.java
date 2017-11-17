@@ -21,14 +21,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.interest.InterestRestController;
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 import com.harku.service.InterestService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestInterestDel {
 	private MockMvc mockMvc;
-	private InterestModel existingInterest;
+	private Interest existingInterest;
 	
 	@Mock
 	private InterestService interestService;

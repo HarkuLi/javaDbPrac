@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.interest.InterestRestController;
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 import com.harku.service.InterestService;
 import com.harku.test.util.RandomData;
 
@@ -35,9 +35,9 @@ import com.harku.test.util.RandomData;
 public class TestInterestGetPage {
 	private MockMvc mockMvc;
 	private final int totalPage = 2;
-	private ArrayList<InterestModel> page1List;
-	private ArrayList<InterestModel> page2List;
-	private InterestModel filterMatchNothing;
+	private ArrayList<Interest> page1List;
+	private ArrayList<Interest> page2List;
+	private Interest filterMatchNothing;
 	
 	@Mock
 	private InterestService interestService;
@@ -132,7 +132,7 @@ public class TestInterestGetPage {
 		
 		when(interestService.getPage(anyInt(), argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
 													&& filter.getState() == filterMatchNothing.getState())))
-			.thenReturn(new ArrayList<InterestModel>());
+			.thenReturn(new ArrayList<Interest>());
 		
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
@@ -150,16 +150,16 @@ public class TestInterestGetPage {
 	}
 	
 	private void setTestData() {
-		page1List = new ArrayList<InterestModel>();
+		page1List = new ArrayList<Interest>();
 		page1List.add(RandomData.genInterest());
-		page2List = new ArrayList<InterestModel>();
+		page2List = new ArrayList<Interest>();
 		page2List.add(RandomData.genInterest());
 		filterMatchNothing = RandomData.genInterest();
 	}
 	
 	private void setStubs() {
-		when(interestService.getTotalPage(any(InterestModel.class))).thenReturn(totalPage);
-		when(interestService.getPage(eq(1), any(InterestModel.class))).thenReturn(page1List);
-		when(interestService.getPage(eq(2), any(InterestModel.class))).thenReturn(page2List);
+		when(interestService.getTotalPage(any(Interest.class))).thenReturn(totalPage);
+		when(interestService.getPage(eq(1), any(Interest.class))).thenReturn(page1List);
+		when(interestService.getPage(eq(2), any(Interest.class))).thenReturn(page2List);
 	}
 }

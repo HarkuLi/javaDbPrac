@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harku.dao.UserDao;
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 
 @Service
 public class UserService{
@@ -25,7 +25,7 @@ public class UserService{
 	 * @param newData
 	 * @return id id of the created user
 	 */
-	public String createUser(UserModel newData) {
+	public String createUser(User newData) {
 		String id = UUID.randomUUID().toString();
 		String[] interest = newData.getInterest();
 		
@@ -43,17 +43,17 @@ public class UserService{
 	 * @param id
 	 * @return user, or null if not found
 	 */
-	public UserModel getUser(String id) {
-		UserFilterModel filter = new UserFilterModel();
+	public User getUser(String id) {
+		UserFilter filter = new UserFilter();
 		filter.setId(id);
 		
-		ArrayList<UserModel> userList = usersDao.read(filter, 0, 1);
+		ArrayList<User> userList = usersDao.read(filter, 0, 1);
 		if(userList.isEmpty()) return null;
-		UserModel user = userList.get(0);
+		User user = userList.get(0);
 		
 		//set values from other tables
 		user.setInterest(userInterestService.getInterests(id));
-		UserModel userAcc = userAccountService.getAccById(id);
+		User userAcc = userAccountService.getAccById(id);
 		user.setAccount(userAcc.getAccount());
 		user.setPassword(userAcc.getPassword());
 		user.setState(userAcc.getState());
@@ -61,16 +61,16 @@ public class UserService{
 		return user;
 	}
 	
-	public ArrayList<UserModel> getPage(int page, UserFilterModel filter) {
-		if(page <= 0) return new ArrayList<UserModel>();
+	public ArrayList<User> getPage(int page, UserFilter filter) {
+		if(page <= 0) return new ArrayList<User>();
 		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
-		ArrayList<UserModel> userList = usersDao.read(filter, skipNum, ENTRY_PER_PAGE);
+		ArrayList<User> userList = usersDao.read(filter, skipNum, ENTRY_PER_PAGE);
 		
 		//set values from other table for each user
-		for(UserModel user : userList) {
+		for(User user : userList) {
 			user.setInterest(userInterestService.getInterests(user.getId()));
-			UserModel userAcc = userAccountService.getAccById(user.getId());
+			User userAcc = userAccountService.getAccById(user.getId());
 			user.setAccount(userAcc.getAccount());
 			user.setPassword(userAcc.getPassword());
 			user.setState(userAcc.getState());
@@ -79,14 +79,14 @@ public class UserService{
 		return userList;
 	}
 	
-	public int getTotalPage(UserFilterModel filter) {
+	public int getTotalPage(UserFilter filter) {
 		int rowNum = usersDao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
 		return totalPage;
 	}
 	
-	public void update(UserModel newData) {
+	public void update(User newData) {
 		String userId = newData.getId();
 		String[] interestList = newData.getInterest();
 		

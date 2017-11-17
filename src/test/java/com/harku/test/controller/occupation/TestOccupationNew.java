@@ -21,14 +21,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.occupation.OccupationRestController;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestOccupationNew {
 	private MockMvc mockMvc;
-	private OccupationModel randomOccupation;
+	private Occupation randomOccupation;
 	
 	@Mock
 	private OccupationService occupationService;

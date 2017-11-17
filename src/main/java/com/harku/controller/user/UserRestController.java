@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
 import com.harku.service.UserAccountService;
@@ -95,7 +95,7 @@ public class UserRestController {
 		
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	StringBuffer errMsg = new StringBuffer();
-    	UserModel newData = new UserModel();
+    	User newData = new User();
     	String newPhotoName = null;
     	
     	rstMap.put("id", id);
@@ -161,8 +161,8 @@ public class UserRestController {
 		@RequestParam(value = "interest[]", required=false) String[] interest) {
 		
 		int totalPage;
-		List<UserModel> tableList;
-		UserFilterModel filter = new UserFilterModel();
+		List<User> tableList;
+		UserFilter filter = new UserFilter();
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		
 		//set filter
@@ -194,17 +194,17 @@ public class UserRestController {
 	 * 404: (no user matches the token)
 	 */
 	@RequestMapping(value = "/get_by_token", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<UserModel> GetUserByToken(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO) {
+	public ResponseEntity<User> GetUserByToken(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO) {
 		
 		if(LOGIN_INFO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		
 		//get id by token in the cookie
-		UserModel acc = userAccountService.getAccByToken(LOGIN_INFO);
+		User acc = userAccountService.getAccByToken(LOGIN_INFO);
 		if(acc == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		String id = acc.getId();
 		
 		//get user by id
-		UserModel user = usersService.getUser(id);
+		User user = usersService.getUser(id);
 		user.eraseSecretInfo();
 		
 		//response
@@ -218,9 +218,9 @@ public class UserRestController {
 	 * 404: (no user matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<UserModel> GetUser(@RequestParam String id) {
+	public ResponseEntity<User> GetUser(@RequestParam String id) {
 		
-		UserModel user = usersService.getUser(id);
+		User user = usersService.getUser(id);
 		if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	user.eraseSecretInfo();
     	
@@ -246,7 +246,7 @@ public class UserRestController {
 		rstMap.put("id", id);
 		
 		//get the user by id
-		UserModel user = usersService.getUser(id);
+		User user = usersService.getUser(id);
 		if(user == null) {
 			rstMap.put("errMsg", "No user matches the id.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
@@ -285,7 +285,7 @@ public class UserRestController {
 		rstMap.put("id", id);
 		
 		//check data
-    	UserModel originalAcc = userAccountService.getAccById(id);
+    	User originalAcc = userAccountService.getAccById(id);
     	String errMsg = checkAccountData(originalAcc, account, password, passwordCheck);
     	if(errMsg != null) {
     		rstMap.put("errMsg", errMsg);
@@ -304,7 +304,7 @@ public class UserRestController {
 		return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
 	
-	private String checkAccountData(UserModel originalAccount, String account, String password, String passwordCheck) {
+	private String checkAccountData(User originalAccount, String account, String password, String passwordCheck) {
 		if(originalAccount == null) {
 			return "No account matches the id.";
 		}
@@ -325,13 +325,13 @@ public class UserRestController {
     	return null;
 	}
 	
-	private String checkUserData(UserModel user) {
+	private String checkUserData(User user) {
 		StringBuffer errMsg = new StringBuffer();
 		
 		//id
 		String id = user.getId();
 		if(id != null) {
-			UserModel getUser = usersService.getUser(id);
+			User getUser = usersService.getUser(id);
 	    	if(getUser == null) errMsg.append("No such user id.\n");
 		}
 		

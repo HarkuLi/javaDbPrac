@@ -25,8 +25,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.user.UserRestController;
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 import com.harku.service.UserAccountService;
 import com.harku.service.UserService;
 import com.harku.test.util.RandomData;
@@ -34,8 +34,8 @@ import com.harku.test.util.RandomData;
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserGetPage {
 	private final int totalPage = 2;
-	private ArrayList<UserModel> page1List;
-	private ArrayList<UserModel> page2List;
+	private ArrayList<User> page1List;
+	private ArrayList<User> page2List;
 	private MockMvc mockMvc;
 	
 	@Mock
@@ -128,16 +128,16 @@ public class TestUserGetPage {
 	}
 	
 	private void setTestData() {
-		page1List = new ArrayList<UserModel>();
+		page1List = new ArrayList<User>();
 		page1List.add(RandomData.genUser());
-		page2List = new ArrayList<UserModel>();
+		page2List = new ArrayList<User>();
 		page2List.add(RandomData.genUser());
 	}
 	
 	private void setStubs() {
-		when(usersService.getTotalPage(any(UserFilterModel.class))).thenReturn(totalPage);
-		when(usersService.getPage(eq(1), any(UserFilterModel.class))).thenReturn(page1List);
-		when(usersService.getPage(eq(2), any(UserFilterModel.class))).thenReturn(page2List);
+		when(usersService.getTotalPage(any(UserFilter.class))).thenReturn(totalPage);
+		when(usersService.getPage(eq(1), any(UserFilter.class))).thenReturn(page1List);
+		when(usersService.getPage(eq(2), any(UserFilter.class))).thenReturn(page2List);
 	}
 }
 

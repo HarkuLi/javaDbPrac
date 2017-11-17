@@ -22,14 +22,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.publicAPI.PublicRestController;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestPublicGetOccupationList {
 	private MockMvc mockMvc;
-	private ArrayList<OccupationModel> occupationList;
+	private ArrayList<Occupation> occupationList;
 	private int occupationNum;
 	
 	@Mock
@@ -61,7 +61,7 @@ public class TestPublicGetOccupationList {
 	}
 	
 	private void setTestData() {
-		occupationList = new ArrayList<OccupationModel>();
+		occupationList = new ArrayList<Occupation>();
 		occupationNum = (int)(Math.random()*20);
 		for(int i=0; i<occupationNum; ++i) {
 			occupationList.add(RandomData.genOcc());

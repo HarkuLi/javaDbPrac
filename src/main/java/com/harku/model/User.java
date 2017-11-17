@@ -2,7 +2,7 @@ package com.harku.model;
 
 import java.util.Arrays;
 
-public class UserModel{
+public class User{
 	private String id;
 	private String account;
 	//the hashed password
@@ -18,9 +18,9 @@ public class UserModel{
 	private Long signInTime;
 	private String token;
 	
-	public UserModel() {}
+	public User() {}
 	
-	public UserModel(UserModel user) {
+	public User(User user) {
 		id = user.getId();
 		account = user.getAccount();
 		password = user.getPassword();

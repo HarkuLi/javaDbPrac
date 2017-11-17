@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 
 @Repository
 public class UserAccountDao {
@@ -21,9 +21,9 @@ public class UserAccountDao {
 	
 	private final String tableName = "userAccount";
 	
-	private final RowMapper<UserModel> userAccountRowMapper = new BeanPropertyRowMapper<UserModel>(UserModel.class);
+	private final RowMapper<User> userAccountRowMapper = new BeanPropertyRowMapper<User>(User.class);
 
-	public void create(UserModel newData) {
+	public void create(User newData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
 		sqlStr.append(tableName);
@@ -35,7 +35,7 @@ public class UserAccountDao {
 		jdbcTemplate.update(sqlStr.toString(), paramList);
 	}
 	
-	public ArrayList<UserModel> read(UserFilterModel filter) {
+	public ArrayList<User> read(UserFilter filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
 		sqlStr.append(tableName);
@@ -50,13 +50,13 @@ public class UserAccountDao {
 			sqlStr.append(filterStr);
 		}
 		
-		ArrayList<UserModel> rstList = 
-				new ArrayList<UserModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), userAccountRowMapper));
+		ArrayList<User> rstList = 
+				new ArrayList<User>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), userAccountRowMapper));
 		
 		return rstList;
 	}
 	
-	public void update(UserModel setData) {
+	public void update(User setData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("update ");
 		sqlStr.append(tableName);
@@ -95,7 +95,7 @@ public class UserAccountDao {
 	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private Map<String, Object> setDataHandle(UserModel setData) {
+	private Map<String, Object> setDataHandle(User setData) {
 		StringBuffer queryStr = new StringBuffer();
 		List<Object> paramList = new ArrayList<Object>();
 		Map<String, Object> rst = new HashMap<String, Object>();
@@ -146,7 +146,7 @@ public class UserAccountDao {
 	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private Map<String, Object> filterHandle(UserFilterModel filter) {
+	private Map<String, Object> filterHandle(UserFilter filter) {
 		StringBuffer queryStr = new StringBuffer();
 		List<Object> paramList = new ArrayList<Object>();
 		Map<String, Object> rst = new HashMap<String, Object>();

@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.sign.SignRestController;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
 import com.harku.service.UserAccountService;
@@ -42,7 +42,7 @@ import com.harku.test.util.RandomData;
 public class TestSignUpAction {
 	private static byte[] defaultPhoto;
 	private MockMvc mockMvc;
-	private UserModel randomUser;
+	private User randomUser;
 	private final String existingAccountName = "existingAccountName";
 	
 	@Mock
@@ -122,9 +122,9 @@ public class TestSignUpAction {
 		assertEquals(randomUser.getAccount(), res.get("account"));
 		
 		//delete the created test photo
-		ArgumentCaptor<UserModel> captor = ArgumentCaptor.forClass(UserModel.class);
+		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 		verify(usersService).createUser(captor.capture());
-		UserModel capturedData = captor.getValue();
+		User capturedData = captor.getValue();
 		PhotoService.delete(capturedData.getPhotoName());
 	}
 	

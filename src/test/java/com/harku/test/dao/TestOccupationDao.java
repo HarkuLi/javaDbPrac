@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.harku.dao.OccupationDao;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.test.config.AppConfigTest;
 import com.harku.test.util.RandomData;
 
@@ -37,17 +37,17 @@ public class TestOccupationDao {
 		
 		//create
 		for(int i=0; i<10; ++i) {
-			OccupationModel newOcc = RandomData.genOcc();
+			Occupation newOcc = RandomData.genOcc();
 			newOcc.setName(occNamePattern + RandomData.genStr(5, 10));
 			occupationDao.create(newOcc);
 			idList.add(newOcc.getId());
 		}
 		
 		//read
-		OccupationModel filter = new OccupationModel();
+		Occupation filter = new Occupation();
 		filter.setName("testOcc");
-		List<OccupationModel> readOccList = occupationDao.read(filter, 0, 10);
-		for(OccupationModel occ : readOccList) assertTrue(idList.contains(occ.getId()));
+		List<Occupation> readOccList = occupationDao.read(filter, 0, 10);
+		for(Occupation occ : readOccList) assertTrue(idList.contains(occ.getId()));
 	}
 	
 	@Test
@@ -56,14 +56,14 @@ public class TestOccupationDao {
 		
 		//create
 		for(int i=0; i<100; ++i) {
-			OccupationModel newOcc = RandomData.genOcc();
+			Occupation newOcc = RandomData.genOcc();
 			occupationDao.create(newOcc);
 			idList.add(newOcc.getId());
 		}
 		
 		//read
-		List<OccupationModel> readOccList = occupationDao.read(new OccupationModel());
-		for(OccupationModel occ : readOccList) assertTrue(idList.contains(occ.getId()));
+		List<Occupation> readOccList = occupationDao.read(new Occupation());
+		for(Occupation occ : readOccList) assertTrue(idList.contains(occ.getId()));
 	}
 	
 	@Test
@@ -72,31 +72,31 @@ public class TestOccupationDao {
 		
 		//create
 		for(int i=0; i<createNum; ++i) {
-			OccupationModel newOcc = RandomData.genOcc();
+			Occupation newOcc = RandomData.genOcc();
 			occupationDao.create(newOcc);
 		}
 		
 		//read
-		assertEquals(createNum, occupationDao.getRowNum(new OccupationModel()));
+		assertEquals(createNum, occupationDao.getRowNum(new Occupation()));
 	}
 	
 	@Test
 	public void testUpdate() {
 		//create
-		OccupationModel occ = RandomData.genOcc();
+		Occupation occ = RandomData.genOcc();
 		occupationDao.create(occ);
 		
 		//update
 		String newName = "test update name";
 		Boolean newState = !occ.getState();
-		OccupationModel updateData = new OccupationModel();
+		Occupation updateData = new Occupation();
 		updateData.setId(occ.getId());
 		updateData.setName(newName);
 		updateData.setState(newState);
 		occupationDao.update(updateData);
 		
 		//verify
-		OccupationModel readOcc = occupationDao.read(new OccupationModel()).get(0);
+		Occupation readOcc = occupationDao.read(new Occupation()).get(0);
 		assertEquals(newName, readOcc.getName());
 		assertEquals(newState, readOcc.getState());
 	}
@@ -108,7 +108,7 @@ public class TestOccupationDao {
 		
 		//create
 		for(int i=0; i<createNum; ++i) {
-			OccupationModel newOcc = RandomData.genOcc();
+			Occupation newOcc = RandomData.genOcc();
 			occupationDao.create(newOcc);
 			idList.add(newOcc.getId());
 		}
@@ -117,7 +117,7 @@ public class TestOccupationDao {
 		for(String id : idList) occupationDao.delete(id);
 		
 		//verify
-		List<OccupationModel> readOccList = occupationDao.read(new OccupationModel());
+		List<Occupation> readOccList = occupationDao.read(new Occupation());
 		assertTrue(readOccList.isEmpty());
 	}
 }

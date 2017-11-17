@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.AccountValidator;
 import com.harku.controller.sign.SignPageController;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
@@ -38,9 +38,9 @@ import com.harku.test.util.RandomData;
 @ContextConfiguration(classes = WebConfig.class)
 public class TestSignInPage {
 	private MockMvc mockMvc;
-	private UserModel userTestData;
-	private UserModel disabledUser;
-	private UserModel enabledUser;
+	private User userTestData;
+	private User disabledUser;
+	private User enabledUser;
 	private String disabledUserPassword;
 	private String enabledUserPassword;
 	private final String invalidToken = "invalidToken";
@@ -115,9 +115,9 @@ public class TestSignInPage {
 				.andReturn();
 		
 		String tokenInCookie = result.getResponse().getCookie("LOGIN_INFO").getValue();
-		ArgumentCaptor<UserModel> captor = ArgumentCaptor.forClass(UserModel.class);
+		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 		verify(userAccountService).updateAcc(captor.capture());
-		UserModel updatedAccount = captor.getValue();
+		User updatedAccount = captor.getValue();
 		//the token of the account passed to the DB must be equal to the token in the cookie
 		assertEquals(updatedAccount.getToken(), tokenInCookie);
 	}

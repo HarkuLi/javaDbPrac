@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 
 @Repository
 public class OccupationDao {
@@ -20,13 +20,13 @@ public class OccupationDao {
 	
 	private final String tableName = "occupation";
 
-	private final RowMapper<OccupationModel> occupationRowMapper = new BeanPropertyRowMapper<OccupationModel>(OccupationModel.class);
+	private final RowMapper<Occupation> occupationRowMapper = new BeanPropertyRowMapper<Occupation>(Occupation.class);
 	
 	/**
 	 * @param filter {OccModel}
 	 * @return {int} total number of rows, and return -1 when the table doesn't exist
 	 */
-	public int getRowNum(OccupationModel filter) {
+	public int getRowNum(Occupation filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select count(id) from ");
 		sqlStr.append(tableName);
@@ -44,7 +44,7 @@ public class OccupationDao {
 		return jdbcTemplate.queryForObject(sqlStr.toString(), paramList.toArray(), Integer.class);
 	}
 	
-	public void create(OccupationModel newData) {
+	public void create(Occupation newData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
 		sqlStr.append(tableName);
@@ -61,7 +61,7 @@ public class OccupationDao {
 	 * @param filter {OccModel}
 	 * @return {ArrayList<OccModel>} a list of occupation object
 	 */
-	public ArrayList<OccupationModel> read(OccupationModel filter) {
+	public ArrayList<Occupation> read(Occupation filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
 		sqlStr.append(tableName);
@@ -78,8 +78,8 @@ public class OccupationDao {
 		
 		sqlStr.append(" order by name");
 		
-		ArrayList<OccupationModel> tableList
-			= new ArrayList<OccupationModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), occupationRowMapper));
+		ArrayList<Occupation> tableList
+			= new ArrayList<Occupation>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), occupationRowMapper));
 		
 		return tableList;
 	}
@@ -91,7 +91,7 @@ public class OccupationDao {
 	 * @param readNum {int} how many rows to read
 	 * @return {ArrayList<OccModel>} a list of occupation object
 	 */
-	public ArrayList<OccupationModel> read(OccupationModel filter, int skipNum, int readNum) {
+	public ArrayList<Occupation> read(Occupation filter, int skipNum, int readNum) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
 		sqlStr.append(tableName);
@@ -112,13 +112,13 @@ public class OccupationDao {
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<OccupationModel> tableList
-			= new ArrayList<OccupationModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), occupationRowMapper));
+		ArrayList<Occupation> tableList
+			= new ArrayList<Occupation>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), occupationRowMapper));
 		
 		return tableList;
 	}
 	
-	public void update(OccupationModel data) {
+	public void update(Occupation data) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("update ");
 		sqlStr.append(tableName);
@@ -148,7 +148,7 @@ public class OccupationDao {
 	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private Map<String, Object> filterHandle(OccupationModel filter) {
+	private Map<String, Object> filterHandle(Occupation filter) {
 		StringBuffer queryStr = new StringBuffer();
 		List<Object> paramList = new ArrayList<Object>();
 		Map<String, Object> rst = new HashMap<String, Object>();

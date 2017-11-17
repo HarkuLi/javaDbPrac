@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 
 @Repository
 public class UserDao{
@@ -21,13 +21,13 @@ public class UserDao{
 	
 	private final String tableName = "user";
 	
-	private final RowMapper<UserModel> userRowMapper = new BeanPropertyRowMapper<UserModel>(UserModel.class);
+	private final RowMapper<User> userRowMapper = new BeanPropertyRowMapper<User>(User.class);
 	
 	/**
 	 * @param filter {UserFilterModel}
 	 * @return {int} total number of rows
 	 */
-	public int getRowNum(UserFilterModel filter) {
+	public int getRowNum(UserFilter filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select count(id) from ");
 		sqlStr.append(tableName);
@@ -45,7 +45,7 @@ public class UserDao{
 		return jdbcTemplate.queryForObject(sqlStr.toString(), paramList.toArray(), Integer.class);
 	}
 	
-	public void create(UserModel newData) {
+	public void create(User newData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
 		sqlStr.append(tableName);
@@ -65,7 +65,7 @@ public class UserDao{
 	 * @param readNum {int} how many rows to read
 	 * @return {ArrayList<UsersModel>} a list of user object
 	 */
-	public ArrayList<UserModel> read(UserFilterModel filter, int skipNum, int readNum) {
+	public ArrayList<User> read(UserFilter filter, int skipNum, int readNum) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
 		sqlStr.append(tableName);
@@ -86,13 +86,13 @@ public class UserDao{
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<UserModel> tableList
-			= new ArrayList<UserModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), userRowMapper));
+		ArrayList<User> tableList
+			= new ArrayList<User>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), userRowMapper));
 		
 		return tableList;
 	}
 	
-	public void update(UserModel setData) {
+	public void update(User setData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("update ");
 		sqlStr.append(tableName);
@@ -131,7 +131,7 @@ public class UserDao{
 	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private Map<String, Object> setDataHandle(UserModel setData) {
+	private Map<String, Object> setDataHandle(User setData) {
 		StringBuffer queryStr = new StringBuffer();
 		List<Object> paramList = new ArrayList<Object>();
 		Map<String, Object> rst = new HashMap<String, Object>();
@@ -182,7 +182,7 @@ public class UserDao{
 	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private Map<String, Object> filterHandle(UserFilterModel filter) {
+	private Map<String, Object> filterHandle(UserFilter filter) {
 		StringBuffer queryStr = new StringBuffer();
 		List<Object> paramList = new ArrayList<Object>();
 		Map<String, Object> rst = new HashMap<String, Object>();

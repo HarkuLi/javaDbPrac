@@ -14,8 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.harku.dao.UserDao;
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 import com.harku.test.config.AppConfigTest;
 import com.harku.test.util.RandomData;
 
@@ -34,13 +34,13 @@ public class TestUserDao {
 	@Test
 	public void testReadOne() {
 		//create random data
-		UserModel newData = RandomData.genUser();
+		User newData = RandomData.genUser();
 		userDao.create(newData);
 		
 		//read
-		UserFilterModel filter = new UserFilterModel();
+		UserFilter filter = new UserFilter();
 		filter.setId(newData.getId());
-		ArrayList<UserModel> readRows = userDao.read(filter, 0, 1);
+		ArrayList<User> readRows = userDao.read(filter, 0, 1);
 		assertEquals(newData.getName()     , readRows.get(0).getName());
 		assertEquals(newData.getPhotoName(), readRows.get(0).getPhotoName());
 	}
@@ -51,14 +51,14 @@ public class TestUserDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			UserModel newData = RandomData.genUser();
+			User newData = RandomData.genUser();
 			idList.add(newData.getId());
 			userDao.create(newData);
 		}
 		
 		//read
-		List<UserModel> readRows = userDao.read(new UserFilterModel(), 0, 10000);
-		for(UserModel user : readRows) {
+		List<User> readRows = userDao.read(new UserFilter(), 0, 10000);
+		for(User user : readRows) {
 			assertTrue(idList.indexOf(user.getId()) >= 0);
 		}
 	}
@@ -66,7 +66,7 @@ public class TestUserDao {
 	@Test
 	public void testUpdate() {
 		//create random data
-		UserModel newData = RandomData.genUser();
+		User newData = RandomData.genUser();
 		String id = newData.getId();
 		userDao.create(newData);
 		
@@ -76,7 +76,7 @@ public class TestUserDao {
 		String newBirth = "2017-01-01";
 		String newPhotoName = "testPhotoName.gif";
 		String newOccupation = "testOccupation";
-		UserModel setData = new UserModel();
+		User setData = new User();
 		setData.setId(id);
 		setData.setName(newName);
 		setData.setAge(newAge);;
@@ -86,9 +86,9 @@ public class TestUserDao {
 		userDao.update(setData);
 		
 		//read
-		UserFilterModel filter = new UserFilterModel();
+		UserFilter filter = new UserFilter();
 		filter.setId(id);
-		UserModel readUser = userDao.read(filter, 0, 1).get(0);
+		User readUser = userDao.read(filter, 0, 1).get(0);
 		assertEquals(newName      , readUser.getName());
 		assertEquals(newAge       , readUser.getAge());
 		assertEquals(newBirth     , readUser.getBirth());
@@ -103,7 +103,7 @@ public class TestUserDao {
 		for(int i=0; i<rowNum; ++i) userDao.create(RandomData.genUser());
 		
 		//check number of rows
-		assertEquals(rowNum, userDao.getRowNum(new UserFilterModel()));
+		assertEquals(rowNum, userDao.getRowNum(new UserFilter()));
 	}
 	
 	@Test
@@ -112,7 +112,7 @@ public class TestUserDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			UserModel newData = RandomData.genUser();
+			User newData = RandomData.genUser();
 			idList.add(newData.getId());
 			userDao.create(newData);
 		}
@@ -120,6 +120,6 @@ public class TestUserDao {
 		//delete
 		for(String id : idList) userDao.delete(id);
 		
-		assertEquals(0, userDao.getRowNum(new UserFilterModel()));
+		assertEquals(0, userDao.getRowNum(new UserFilter()));
 	}
 }

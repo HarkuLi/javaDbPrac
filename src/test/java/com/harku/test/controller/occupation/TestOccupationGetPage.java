@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.controller.occupation.OccupationRestController;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.service.OccupationService;
 import com.harku.test.util.RandomData;
 
@@ -35,9 +35,9 @@ import com.harku.test.util.RandomData;
 public class TestOccupationGetPage {
 	private MockMvc mockMvc;
 	private final int totalPage = 2;
-	private ArrayList<OccupationModel> page1List;
-	private ArrayList<OccupationModel> page2List;
-	private OccupationModel filterMatchNothing;
+	private ArrayList<Occupation> page1List;
+	private ArrayList<Occupation> page2List;
+	private Occupation filterMatchNothing;
 	
 	@Mock
 	private OccupationService occupationService;
@@ -132,7 +132,7 @@ public class TestOccupationGetPage {
 		
 		when(occupationService.getPage(anyInt(), argThat(filter -> filter.getName().equals(filterMatchNothing.getName())
 													&& filter.getState() == filterMatchNothing.getState())))
-			.thenReturn(new ArrayList<OccupationModel>());
+			.thenReturn(new ArrayList<Occupation>());
 		
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/get_page")
@@ -150,16 +150,16 @@ public class TestOccupationGetPage {
 	}
 	
 	private void setTestData() {
-		page1List = new ArrayList<OccupationModel>();
+		page1List = new ArrayList<Occupation>();
 		page1List.add(RandomData.genOcc());
-		page2List = new ArrayList<OccupationModel>();
+		page2List = new ArrayList<Occupation>();
 		page2List.add(RandomData.genOcc());
 		filterMatchNothing = RandomData.genOcc();
 	}
 	
 	private void setStubs() {
-		when(occupationService.getTotalPage(any(OccupationModel.class))).thenReturn(totalPage);
-		when(occupationService.getPage(eq(1), any(OccupationModel.class))).thenReturn(page1List);
-		when(occupationService.getPage(eq(2), any(OccupationModel.class))).thenReturn(page2List);
+		when(occupationService.getTotalPage(any(Occupation.class))).thenReturn(totalPage);
+		when(occupationService.getPage(eq(1), any(Occupation.class))).thenReturn(page1List);
+		when(occupationService.getPage(eq(2), any(Occupation.class))).thenReturn(page2List);
 	}
 }

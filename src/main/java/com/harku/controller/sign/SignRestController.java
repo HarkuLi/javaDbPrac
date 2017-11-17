@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
 import com.harku.service.UserAccountService;
@@ -63,7 +63,7 @@ public class SignRestController {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		StringBuffer errMsg = new StringBuffer();
-		UserModel newData = new UserModel();
+		User newData = new User();
 		String photoName = null;
 		
 		rstMap.put("account", account);
@@ -109,7 +109,7 @@ public class SignRestController {
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
 	}
 	
-	private String checkUserData(UserModel user,  String passwordCheck) {
+	private String checkUserData(User user,  String passwordCheck) {
 		StringBuffer errMsg = new StringBuffer();
 		
 		//name

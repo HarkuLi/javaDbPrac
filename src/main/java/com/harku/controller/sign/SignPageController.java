@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.UserAccountService;
 
 @Controller
@@ -41,14 +41,14 @@ public class SignPageController {
 			return "redirect:/user/page";
 		}
 		
-		UserModel user = new UserModel();
+		User user = new User();
 		model.addAttribute("account_form", user);
 		
 		return "views/sign_in";
 	}
 	
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.POST)
-	public String SingInAction(@Valid @ModelAttribute("account_form") UserModel user, Errors errors, ModelMap model, HttpServletResponse res) {
+	public String SingInAction(@Valid @ModelAttribute("account_form") User user, Errors errors, ModelMap model, HttpServletResponse res) {
 		
 		//error generated in the validator
 		if(errors.hasErrors()) {
@@ -58,7 +58,7 @@ public class SignPageController {
 		
 		String account = user.getAccount();
 		String password = user.getPassword();
-		UserModel acc = userAccountService.getAcc(account);
+		User acc = userAccountService.getAcc(account);
 		
 		if(acc == null)	errors.rejectValue("account", "account.noMatch");
 		else if(!acc.getState())	errors.rejectValue("account", "account.noMatch");

@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.validation.Errors;
 
 import com.harku.controller.sign.AccountValidator;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,7 +28,7 @@ public class TestAccountValidator {
 	@Test
 	public void validAccount() {
 		//generate the account that user inputs
-		UserModel inputAccount = RandomData.genUser();
+		User inputAccount = RandomData.genUser();
 		String plainPassword = RandomData.genStr(8, 20);
 		inputAccount.setPassword(plainPassword);
 				
@@ -43,7 +43,7 @@ public class TestAccountValidator {
 	@Test
 	public void nullAccount() {
 		//generate the account that user inputs
-		UserModel inputAccount = RandomData.genUser();
+		User inputAccount = RandomData.genUser();
 		String plainPassword = RandomData.genStr(8, 20);
 		inputAccount.setAccount(null);
 		inputAccount.setPassword(plainPassword);
@@ -58,7 +58,7 @@ public class TestAccountValidator {
 	@Test
 	public void zeroLengthAccount() {
 		//generate the account that user inputs
-		UserModel inputAccount = RandomData.genUser();
+		User inputAccount = RandomData.genUser();
 		String plainPassword = RandomData.genStr(8, 20);
 		inputAccount.setAccount("");
 		inputAccount.setPassword(plainPassword);
@@ -73,7 +73,7 @@ public class TestAccountValidator {
 	@Test
 	public void nullPassword() {
 		//generate the account that user inputs
-		UserModel inputAccount = RandomData.genUser();
+		User inputAccount = RandomData.genUser();
 		inputAccount.setPassword(null);
 				
 		//call function
@@ -86,7 +86,7 @@ public class TestAccountValidator {
 	@Test
 	public void zeroLengthPassword() {
 		//generate the account that user inputs
-		UserModel inputAccount = RandomData.genUser();
+		User inputAccount = RandomData.genUser();
 		inputAccount.setPassword("");
 				
 		//call function

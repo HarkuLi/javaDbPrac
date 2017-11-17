@@ -17,8 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.harku.dao.UserAccountDao;
-import com.harku.model.UserFilterModel;
-import com.harku.model.UserModel;
+import com.harku.model.UserFilter;
+import com.harku.model.User;
 import com.harku.test.config.AppConfigTest;
 import com.harku.test.util.RandomData;
 
@@ -36,10 +36,10 @@ public class TestUserAccountDao {
 	
 	@Test
 	public void testReadOne() {
-		UserModel newUser = RandomData.genUser();
+		User newUser = RandomData.genUser();
 		userAccountDao.create(newUser);
 		
-		UserModel readUser = userAccountDao.read(new UserFilterModel()).get(0);
+		User readUser = userAccountDao.read(new UserFilter()).get(0);
 		
 		assertEquals(newUser.getId(), readUser.getId());
 		assertEquals(newUser.getAccount(), readUser.getAccount());
@@ -52,17 +52,17 @@ public class TestUserAccountDao {
 		
 		//create users and record their accounts
 		for(int i=0; i<100; ++i) {
-			UserModel newUser = RandomData.genUser();
+			User newUser = RandomData.genUser();
 			userAccountDao.create(newUser);
 			idSet.add(newUser.getId());
 			accountSet.add(newUser.getAccount());
 		}
 		
 		//read and get account set
-		List<UserModel> readUserList = userAccountDao.read(new UserFilterModel());
+		List<User> readUserList = userAccountDao.read(new UserFilter());
 		Set<String> readIdSet = new HashSet<String>();
 		Set<String> readAccountSet = new HashSet<String>();
-		for(UserModel user : readUserList) {
+		for(User user : readUserList) {
 			readIdSet.add(user.getId());
 			readAccountSet.add(user.getAccount());
 		}
@@ -75,7 +75,7 @@ public class TestUserAccountDao {
 	@Test
 	public void testUpdate() {
 		//create random data
-		UserModel newData = RandomData.genUser();
+		User newData = RandomData.genUser();
 		userAccountDao.create(newData);
 		
 		//update
@@ -84,7 +84,7 @@ public class TestUserAccountDao {
 		Boolean newState = !newData.getState();
 		Long newSignInTime = System.currentTimeMillis();
 		String newToken = "testUpdateToken";
-		UserModel setData = new UserModel();
+		User setData = new User();
 		setData.setId(newData.getId());
 		setData.setAccount(newAccount);
 		setData.setPassword(newPassword);
@@ -94,8 +94,8 @@ public class TestUserAccountDao {
 		userAccountDao.update(setData);
 		
 		//read
-		UserFilterModel filter = new UserFilterModel();
-		UserModel readUser = userAccountDao.read(filter).get(0);
+		UserFilter filter = new UserFilter();
+		User readUser = userAccountDao.read(filter).get(0);
 		assertEquals(newAccount   , readUser.getAccount());
 		assertEquals(newPassword  , readUser.getPassword());
 		assertEquals(newState     , readUser.getState());
@@ -109,7 +109,7 @@ public class TestUserAccountDao {
 		
 		//create random data
 		for(int i=0; i<100; ++i) {
-			UserModel newData = RandomData.genUser();
+			User newData = RandomData.genUser();
 			userAccountDao.create(newData);
 			idList.add(newData.getId());
 		}
@@ -117,6 +117,6 @@ public class TestUserAccountDao {
 		//delete
 		for(String id : idList) userAccountDao.delete(id);
 		
-		assertTrue(userAccountDao.read(new UserFilterModel()).isEmpty());
+		assertTrue(userAccountDao.read(new UserFilter()).isEmpty());
 	}
 }

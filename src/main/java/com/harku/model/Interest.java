@@ -1,6 +1,6 @@
 package com.harku.model;
 
-public class InterestModel {
+public class Interest {
 	private String id;
 	private String name;
 	private Boolean state;

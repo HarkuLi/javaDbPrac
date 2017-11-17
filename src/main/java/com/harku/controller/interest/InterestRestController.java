@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 import com.harku.service.InterestService;
 
 @RestController
@@ -47,7 +47,7 @@ public class InterestRestController {
     	StringBuffer errMsg = new StringBuffer();
 		
     	//check data
-    	InterestModel nameFilter = new InterestModel();
+    	Interest nameFilter = new Interest();
     	nameFilter.setName(name);
 			//id
 		if(interestService.getInterest(id) == null)
@@ -56,7 +56,7 @@ public class InterestRestController {
 		if(name.length() > ConstantConfig.MAX_NAME_LENGTH)
 			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
 		else {
-			List<InterestModel> interestList = interestService.getPage(1, nameFilter);
+			List<Interest> interestList = interestService.getPage(1, nameFilter);
 			//There is an another interest with the same name.
 			//In other words, there is an interest with the name,
 			//and the interest isn't the current updated one.
@@ -91,7 +91,7 @@ public class InterestRestController {
 		StringBuffer errMsg = new StringBuffer();
 		
     	//check data
-		InterestModel nameFilter = new InterestModel();
+		Interest nameFilter = new Interest();
     	nameFilter.setName(name);
 		if(name.length() > ConstantConfig.MAX_NAME_LENGTH) {
 			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
@@ -124,8 +124,8 @@ public class InterestRestController {
 		@RequestParam(required = false) String state) {
 		
 		int totalPage;
-		ArrayList<InterestModel> tableList;
-		InterestModel filter = new InterestModel();
+		ArrayList<Interest> tableList;
+		Interest filter = new Interest();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	
     	//set filter
@@ -152,9 +152,9 @@ public class InterestRestController {
 	 * 404: (no interest matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<InterestModel> GetInterest(@RequestParam String id) {
+	public ResponseEntity<Interest> GetInterest(@RequestParam String id) {
 		
-		InterestModel interest = interestService.getInterest(id);
+		Interest interest = interestService.getInterest(id);
     	if(interest == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(interest);

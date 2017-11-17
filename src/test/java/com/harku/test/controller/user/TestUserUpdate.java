@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
-import com.harku.model.UserModel;
+import com.harku.model.User;
 import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
 import com.harku.service.UserAccountService;
@@ -42,7 +42,7 @@ import com.harku.test.util.RandomData;
 public class TestUserUpdate {
 	private static byte[] defaultPhoto;
 	private MockMvc mockMvc;
-	private UserModel userTestData;
+	private User userTestData;
 	
 	@Mock
 	private UserService usersService;
@@ -117,9 +117,9 @@ public class TestUserUpdate {
 		assertEquals(userTestData.getId(), res.get("id"));
 		
 		//delete the created test photo
-		ArgumentCaptor<UserModel> captor = ArgumentCaptor.forClass(UserModel.class);
+		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 		verify(usersService).update(captor.capture());
-		UserModel capturedData = captor.getValue();
+		User capturedData = captor.getValue();
 		PhotoService.delete(capturedData.getPhotoName());
 	}
 	
@@ -164,7 +164,7 @@ public class TestUserUpdate {
 	
 	@Test
 	public void notExistingUser() throws Exception {
-		UserModel notExistingUser = RandomData.genUser();
+		User notExistingUser = RandomData.genUser();
 		MvcResult result
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
 							.param("id"			, notExistingUser.getId())

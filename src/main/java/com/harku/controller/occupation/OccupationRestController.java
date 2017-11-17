@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 import com.harku.service.OccupationService;
 
 @RestController
@@ -47,7 +47,7 @@ public class OccupationRestController {
     	StringBuffer errMsg = new StringBuffer();
     	
     	//check data
-    	OccupationModel nameFilter = new OccupationModel();
+    	Occupation nameFilter = new Occupation();
     	nameFilter.setName(name);
 			//id
 		if(occupationService.getOcc(id) == null)
@@ -56,7 +56,7 @@ public class OccupationRestController {
 		if(name.length() > ConstantConfig.MAX_NAME_LENGTH)
 			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
 		else {
-			List<OccupationModel> occupationList = occupationService.getPage(1, nameFilter);
+			List<Occupation> occupationList = occupationService.getPage(1, nameFilter);
 			//There is an another occupation with the same name.
 			//In other words, there is an occupation with the name,
 			//and the occupation isn't the current updated one.
@@ -91,7 +91,7 @@ public class OccupationRestController {
 		StringBuffer errMsg = new StringBuffer();
     	
     	//check data
-		OccupationModel nameFilter = new OccupationModel();
+		Occupation nameFilter = new Occupation();
     	nameFilter.setName(name);
 		if(name.length() > ConstantConfig.MAX_NAME_LENGTH) {
 			errMsg.append("The name can't be longer than " + ConstantConfig.MAX_NAME_LENGTH + " characters.\n");
@@ -124,8 +124,8 @@ public class OccupationRestController {
 		@RequestParam(required = false) String state) {
     	
 		int totalPage;
-		ArrayList<OccupationModel> tableList;
-		OccupationModel filter = new OccupationModel();
+		ArrayList<Occupation> tableList;
+		Occupation filter = new Occupation();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	
     	//set filter
@@ -152,9 +152,9 @@ public class OccupationRestController {
 	 * 404: (no occupation matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<OccupationModel> GetOcc(@RequestParam String id) {
+	public ResponseEntity<Occupation> GetOcc(@RequestParam String id) {
 		
-    	OccupationModel occupation = occupationService.getOcc(id);
+    	Occupation occupation = occupationService.getOcc(id);
     	if(occupation == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(occupation);

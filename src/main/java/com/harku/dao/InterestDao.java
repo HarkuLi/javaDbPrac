@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.harku.model.InterestModel;
+import com.harku.model.Interest;
 
 @Repository
 public class InterestDao {
@@ -20,13 +20,13 @@ public class InterestDao {
 	
 	private final String tableName = "interest";
 	
-	private final RowMapper<InterestModel> interestRowMapper = new BeanPropertyRowMapper<InterestModel>(InterestModel.class);
+	private final RowMapper<Interest> interestRowMapper = new BeanPropertyRowMapper<Interest>(Interest.class);
 	
 	/**
 	 * @param filter {IntModel}
 	 * @return {int} total number of rows
 	 */
-	public int getRowNum(InterestModel filter) {
+	public int getRowNum(Interest filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select count(id) from ");
 		sqlStr.append(tableName);
@@ -44,7 +44,7 @@ public class InterestDao {
 		return jdbcTemplate.queryForObject(sqlStr.toString(), paramList.toArray(), Integer.class);
 	}
 	
-	public void create(InterestModel newData) {
+	public void create(Interest newData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
 		sqlStr.append(tableName);
@@ -61,7 +61,7 @@ public class InterestDao {
 	 * @param filter {IntModel}
 	 * @return {ArrayList<IntModel>} a list of interest object
 	 */
-	public ArrayList<InterestModel> read(InterestModel filter) {
+	public ArrayList<Interest> read(Interest filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
 		sqlStr.append(tableName);
@@ -78,8 +78,8 @@ public class InterestDao {
 		
 		sqlStr.append(" order by name");
 		
-		ArrayList<InterestModel> tableList
-			= new ArrayList<InterestModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), interestRowMapper));
+		ArrayList<Interest> tableList
+			= new ArrayList<Interest>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), interestRowMapper));
 		
 		return tableList;
 	}
@@ -91,7 +91,7 @@ public class InterestDao {
 	 * @param readNum {int} how many rows to read
 	 * @return {ArrayList<IntModel>} a list of interest object
 	 */
-	public ArrayList<InterestModel> read(InterestModel filter, int skipNum, int readNum) {
+	public ArrayList<Interest> read(Interest filter, int skipNum, int readNum) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
 		sqlStr.append(tableName);
@@ -112,13 +112,13 @@ public class InterestDao {
 		paramList.add(skipNum);
 		paramList.add(readNum);
 		
-		ArrayList<InterestModel> tableList
-			= new ArrayList<InterestModel>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), interestRowMapper));
+		ArrayList<Interest> tableList
+			= new ArrayList<Interest>(jdbcTemplate.query(sqlStr.toString(), paramList.toArray(), interestRowMapper));
 		
 		return tableList;
 	}
 	
-	public void update(InterestModel data) {
+	public void update(Interest data) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("update ");
 		sqlStr.append(tableName);
@@ -148,7 +148,7 @@ public class InterestDao {
 	 *     paramList: List<Object>,
 	 *   }
 	 */
-	private Map<String, Object> filterHandle(InterestModel filter) {
+	private Map<String, Object> filterHandle(Interest filter) {
 		StringBuffer queryStr = new StringBuffer();
 		List<Object> paramList = new ArrayList<Object>();
 		Map<String, Object> rst = new HashMap<String, Object>();

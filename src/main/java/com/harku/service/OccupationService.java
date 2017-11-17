@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harku.dao.OccupationDao;
-import com.harku.model.OccupationModel;
+import com.harku.model.Occupation;
 
 @Service
 public class OccupationService {
@@ -17,7 +17,7 @@ public class OccupationService {
 	private final int ENTRY_PER_PAGE = 10;
 	
 	public void createOcc(String name, Boolean state) {
-		OccupationModel newData = new OccupationModel();
+		Occupation newData = new Occupation();
 		
 		newData.setId(UUID.randomUUID().toString());
 		newData.setName(name);
@@ -30,30 +30,30 @@ public class OccupationService {
 	 * @param id
 	 * @return occupation data, null if not found
 	 */
-	public OccupationModel getOcc(String id) {
-		OccupationModel filter = new OccupationModel();
+	public Occupation getOcc(String id) {
+		Occupation filter = new Occupation();
 		filter.setId(id);
-		ArrayList<OccupationModel> occList = occupationDao.read(filter, 0, 1);
+		ArrayList<Occupation> occList = occupationDao.read(filter, 0, 1);
 		
 		if(occList.isEmpty()) return null;
 		return occList.get(0);
 	}
 	
-	public ArrayList<OccupationModel> getList() {
-		OccupationModel filter = new OccupationModel();
+	public ArrayList<Occupation> getList() {
+		Occupation filter = new Occupation();
 		filter.setState(true);
 		return occupationDao.read(filter);
 	}
 	
-	public ArrayList<OccupationModel> getPage(int page, OccupationModel filter) {
-		if(page <= 0) return new ArrayList<OccupationModel>();
+	public ArrayList<Occupation> getPage(int page, Occupation filter) {
+		if(page <= 0) return new ArrayList<Occupation>();
 		
 		int skipNum = ENTRY_PER_PAGE * (page - 1);
 		
 		return occupationDao.read(filter, skipNum, ENTRY_PER_PAGE);
 	}
 	
-	public int getTotalPage(OccupationModel filter) {
+	public int getTotalPage(Occupation filter) {
 		int rowNum = occupationDao.getRowNum(filter);
 		
 		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
@@ -61,7 +61,7 @@ public class OccupationService {
 	}
 	
 	public void update(String id, String name, Boolean state) {
-		OccupationModel newData = new OccupationModel();
+		Occupation newData = new Occupation();
 		
 		newData.setId(id);
 		newData.setName(name);
