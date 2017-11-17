@@ -6,7 +6,7 @@
 <html>
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
-	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/sign_up.css">	
+	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/signUp.css">	
 	<title><spring:message code="signUp" text="Sign Up" /></title>
 </head>
 <body>
@@ -17,11 +17,11 @@
 	<div class="container">
 		<div class="panel panel-success center-block">
 			<form class="form-horizontal" id="sign_up_form" enctype="multipart/form-data">
-				<jsp:include page="/WEB-INF/partial/user/detail_new.jsp"></jsp:include>
+				<jsp:include page="/WEB-INF/partial/user/detailNew.jsp"></jsp:include>
 			</form>
 		</div>
 	</div>
 	
-	<script src="/javaDbPrac/js/sign_up.js"></script>
+	<script src="/javaDbPrac/js/signUp.js"></script>
 </body>
 </html>

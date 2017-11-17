@@ -45,7 +45,7 @@ public class TestSignInPage {
 	private String enabledUserPassword;
 	private final String invalidToken = "invalidToken";
 	private final String notExistingAccount = "notExistingAccount";
-	private final String signInPageURL = "/WEB-INF/views/sign_in.jsp";
+	private final String signInPageURL = "/WEB-INF/views/signIn.jsp";
 	
 	@Mock
 	private UserAccountService userAccountService;

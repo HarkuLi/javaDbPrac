@@ -37,7 +37,7 @@ public class GlobalControllerAdvice {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(value = NoHandlerFoundException.class)
 	public String notFoundPageHandler(HttpServletRequest req, HttpServletResponse res, Exception e) {
-		return "views/not_found";
+		return "views/notFound";
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

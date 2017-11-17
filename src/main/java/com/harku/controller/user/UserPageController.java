@@ -14,14 +14,14 @@ public class UserPageController {
 	}
 	@RequestMapping(value = "/new_form", method = RequestMethod.GET)
 	public String getNewForm(ModelMap model) {
-		return "partial/user/detail_new";
+		return "partial/user/detailNew";
 	}
 	@RequestMapping(value = "/edit_form", method = RequestMethod.GET)
 	public String getEditForm(ModelMap model) {
-		return "partial/user/detail_edit";
+		return "partial/user/detailEdit";
 	}
 	@RequestMapping(value = "/change_password_form", method = RequestMethod.GET)
 	public String getChangePasswordForm(ModelMap model) {
-		return "partial/user/change_password";
+		return "partial/user/changePassword";
 	}
 }

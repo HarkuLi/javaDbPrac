@@ -1116,6 +1116,7 @@ function loadNewUserForm(){
 			//load the occupation and interest lists
 			return initialization();
 		}
+		return null;
 	});
 }
 
@@ -1149,6 +1150,7 @@ function loadEditUserForm(){
 			//load the occupation and interest lists
 			return initialization();
 		}
+		return null;
 	});
 }
 
