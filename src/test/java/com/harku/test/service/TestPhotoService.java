@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 import org.junit.BeforeClass;
@@ -23,7 +22,6 @@ import com.harku.service.PhotoService;
 import com.harku.test.util.RandomData;
 
 public class TestPhotoService {
-	private static final List<String> acceptType = Arrays.asList("jpeg" ,"png", "gif");
 	private static String imageDirPathStr;
 	
 	@BeforeClass
@@ -50,7 +48,7 @@ public class TestPhotoService {
 	@Test
 	public void testUnacceptableType() throws IOException {
 		String type = RandomData.genStr(3, 5);
-		while(acceptType.contains(type)) type = RandomData.genStr(3, 5);
+		while(PhotoService.acceptType.contains(type)) type = RandomData.genStr(3, 5);
 		
 		String imageName = UUID.randomUUID().toString() + "." + type;
 		String originalName = imageName;

@@ -25,7 +25,6 @@ import com.harku.service.UserService;
 
 @RestController
 public class SignRestController {
-	private static final int workload = 12;
 	@Autowired
 	private UserAccountService userAccountService;
 	@Autowired
@@ -88,7 +87,7 @@ public class SignRestController {
     	}
 		
     	//hash the password
-    	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
+    	password = BCrypt.hashpw(password, BCrypt.gensalt(ConstantConfig.BCRYPT_WORKLOAD));
     	
     	//store photo
 		if(photo != null && photo.getSize() != 0) {

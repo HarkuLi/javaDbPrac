@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.AccountValidator;
 import com.harku.controller.sign.SignPageController;
@@ -79,7 +80,7 @@ public class TestSignInPage {
 	
 	@Test
 	public void get_invalidToken() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", invalidToken);
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, invalidToken);
 		mockMvc.perform(get("/sign_in/page")
 						.cookie(cookie))
 				.andExpect(status().isOk());
@@ -87,7 +88,7 @@ public class TestSignInPage {
 	
 	@Test
 	public void get_validToken() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", userTestData.getToken());
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, userTestData.getToken());
 		mockMvc.perform(get("/sign_in/page")
 						.cookie(cookie))
 				.andExpect(redirectedUrl("/user/page"))
@@ -114,7 +115,7 @@ public class TestSignInPage {
 				.andExpect(status().isFound())
 				.andReturn();
 		
-		String tokenInCookie = result.getResponse().getCookie("LOGIN_INFO").getValue();
+		String tokenInCookie = result.getResponse().getCookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME).getValue();
 		ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 		verify(userAccountService).updateAcc(captor.capture());
 		User updatedAccount = captor.getValue();

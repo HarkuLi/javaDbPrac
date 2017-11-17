@@ -19,14 +19,14 @@ public class UserAccountDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private final String tableName = "userAccount";
+	private final String TABLE_NAME = "userAccount";
 	
 	private final RowMapper<User> userAccountRowMapper = new BeanPropertyRowMapper<User>(User.class);
 
 	public void create(User newData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" (id, account, password, state)");
 		sqlStr.append(" values (?, ?, ?, ?)");
 		
@@ -38,7 +38,7 @@ public class UserAccountDao {
 	public ArrayList<User> read(UserFilter filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		
 		//handle the filter
 		Map<String, Object> handledFilter = filterHandle(filter);
@@ -59,7 +59,7 @@ public class UserAccountDao {
 	public void update(User setData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("update ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 
 		//handle the data to set
 		String userId = setData.getId();
@@ -80,7 +80,7 @@ public class UserAccountDao {
 	public void delete(String userId) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("delete from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" where id = ?");
 		
 		jdbcTemplate.update(sqlStr.toString(), new Object[] {userId});

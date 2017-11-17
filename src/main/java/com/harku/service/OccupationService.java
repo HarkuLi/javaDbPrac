@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harku.config.ConstantConfig;
 import com.harku.dao.OccupationDao;
 import com.harku.model.Occupation;
 
@@ -13,8 +14,6 @@ import com.harku.model.Occupation;
 public class OccupationService {
 	@Autowired
 	private OccupationDao occupationDao;
-	
-	private final int ENTRY_PER_PAGE = 10;
 	
 	public void createOcc(String name, Boolean state) {
 		Occupation newData = new Occupation();
@@ -48,15 +47,15 @@ public class OccupationService {
 	public ArrayList<Occupation> getPage(int page, Occupation filter) {
 		if(page <= 0) return new ArrayList<Occupation>();
 		
-		int skipNum = ENTRY_PER_PAGE * (page - 1);
+		int skipNum = ConstantConfig.ENTRY_PER_PAGE * (page - 1);
 		
-		return occupationDao.read(filter, skipNum, ENTRY_PER_PAGE);
+		return occupationDao.read(filter, skipNum, ConstantConfig.ENTRY_PER_PAGE);
 	}
 	
 	public int getTotalPage(Occupation filter) {
 		int rowNum = occupationDao.getRowNum(filter);
 		
-		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
+		final int totalPage = (int) Math.ceil((double) rowNum / ConstantConfig.ENTRY_PER_PAGE);
 		return totalPage;
 	}
 	

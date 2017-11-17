@@ -30,9 +30,6 @@ import com.harku.service.UserService;
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
-	//workload for bcrypt
-	private static final int workload = 12;
-	
 	@Autowired
 	private UserService usersService;
 	@Autowired
@@ -194,7 +191,7 @@ public class UserRestController {
 	 * 404: (no user matches the token)
 	 */
 	@RequestMapping(value = "/get_by_token", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<User> GetUserByToken(@CookieValue(value = "LOGIN_INFO", required = false) String LOGIN_INFO) {
+	public ResponseEntity<User> GetUserByToken(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO) {
 		
 		if(LOGIN_INFO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		
@@ -293,7 +290,7 @@ public class UserRestController {
     	}
     	
     	//hash the password
-    	password = BCrypt.hashpw(password, BCrypt.gensalt(workload));
+    	password = BCrypt.hashpw(password, BCrypt.gensalt(ConstantConfig.BCRYPT_WORKLOAD));
     	
     	//call service to update the password
     	if(originalAcc.getAccount() == null)

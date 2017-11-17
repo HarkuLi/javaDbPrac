@@ -44,7 +44,7 @@ public class TestSignInInterceptor {
 	public void signedIn() throws Exception {
 		//set test data
 		final User signedInUser = RandomData.genUser();
-		final Cookie LOGIN_INFO = new Cookie("LOGIN_INFO", signedInUser.getToken());
+		final Cookie LOGIN_INFO = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, signedInUser.getToken());
 		final Cookie[] cookies = {LOGIN_INFO};
 		
 		//set Stubs
@@ -87,7 +87,7 @@ public class TestSignInInterceptor {
 	public void invalidToken() throws Exception {
 		//set test data
 		final String invalidToken = "invalidToken";
-		final Cookie LOGIN_INFO = new Cookie("LOGIN_INFO", invalidToken);
+		final Cookie LOGIN_INFO = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, invalidToken);
 		final Cookie[] cookies = {LOGIN_INFO};
 		
 		//set Stubs

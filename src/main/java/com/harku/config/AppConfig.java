@@ -11,10 +11,10 @@ public class AppConfig {
 	//@Scope("singleton") //default
 	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://127.0.0.1/db1?useSSL=false");
-		dataSource.setUsername("root");
-		dataSource.setPassword("1234,Qwer");
+		dataSource.setDriverClassName(ConstantConfig.DB_DRIVER_NAME);
+		dataSource.setUrl(ConstantConfig.DB_URL);
+		dataSource.setUsername(ConstantConfig.DB_USERNAME);
+		dataSource.setPassword(ConstantConfig.DB_PASSWORD);
 		return dataSource;
 	}
 	

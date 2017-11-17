@@ -3,9 +3,9 @@ package com.harku.test.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.argThat;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.harku.config.ConstantConfig;
 import com.harku.dao.UserAccountDao;
 import com.harku.model.User;
 import com.harku.service.UserAccountService;
@@ -121,8 +122,8 @@ public class TestUserAccountService {
 		
 		//set valid sign in time
 		long currentTime = System.currentTimeMillis();
-		long earliestValidTime = currentTime - (UserAccountService.EXPIRE_TIME_SEC - deviationSec)*1000;
-		long validRandomTime = (long)(Math.random()*(UserAccountService.EXPIRE_TIME_SEC - deviationSec)*1000 + earliestValidTime);
+		long earliestValidTime = currentTime - (ConstantConfig.EXPIRE_TIME_SEC - deviationSec)*1000;
+		long validRandomTime = (long)(Math.random()*(ConstantConfig.EXPIRE_TIME_SEC - deviationSec)*1000 + earliestValidTime);
 		acc.setSignInTime(validRandomTime);
 		
 		ArrayList<User> accList = new ArrayList<User>();
@@ -155,7 +156,7 @@ public class TestUserAccountService {
 		
 		//set expired sign in time
 		long currentTime = System.currentTimeMillis();
-		long earliestValidTime = currentTime - (UserAccountService.EXPIRE_TIME_SEC - deviationSec)*1000;
+		long earliestValidTime = currentTime - (ConstantConfig.EXPIRE_TIME_SEC - deviationSec)*1000;
 		long expiredRandomTime = (long)(Math.random()*(earliestValidTime-deviationSec*2*1000));
 		acc.setSignInTime(expiredRandomTime);
 		

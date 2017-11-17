@@ -11,8 +11,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class Initializer implements WebApplicationInitializer{
-	private final int MAX_UPLOAD_SIZE = 10485760; //10MB
-	
 	@Override
 	public void onStartup(final ServletContext servletContext) throws ServletException {
 		
@@ -23,7 +21,12 @@ public class Initializer implements WebApplicationInitializer{
 		
 		//multipart config
 		MultipartConfigElement multipartConfigElement
-			= new MultipartConfigElement(null, MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE * 2, MAX_UPLOAD_SIZE * 2);
+			= new MultipartConfigElement(
+					null,
+					ConstantConfig.MAX_UPLOAD_SIZE,
+					ConstantConfig.MAX_UPLOAD_SIZE * 2,
+					ConstantConfig.MAX_UPLOAD_SIZE * 2
+			);
 		
 		//register the DispatcherServlet
 		final ServletRegistration.Dynamic appServlet =

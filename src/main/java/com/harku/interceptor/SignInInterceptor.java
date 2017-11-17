@@ -23,7 +23,7 @@ public class SignInInterceptor extends HandlerInterceptorAdapter {
 		
 		//check token
 		HashMap<String, String> cookie = cookieHandle(req.getCookies());
-		if(!(cookie != null && userAccountService.checkToken(cookie.get("LOGIN_INFO")))) {
+		if(!(cookie != null && userAccountService.checkToken(cookie.get(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME)))) {
 			res.sendRedirect(ConstantConfig.SIGN_IN_ROUTE);
 			return false;
 		}

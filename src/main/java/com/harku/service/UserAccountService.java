@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harku.config.ConstantConfig;
 import com.harku.dao.UserAccountDao;
-import com.harku.model.UserFilter;
 import com.harku.model.User;
+import com.harku.model.UserFilter;
 
 @Service
 public class UserAccountService {
 	@Autowired
 	private UserAccountDao userAccountDao;
-	
-	public static final int EXPIRE_TIME_SEC = 604800;	//one week, 60*60*24*7
 	
 	public void saveAcc(User newData) {
 		userAccountDao.create(newData);
@@ -85,7 +84,7 @@ public class UserAccountService {
 		long currentTime = System.currentTimeMillis();
 		long signInTime = acc.getSignInTime();
 		long elapsedTime = (long)(currentTime - signInTime);
-		if(elapsedTime >= EXPIRE_TIME_SEC*1000) return false;
+		if(elapsedTime >= ConstantConfig.EXPIRE_TIME_SEC*1000) return false;
 		
 		return true;
 	}

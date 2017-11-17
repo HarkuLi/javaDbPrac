@@ -6,13 +6,13 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harku.config.ConstantConfig;
 import com.harku.dao.UserDao;
-import com.harku.model.UserFilter;
 import com.harku.model.User;
+import com.harku.model.UserFilter;
 
 @Service
 public class UserService{
-	private final int ENTRY_PER_PAGE = 10;
 	@Autowired
 	private UserDao usersDao;
 	@Autowired
@@ -64,8 +64,8 @@ public class UserService{
 	public ArrayList<User> getPage(int page, UserFilter filter) {
 		if(page <= 0) return new ArrayList<User>();
 		
-		int skipNum = ENTRY_PER_PAGE * (page - 1);
-		ArrayList<User> userList = usersDao.read(filter, skipNum, ENTRY_PER_PAGE);
+		int skipNum = ConstantConfig.ENTRY_PER_PAGE * (page - 1);
+		ArrayList<User> userList = usersDao.read(filter, skipNum, ConstantConfig.ENTRY_PER_PAGE);
 		
 		//set values from other table for each user
 		for(User user : userList) {
@@ -82,7 +82,7 @@ public class UserService{
 	public int getTotalPage(UserFilter filter) {
 		int rowNum = usersDao.getRowNum(filter);
 		
-		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
+		final int totalPage = (int) Math.ceil((double) rowNum / ConstantConfig.ENTRY_PER_PAGE);
 		return totalPage;
 	}
 	

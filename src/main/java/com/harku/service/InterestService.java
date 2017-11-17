@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harku.config.ConstantConfig;
 import com.harku.dao.InterestDao;
 import com.harku.model.Interest;
 
@@ -13,8 +14,6 @@ import com.harku.model.Interest;
 public class InterestService {
 	@Autowired
 	private InterestDao interestDao;
-	
-	private final int ENTRY_PER_PAGE = 10;
 	
 	public void createInt(String name, Boolean state) {
 		Interest newData = new Interest();
@@ -42,9 +41,9 @@ public class InterestService {
 	public ArrayList<Interest> getPage(int page, Interest filter) {
 		if(page <= 0) return new ArrayList<Interest>();
 		
-		int skipNum = ENTRY_PER_PAGE * (page - 1);
+		int skipNum = ConstantConfig.ENTRY_PER_PAGE * (page - 1);
 		
-		return interestDao.read(filter, skipNum, ENTRY_PER_PAGE);
+		return interestDao.read(filter, skipNum, ConstantConfig.ENTRY_PER_PAGE);
 	}
 	
 	public ArrayList<Interest> getList() {
@@ -56,7 +55,7 @@ public class InterestService {
 	public int getTotalPage(Interest filter) {
 		int rowNum = interestDao.getRowNum(filter);
 		
-		final int totalPage = (int) Math.ceil((double) rowNum / ENTRY_PER_PAGE);
+		final int totalPage = (int) Math.ceil((double) rowNum / ConstantConfig.ENTRY_PER_PAGE);
 		return totalPage;
 	}
 	

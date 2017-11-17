@@ -16,6 +16,7 @@ import com.harku.model.User;
 public class RandomData {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
+	//use lower workload for fast test
 	public static final int workload = 5;
 	
 	public static String genStr(int minLength, int maxLength) {

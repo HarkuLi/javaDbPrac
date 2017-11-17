@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
 import com.harku.service.UserAccountService;
@@ -44,12 +45,12 @@ public class TestSignOut {
 	
 	@Test
 	public void signOut() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", RandomData.genStr(100, 100));
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, RandomData.genStr(100, 100));
 		mockMvc.perform(get("/sign_out")
 						.cookie(cookie))
 				.andExpect(redirectedUrl("/sign_in/page"))
 				.andExpect(status().isFound())
-				.andExpect(MockMvcResultMatchers.cookie().value("LOGIN_INFO", ""))
-				.andExpect(MockMvcResultMatchers.cookie().maxAge("LOGIN_INFO", 0));
+				.andExpect(MockMvcResultMatchers.cookie().value(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, ""))
+				.andExpect(MockMvcResultMatchers.cookie().maxAge(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, 0));
 	}
 }

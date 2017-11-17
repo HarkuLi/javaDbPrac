@@ -18,6 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
 import com.harku.model.User;
@@ -57,7 +58,7 @@ public class TestSignUpPage {
 	
 	@Test
 	public void invalidToken() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", invalidToken);
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, invalidToken);
 		mockMvc.perform(get("/sign_up/page")
 						.cookie(cookie))
 				.andExpect(status().isOk());
@@ -65,7 +66,7 @@ public class TestSignUpPage {
 	
 	@Test
 	public void validToken() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", userTestData.getToken());
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, userTestData.getToken());
 		mockMvc.perform(get("/sign_up/page")
 						.cookie(cookie))
 				.andExpect(redirectedUrl("/user/page"))

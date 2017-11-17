@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
 import com.harku.model.User;
 import com.harku.service.UserAccountService;
@@ -55,7 +56,7 @@ public class TestUserGetByToken {
 	
 	@Test
 	public void existingToken() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", userTestData.getToken());
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, userTestData.getToken());
 		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/get_by_token").cookie(cookie))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -70,7 +71,7 @@ public class TestUserGetByToken {
 	
 	@Test
 	public void notExistingToken() throws Exception {
-		Cookie cookie = new Cookie("LOGIN_INFO", RandomData.genStr(0, 100));
+		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, RandomData.genStr(0, 100));
 		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/get_by_token").cookie(cookie))
 				.andExpect(status().isNotFound());
 	}

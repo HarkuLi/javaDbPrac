@@ -18,7 +18,7 @@ public class OccupationDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private final String tableName = "occupation";
+	private final String TABLE_NAME = "occupation";
 
 	private final RowMapper<Occupation> occupationRowMapper = new BeanPropertyRowMapper<Occupation>(Occupation.class);
 	
@@ -29,7 +29,7 @@ public class OccupationDao {
 	public int getRowNum(Occupation filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select count(id) from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		
 		//handle the filter
 		Map<String, Object> handledFilter = filterHandle(filter);
@@ -47,7 +47,7 @@ public class OccupationDao {
 	public void create(Occupation newData) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" (id, name, state)");
 		sqlStr.append(" values (?, ?, ?)");
 		
@@ -64,7 +64,7 @@ public class OccupationDao {
 	public ArrayList<Occupation> read(Occupation filter) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		
 		//handle the filter
 		Map<String, Object> handledFilter = filterHandle(filter);
@@ -94,7 +94,7 @@ public class OccupationDao {
 	public ArrayList<Occupation> read(Occupation filter, int skipNum, int readNum) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select * from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		
 		//handle the filter
 		Map<String, Object> handledFilter = filterHandle(filter);
@@ -121,7 +121,7 @@ public class OccupationDao {
 	public void update(Occupation data) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("update ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" set name = ?, state = ?");
 		sqlStr.append(" where id = ?");
 		
@@ -133,7 +133,7 @@ public class OccupationDao {
 	public void delete(String id) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("delete from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" where id = ?");
 		
 		jdbcTemplate.update(sqlStr.toString(), new Object[] {id});

@@ -11,12 +11,12 @@ public class UserInterestDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private final String tableName = "userInterest";
+	private final String TABLE_NAME = "userInterest";
 	
 	public void create(String userId, String interest) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("insert into ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" (id, interest) values (?, ?)");
 		
 		jdbcTemplate.update(sqlStr.toString(), userId, interest);
@@ -30,7 +30,7 @@ public class UserInterestDao {
 	public List<String> read(String userId) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("select interest from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" where id = ?");
 		
 		List<String> rstList = jdbcTemplate.queryForList(sqlStr.toString(), String.class, userId);
@@ -41,7 +41,7 @@ public class UserInterestDao {
 	public void delete(String userId) {
 		StringBuffer sqlStr = new StringBuffer();
 		sqlStr.append("delete from ");
-		sqlStr.append(tableName);
+		sqlStr.append(TABLE_NAME);
 		sqlStr.append(" where id = ?");
 		
 		jdbcTemplate.update(sqlStr.toString(), new Object[] {userId});
