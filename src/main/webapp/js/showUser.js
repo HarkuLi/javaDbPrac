@@ -422,10 +422,9 @@ function edit(self){
 				$(ele).prop("value", data[propName]);
 			}
 				//set state
-			var state = data.state ? "1" : "0";
 			let stateList = $("#popup_form_edit").find("[name='state']");
 			for(let ele of stateList){
-				if($(ele).prop("value") === state){
+				if($(ele).prop("value") === data.state){
 					$(ele).prop("checked", true);
 					break;
 				}
