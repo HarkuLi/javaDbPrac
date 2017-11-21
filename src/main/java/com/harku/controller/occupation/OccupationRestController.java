@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import com.harku.service.OccupationService;
 public class OccupationRestController {
 	@Autowired
 	private OccupationService occupationService;
+	@Resource(name = "statusOption")
+	private Map<String, String> statusOption;
 	
 	/**
 	 * 
@@ -63,6 +67,9 @@ public class OccupationRestController {
 			if(occupationList.size() > 0 && !occupationList.get(0).getId().equals(id))
 				errMsg.append("The name is already used.\n");
 		}
+			//state
+		if(!statusOption.containsKey(state))
+			errMsg.append("Invalid state");
 		if(errMsg.length() != 0) {
     		rstMap.put("errMsg", errMsg.toString());
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
@@ -91,6 +98,7 @@ public class OccupationRestController {
 		StringBuffer errMsg = new StringBuffer();
     	
     	//check data
+			//name
 		Occupation nameFilter = new Occupation();
     	nameFilter.setName(name);
 		if(name.length() > ConstantConfig.MAX_NAME_LENGTH) {
@@ -99,6 +107,9 @@ public class OccupationRestController {
 		else if(occupationService.getTotalPage(nameFilter) > 0) {
 			errMsg.append("The name is already used.\n");
 		}
+			//state
+		if(!statusOption.containsKey(state))
+			errMsg.append("Invalid state");
     	if(errMsg.length() != 0) {
     		rstMap.put("errMsg", errMsg.toString());
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);

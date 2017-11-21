@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.UUID;
 
 import org.json.JSONObject;
@@ -21,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,6 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.AppConfig;
 import com.harku.config.ConstantConfig;
 import com.harku.controller.user.UserRestController;
 import com.harku.model.User;
@@ -52,6 +55,9 @@ public class TestUserUpdate {
 	
 	@Mock
 	private OccupationService occupationService;
+	
+	@Spy
+	private Map<String, String> statusOption = new AppConfig().statusOption();
 	
 	@Autowired
 	@InjectMocks
@@ -292,6 +298,25 @@ public class TestUserUpdate {
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
 							.param("state"		, userTestData.getState()))
+					 .andExpect(status().isBadRequest())
+					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					 .andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertEquals(userTestData.getId(), res.get("id"));
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void invalidState() throws Exception {
+		MvcResult result
+			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/user/update")
+							.param("id"			, userTestData.getId())
+							.param("name"		, userTestData.getName())
+							.param("age"		, userTestData.getAge().toString())
+							.param("birth"		, userTestData.getBirth())
+							.param("occupation"	, userTestData.getOccupation())
+							.param("state"		, "invalid state"))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();

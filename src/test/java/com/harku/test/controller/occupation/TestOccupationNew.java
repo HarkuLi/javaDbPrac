@@ -6,12 +6,15 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Map;
+
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.AppConfig;
 import com.harku.config.ConstantConfig;
 import com.harku.controller.occupation.OccupationRestController;
 import com.harku.model.Occupation;
@@ -32,6 +36,9 @@ public class TestOccupationNew {
 	
 	@Mock
 	private OccupationService occupationService;
+	
+	@Spy
+	private Map<String, String> statusOption = new AppConfig().statusOption();
 	
 	@InjectMocks
 	private OccupationRestController occupationRestController;
@@ -79,6 +86,20 @@ public class TestOccupationNew {
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 							.param("name"  , existingName)
 							.param("state" , randomOccupation.getState()))
+					.andExpect(status().isBadRequest())
+					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+					.andReturn();
+		
+		JSONObject res = new JSONObject(result.getResponse().getContentAsString());
+		assertNotNull(res.get("errMsg"));
+	}
+	
+	@Test
+	public void invalidState() throws Exception {
+		MvcResult result =
+			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
+						.param("name"  , randomOccupation.getName())
+						.param("state" , "invalid state"))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();

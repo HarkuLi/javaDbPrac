@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.harku.config.ConstantConfig;
-import com.harku.model.UserFilter;
 import com.harku.model.User;
+import com.harku.model.UserFilter;
 import com.harku.service.OccupationService;
 import com.harku.service.PhotoService;
 import com.harku.service.UserAccountService;
@@ -36,6 +38,8 @@ public class UserRestController {
 	private UserAccountService userAccountService;
 	@Autowired
 	private OccupationService occupationService;
+	@Resource(name = "statusOption")
+	private Map<String, String> statusOption;
 	
 	/**
 	 * 
@@ -349,6 +353,11 @@ public class UserRestController {
     	String occ = user.getOccupation();
 		if(!occ.equals("other") && occupationService.getOcc(occ) == null)
 			errMsg.append("No such occupation.\n");
+		
+		//state
+		if(!statusOption.containsKey(user.getState())) {
+			errMsg.append("Invalid state.\n");
+		}
 		
 		return errMsg.toString();
 	}

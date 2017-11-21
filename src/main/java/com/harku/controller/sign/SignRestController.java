@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ public class SignRestController {
 	private UserService usersService;
 	@Autowired
 	private OccupationService occupationService;
+	@Resource(name = "statusOption")
+	private Map<String, String> statusOption;
 	
 	/**
 	 * response:
@@ -141,6 +145,11 @@ public class SignRestController {
     	String occ = user.getOccupation();
 		if(!occ.equals("other") && occupationService.getOcc(occ) == null)
 			errMsg.append("No such occupation.\n");
+		
+		//state
+		if(!statusOption.containsKey(user.getState())) {
+			errMsg.append("Invalid state.\n");
+		}
 		
 		return errMsg.toString();
 	}
