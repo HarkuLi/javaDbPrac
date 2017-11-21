@@ -68,7 +68,7 @@ public class OccupationRestController {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	occupationService.update(id, name, state.equals("1"));
+    	occupationService.update(id, name, state);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -104,7 +104,7 @@ public class OccupationRestController {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	occupationService.createOcc(name, state.equals("1"));
+    	occupationService.createOcc(name, state);
     	
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
     }
@@ -130,7 +130,7 @@ public class OccupationRestController {
     	
     	//set filter
     	filter.setName(name);
-    	if(state != null) filter.setState(state.equals("1"));
+    	filter.setState(state);
     	
     	//check page range
     	totalPage = occupationService.getTotalPage(filter);

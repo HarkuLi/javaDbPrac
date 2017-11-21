@@ -88,7 +88,7 @@ public class TestOccupationDao {
 		
 		//update
 		String newName = "test update name";
-		Boolean newState = !occ.getState();
+		String newState = occ.getState().equals("1") ? "0" : "1";
 		Occupation updateData = new Occupation();
 		updateData.setId(occ.getId());
 		updateData.setName(newName);

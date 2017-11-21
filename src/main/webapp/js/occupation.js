@@ -8,6 +8,9 @@ var filter = {
 	name: "",
 	state: ""
 };
+var statusMap = {};
+
+initialization();
 
 ///////////
 // ready //
@@ -128,6 +131,16 @@ $(() => {
 // functions //
 ///////////////
 
+function initialization(){
+	recordStatusOption();
+}
+
+function recordStatusOption(){
+	for(let option of $(".filter").find("[name='state']").children()){
+		statusMap[$(option).prop("value")] = $(option).text();
+	}
+}
+
 function closePopup(){
 	clrFields($("#popup_form"));
 	$(".mask").prop("id", "");
@@ -210,10 +223,9 @@ function edit(self){
 			}
 				//set checked type
 			for(let name of checkTypeList){
-				let val = data[name] ? "1" : "0";
 				let checkList = $("#popup_form").find("[name='"+ name +"']");
 				for(let ele of checkList){
-					if($(ele).prop("value") === val){
+					if($(ele).prop("value") === data[name]){
 						$(ele).prop("checked", true);
 						break;
 					}
@@ -386,11 +398,12 @@ function renderData(dataList){
 	var idx = 0;
 	var rowList = $("#data_table").find(".data_rows");
 	for(let row of rowList){
+		let data = dataList[idx];
 		let inputList = $(row).find("input");
 		
 		//number of row elements > data
 	  //hide and clean values of the redundant rows
-		if(!dataList[idx]){
+		if(!data){
 			for(let ele of inputList){
 				$(ele).prop("value", "");
 			}
@@ -402,10 +415,10 @@ function renderData(dataList){
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
 			if(prop === "state"){
-				dataList[idx][prop] ? $(ele).prop("value", "enable") : $(ele).prop("value", "disable");
+				$(ele).prop("value", statusMap[data[prop]]);
 				continue;
 			}
-			$(ele).prop("value", dataList[idx][prop]);
+			$(ele).prop("value", data[prop]);
 		}
 		$(row).css("display", "");
 		++idx;
@@ -429,7 +442,7 @@ function renderData(dataList){
 			input.prop("name", prop);
 			
 			if(prop === "state"){
-				data[prop] ? input.prop("value", "enable") : input.prop("value", "disable");
+				input.prop("value", statusMap[data[prop]]);
 			}
 			else{
 				input.prop("value", data[prop]);

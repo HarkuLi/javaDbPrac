@@ -65,7 +65,7 @@ public class RandomData {
 	public static Occupation genOcc() {
 		String id     = UUID.randomUUID().toString();
 		String name   = genStr(40, 40);
-		Boolean state = new Random().nextBoolean();
+		String state = (new Random().nextBoolean()) ? "1" : "0";
 		
 		Occupation newData = new Occupation();
 		newData.setId(id);

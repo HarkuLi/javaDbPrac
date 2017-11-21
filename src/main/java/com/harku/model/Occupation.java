@@ -3,7 +3,7 @@ package com.harku.model;
 public class Occupation {
 	private String id;
 	private String name;
-	private Boolean state;
+	private String state;
 	
 	public void setId(String _id) {
 		id = _id;
@@ -13,7 +13,7 @@ public class Occupation {
 		name = _name;
 	}
 	
-	public void setState(Boolean _state) {
+	public void setState(String _state) {
 		state = _state;
 	}
 	
@@ -25,7 +25,7 @@ public class Occupation {
 		return name;
 	}
 	
-	public Boolean getState() {
+	public String getState() {
 		return state;
 	}
 }

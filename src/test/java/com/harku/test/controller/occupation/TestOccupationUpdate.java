@@ -56,7 +56,7 @@ public class TestOccupationUpdate {
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , existingOccupation.getId())
 							.param("name"  , existingOccupation.getName())
-							.param("state" , existingOccupation.getState()?"1":"0"))
+							.param("state" , existingOccupation.getState()))
 					.andExpect(status().isOk())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -72,7 +72,7 @@ public class TestOccupationUpdate {
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , invalidId)
 							.param("name"  , existingOccupation.getName())
-							.param("state" , existingOccupation.getState()?"1":"0"))
+							.param("state" , existingOccupation.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -90,7 +90,7 @@ public class TestOccupationUpdate {
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , existingOccupation.getId())
 							.param("name"  , tooLongName)
-							.param("state" , existingOccupation.getState()?"1":"0"))
+							.param("state" , existingOccupation.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -116,7 +116,7 @@ public class TestOccupationUpdate {
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/update")
 							.param("id"    , existingOccupation.getId())
 							.param("name"  , existingName)
-							.param("state" , existingOccupation.getState()?"1":"0"))
+							.param("state" , existingOccupation.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();

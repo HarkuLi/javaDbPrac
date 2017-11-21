@@ -69,7 +69,7 @@ public class TestOccupationService {
 		for(int i=0; i<occNum; ++i) occList.add(RandomData.genOcc());
 		
 		//set Stub
-		when(occupationDao.read(argThat(filter -> filter.getState())))
+		when(occupationDao.read(argThat(filter -> filter.getState().equals("1"))))
 			.thenReturn(occList);
 		
 		//call function and verify
@@ -118,7 +118,7 @@ public class TestOccupationService {
 		Occupation occupation = RandomData.genOcc();
 		String id = occupation.getId();
 		String name = occupation.getName();
-		Boolean state = occupation.getState();
+		String state = occupation.getState();
 		
 		//call function
 		occupationService.update(id, name, state);
@@ -126,7 +126,7 @@ public class TestOccupationService {
 		//verify
 		verify(occupationDao).update(argThat(data -> data.getId().equals(id)
 										   && data.getName().equals(name)
-										   && data.getState() == state));
+										   && data.getState().equals(state)));
 	}
 	
 	@Test

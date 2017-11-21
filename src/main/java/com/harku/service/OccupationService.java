@@ -15,7 +15,7 @@ public class OccupationService {
 	@Autowired
 	private OccupationDao occupationDao;
 	
-	public void createOcc(String name, Boolean state) {
+	public void createOcc(String name, String state) {
 		Occupation newData = new Occupation();
 		
 		newData.setId(UUID.randomUUID().toString());
@@ -40,7 +40,7 @@ public class OccupationService {
 	
 	public ArrayList<Occupation> getList() {
 		Occupation filter = new Occupation();
-		filter.setState(true);
+		filter.setState("1");
 		return occupationDao.read(filter);
 	}
 	
@@ -59,7 +59,7 @@ public class OccupationService {
 		return totalPage;
 	}
 	
-	public void update(String id, String name, Boolean state) {
+	public void update(String id, String name, String state) {
 		Occupation newData = new Occupation();
 		
 		newData.setId(id);

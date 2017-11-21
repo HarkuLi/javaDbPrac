@@ -49,7 +49,7 @@ public class TestOccupationNew {
 	public void basic() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 						.param("name"  , randomOccupation.getName())
-						.param("state" , randomOccupation.getState()?"1":"0"))
+						.param("state" , randomOccupation.getState()))
 				.andExpect(status().isCreated());
 	}
 	
@@ -60,7 +60,7 @@ public class TestOccupationNew {
 		MvcResult result =
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 							.param("name"  , tooLongName)
-							.param("state" , randomOccupation.getState()?"1":"0"))
+							.param("state" , randomOccupation.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -78,7 +78,7 @@ public class TestOccupationNew {
 		MvcResult result =
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/occupation/new")
 							.param("name"  , existingName)
-							.param("state" , randomOccupation.getState()?"1":"0"))
+							.param("state" , randomOccupation.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
