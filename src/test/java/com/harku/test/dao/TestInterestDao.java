@@ -88,7 +88,7 @@ public class TestInterestDao {
 		
 		//update
 		String newName = "test update name";
-		Boolean newState = !interest.getState();
+		String newState = interest.getState().equals("1") ? "0" : "1";
 		Interest updateData = new Interest();
 		updateData.setId(interest.getId());
 		updateData.setName(newName);

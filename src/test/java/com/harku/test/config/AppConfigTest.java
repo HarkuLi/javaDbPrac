@@ -78,7 +78,7 @@ public class AppConfigTest {
 		sqlStr  = "create table interest(";
 		sqlStr += "id varchar(40) not null, ";
 		sqlStr += "name varchar(40) not null, ";
-		sqlStr += "state boolean not null, ";
+		sqlStr += "state varchar(2) not null, ";
 		sqlStr += "primary key (id));";
 		jdbcObj.execute(sqlStr);
 	}

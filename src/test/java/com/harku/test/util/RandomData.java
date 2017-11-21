@@ -77,7 +77,7 @@ public class RandomData {
 	public static Interest genInterest() {
 		String id     = UUID.randomUUID().toString();
 		String name   = genStr(40, 40);
-		Boolean state = new Random().nextBoolean();
+		String state = (new Random().nextBoolean()) ? "1" : "0";
 		
 		Interest newData = new Interest();
 		newData.setId(id);

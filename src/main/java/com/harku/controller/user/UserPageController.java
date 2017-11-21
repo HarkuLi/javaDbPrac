@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserPageController {
 	
 	@Resource(name = "statusOption")
-	Map<String, String> statusOption;
+	private Map<String, String> statusOption;
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public String showPage(ModelMap model) {

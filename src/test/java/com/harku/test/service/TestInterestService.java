@@ -69,7 +69,7 @@ public class TestInterestService {
 		for(int i=0; i<interestNum; ++i) interestList.add(RandomData.genInterest());
 		
 		//set Stub
-		when(interestDao.read(argThat(filter -> filter.getState())))
+		when(interestDao.read(argThat(filter -> filter.getState().equals("1"))))
 			.thenReturn(interestList);
 		
 		//call function and verify
@@ -118,7 +118,7 @@ public class TestInterestService {
 		Interest interest = RandomData.genInterest();
 		String id = interest.getId();
 		String name = interest.getName();
-		Boolean state = interest.getState();
+		String state = interest.getState();
 		
 		//call function
 		interestService.update(id, name, state);
@@ -126,7 +126,7 @@ public class TestInterestService {
 		//verify
 		verify(interestDao).update(argThat(data -> data.getId().equals(id)
 										   && data.getName().equals(name)
-										   && data.getState() == state));
+										   && data.getState().equals(state)));
 	}
 	
 	@Test

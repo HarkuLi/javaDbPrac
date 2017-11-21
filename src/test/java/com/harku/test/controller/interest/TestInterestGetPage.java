@@ -138,7 +138,7 @@ public class TestInterestGetPage {
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/get_page")
 							.param("page", "1")
 							.param("name", filterMatchNothing.getName())
-							.param("state", filterMatchNothing.getState()?"1":"0"))
+							.param("state", filterMatchNothing.getState()))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();

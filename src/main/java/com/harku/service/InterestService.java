@@ -15,7 +15,7 @@ public class InterestService {
 	@Autowired
 	private InterestDao interestDao;
 	
-	public void createInt(String name, Boolean state) {
+	public void createInt(String name, String state) {
 		Interest newData = new Interest();
 		
 		newData.setId(UUID.randomUUID().toString());
@@ -48,7 +48,7 @@ public class InterestService {
 	
 	public ArrayList<Interest> getList() {
 		Interest filter = new Interest();
-		filter.setState(true);
+		filter.setState("1");
 		return interestDao.read(filter);
 	}
 	
@@ -59,7 +59,7 @@ public class InterestService {
 		return totalPage;
 	}
 	
-	public void update(String id, String name, Boolean state) {
+	public void update(String id, String name, String state) {
 		Interest newData = new Interest();
 		
 		newData.setId(id);

@@ -68,7 +68,7 @@ public class InterestRestController {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	interestService.update(id, name, state.equals("1"));
+    	interestService.update(id, name, state);
     	
     	return ResponseEntity.status(HttpStatus.OK).body(rstMap);
 	}
@@ -104,7 +104,7 @@ public class InterestRestController {
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(rstMap);
     	}
     	
-    	interestService.createInt(name, state.equals("1"));
+    	interestService.createInt(name, state);
     	
     	return ResponseEntity.status(HttpStatus.CREATED).body(rstMap);
     }
@@ -130,7 +130,7 @@ public class InterestRestController {
     	
     	//set filter
     	filter.setName(name);
-    	if(state != null) filter.setState(state.equals("1"));
+    	if(state != null) filter.setState(state);
     	
     	//check page range
     	totalPage = interestService.getTotalPage(filter);

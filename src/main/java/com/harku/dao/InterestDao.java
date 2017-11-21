@@ -156,7 +156,7 @@ public class InterestDao {
 		//get filters
 		String id = filter.getId();
 		String name = filter.getName();
-		Boolean state = filter.getState();
+		String state = filter.getState();
 		
 		if(id != null) {
 			queryStr.append("id = ?");

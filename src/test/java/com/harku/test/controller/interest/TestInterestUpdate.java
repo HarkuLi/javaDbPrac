@@ -56,7 +56,7 @@ public class TestInterestUpdate {
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
 							.param("id"    , existingInterest.getId())
 							.param("name"  , existingInterest.getName())
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("state" , existingInterest.getState()))
 					.andExpect(status().isOk())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -72,7 +72,7 @@ public class TestInterestUpdate {
 			= mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
 							.param("id"    , invalidId)
 							.param("name"  , existingInterest.getName())
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("state" , existingInterest.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -90,7 +90,7 @@ public class TestInterestUpdate {
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
 							.param("id"    , existingInterest.getId())
 							.param("name"  , tooLongName)
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("state" , existingInterest.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -116,7 +116,7 @@ public class TestInterestUpdate {
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/update")
 							.param("id"    , existingInterest.getId())
 							.param("name"  , existingName)
-							.param("state" , existingInterest.getState()?"1":"0"))
+							.param("state" , existingInterest.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();

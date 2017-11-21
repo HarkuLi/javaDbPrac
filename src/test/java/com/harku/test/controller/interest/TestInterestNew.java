@@ -49,7 +49,7 @@ public class TestInterestNew {
 	public void basic() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/new")
 						.param("name"  , randomInterest.getName())
-						.param("state" , randomInterest.getState()?"1":"0"))
+						.param("state" , randomInterest.getState()))
 				.andExpect(status().isCreated());
 	}
 	
@@ -60,7 +60,7 @@ public class TestInterestNew {
 		MvcResult result =
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/new")
 							.param("name"  , tooLongName)
-							.param("state" , randomInterest.getState()?"1":"0"))
+							.param("state" , randomInterest.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
@@ -78,7 +78,7 @@ public class TestInterestNew {
 		MvcResult result =
 			mockMvc.perform(MockMvcRequestBuilders.fileUpload("/interest/new")
 							.param("name"  , existingName)
-							.param("state" , randomInterest.getState()?"1":"0"))
+							.param("state" , randomInterest.getState()))
 					.andExpect(status().isBadRequest())
 					.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					.andReturn();
