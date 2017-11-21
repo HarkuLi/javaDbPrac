@@ -79,7 +79,7 @@ public class SignRestController {
     	newData.setBirth(birth);
     	newData.setInterest(interest);
     	newData.setOccupation(occupation);
-    	newData.setState(state.equals("1"));
+    	newData.setState(state);
     	errMsg.append(checkUserData(newData, passwordCheck));
     	if(errMsg.length() != 0) {
     		rstMap.put("errMsg", errMsg.toString());

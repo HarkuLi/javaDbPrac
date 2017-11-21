@@ -9,6 +9,7 @@ var processing = false;
 
 var occMap = {other : "other"};	//{occId: name}
 var interestMap = {}; //{interestId: name}
+var statusMap = {}; //{value: description}
 var filterForm = new FormData($(".filter").find("form")[0]);
 //store jquery elements of opened forms
 var openedFormList = [];
@@ -316,7 +317,9 @@ function interestFilterMore(){
  * 
  * @return {Promise}
  */
-function initialization(){	
+function initialization(){
+	recordStatusOption();
+	
 	var promiseList = [];
 	promiseList.push(renderOccList());
 	promiseList.push(renderInterestList());
@@ -327,6 +330,12 @@ function initialization(){
 			//because it uses occMap and interestMap
 			return selectPage(currentPage);
 		});
+}
+
+function recordStatusOption(){
+	for(let option of $(".filter").find("[name='state']").children()){
+		statusMap[$(option).prop("value")] = $(option).text();
+	}
 }
 
 function closePopup(){
@@ -738,11 +747,12 @@ function renderData(dataList){
 	var idx = 0;
 	var rowList = $("#data_table").find(".data_rows");
 	for(let row of rowList){
+		let data = dataList[idx];
 		let inputList = $(row).find("input");
 		
 		//number of row elements > data
 	  //hide and clean values of the redundant rows
-		if(!dataList[idx]){
+		if(!data){
 			for(let ele of inputList){
 				$(ele).prop("value", "");
 				$(ele).prop("title", "");
@@ -756,16 +766,16 @@ function renderData(dataList){
 		for(let ele of inputList){
 			let prop = $(ele).prop("name");
 			if(prop === "state"){
-				dataList[idx][prop] ? $(ele).prop("value", "enable") : $(ele).prop("value", "disable");
+				$(ele).prop("value", statusMap[data[prop]]);
 				continue;
 			}
-			$(ele).prop("value", dataList[idx][prop] || "--");
-			if(prop === "interest") $(ele).prop("title", dataList[idx][prop]);
+			$(ele).prop("value", data[prop] || "--");
+			if(prop === "interest") $(ele).prop("title", data[prop]);
 		}
 		
 	  //set photo entry
 		let photo = $(row).find("img");
-		let photoURL = URLBase + "/user/photo?n=" + (dataList[idx].photoName || "");
+		let photoURL = URLBase + "/user/photo?n=" + (data.photoName || "");
 		$(photo).prop("src", photoURL);
 		
 		$(row).css("display", "");
@@ -804,7 +814,7 @@ function renderData(dataList){
 			input = $("<input>");
 			input.prop("name", prop);
 			if(prop === "state"){
-				data[prop] ? input.prop("value", "enable") : input.prop("value", "disable");
+				input.prop("value", statusMap[data[prop]]);
 			}
 			else{
 				input.prop("value", data[prop] || "--");
@@ -1114,7 +1124,11 @@ function loadNewUserForm(){
 	.then(isLoad => {
 		if(isLoad){
 			//load the occupation and interest lists
-			return initialization();
+			var promiseList = [];
+			promiseList.push(renderOccList());
+			promiseList.push(renderInterestList());
+			
+			return Promise.all(promiseList);
 		}
 		return null;
 	});
@@ -1148,7 +1162,11 @@ function loadEditUserForm(){
 	.then(isLoad => {
 		if(isLoad){
 			//load the occupation and interest lists
-			return initialization();
+			var promiseList = [];
+			promiseList.push(renderOccList());
+			promiseList.push(renderInterestList());
+			
+			return Promise.all(promiseList);
 		}
 		return null;
 	});

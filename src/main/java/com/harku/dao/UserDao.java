@@ -193,7 +193,7 @@ public class UserDao{
 		String birthFrom = filter.getBirthFrom();
 		String birthTo = filter.getBirthTo();
 		String occ = filter.getOccupation();
-		Boolean state = filter.getState();
+		String state = filter.getState();
 		String[] interest = filter.getInterest();
 		
 		if(id != null) {
@@ -222,12 +222,12 @@ public class UserDao{
 		}
 		if(state != null) {
 			if(queryStr.length() != 0) queryStr.append(" and ");
-			queryStr.append("id in (select userId from userAccount where state = ?)");
+			queryStr.append("id in (select id from userAccount where state = ?)");
 			paramList.add(state);
 		}
 		if(interest != null) {
 			if(queryStr.length() != 0) queryStr.append(" and ");
-			queryStr.append("id in (select userId from userInterest where interest in (");
+			queryStr.append("id in (select id from userInterest where interest in (");
 			
 			for(int i=0; i<interest.length; ++i) {
 				queryStr.append("?");

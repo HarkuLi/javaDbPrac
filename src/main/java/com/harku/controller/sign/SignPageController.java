@@ -1,5 +1,8 @@
 package com.harku.controller.sign;
 
+import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -27,6 +30,9 @@ public class SignPageController {
 	
 	@Autowired
 	private AccountValidator accountValidator;
+	
+	@Resource(name = "statusOption")
+	private Map<String, String> statusOption;
 	
 	@InitBinder
 	private void initBinder(DataBinder binder) {
@@ -61,7 +67,7 @@ public class SignPageController {
 		User acc = userAccountService.getAcc(account);
 		
 		if(acc == null)	errors.rejectValue("account", "account.noMatch");
-		else if(!acc.getState())	errors.rejectValue("account", "account.noMatch");
+		else if(!statusOption.get(acc.getState()).equals("enable"))	errors.rejectValue("account", "account.noMatch");
 		else if(!BCrypt.checkpw(password, (String)acc.getPassword())) errors.rejectValue("password", "account.noMatch");
 		
 		if(errors.hasErrors()) {

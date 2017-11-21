@@ -102,7 +102,7 @@ public class UserAccountDao {
 		
 		String account = setData.getAccount();
 		String password = setData.getPassword();
-		Boolean state = setData.getState();
+		String state = setData.getState();
 		Long signInTime = setData.getSignInTime();
 		String token = setData.getToken();
 		

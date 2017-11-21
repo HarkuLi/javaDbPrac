@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <input type="hidden" class="data" name="id">
 <img src="/javaDbPrac/default.png" class="mid_img center-block">
 <br>
@@ -10,12 +12,13 @@
 <div class="form-group">
 	<label><spring:message code="state" /><span class="text-danger"> *</span>:</label>
 	<div class="row radio">
-		<div class="col-md-6">
-			<label><input type="radio" class="data" name="state" value="1"> <spring:message code="enable" /></label>
-		</div>
-		<div class="col-md-6">
-			<label><input type="radio" class="data" name="state" value="0"> <spring:message code="disable" /></label>
-		</div>
+		<c:forEach items="${statusOption}" var="option">
+			<div class="col-md-6">
+				<label>
+					<input type="radio" class="data" name="state" value="${option.key}"> <spring:message code="${option.value}" />
+				</label>
+			</div>
+		</c:forEach>
 	</div>
 </div>
 

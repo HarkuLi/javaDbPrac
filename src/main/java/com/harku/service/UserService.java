@@ -79,6 +79,43 @@ public class UserService{
 		return userList;
 	}
 	
+//	public ArrayList<User> getPage(
+//		int page,
+//		String id,
+//		String name,
+//		String birthFrom,
+//		String birthTo,
+//		String occ,
+//		Boolean state,
+//		String[] interest) {
+//		
+//		if(page <= 0) return new ArrayList<User>();
+//		
+//		String id = filter.getId();
+//		String name = filter.getName();
+//		String birthFrom = filter.getBirthFrom();
+//		String birthTo = filter.getBirthTo();
+//		String occ = filter.getOccupation();
+//		Boolean state = filter.getState();
+//		String[] interest = filter.getInterest();
+//		
+//		
+//		int skipNum = ConstantConfig.ENTRY_PER_PAGE * (page - 1);
+//		ArrayList<User> userList = usersDao.read(filter, skipNum, ConstantConfig.ENTRY_PER_PAGE);
+//		
+//		//set values from other table for each user
+//		for(User user : userList) {
+//			user.setInterest(userInterestService.getInterests(user.getId()));
+//			User userAcc = userAccountService.getAccById(user.getId());
+//			user.setAccount(userAcc.getAccount());
+//			user.setPassword(userAcc.getPassword());
+//			user.setState(userAcc.getState());
+//		}
+//		
+//		return userList;
+//	}
+	
+	
 	public int getTotalPage(UserFilter filter) {
 		int rowNum = usersDao.getRowNum(filter);
 		

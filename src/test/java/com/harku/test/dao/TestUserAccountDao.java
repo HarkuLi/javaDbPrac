@@ -81,7 +81,7 @@ public class TestUserAccountDao {
 		//update
 		String newAccount = "testUpdateAccount";
 		String newPassword = BCrypt.hashpw("testUpdatePassword", BCrypt.gensalt(RandomData.workload));
-		Boolean newState = !newData.getState();
+		String newState = newData.getState().equals("1") ? "0" : "1";
 		Long newSignInTime = System.currentTimeMillis();
 		String newToken = "testUpdateToken";
 		User setData = new User();

@@ -108,7 +108,7 @@ public class UserRestController {
 		newData.setBirth(birth);
 		newData.setInterest(interest);
     	newData.setOccupation(occupation);
-    	newData.setState(state.equals("1"));
+    	newData.setState(state);
     	errMsg.append(checkUserData(newData));
     	if(errMsg.length() != 0) {
     		rstMap.put("errMsg", errMsg.toString());
@@ -167,8 +167,7 @@ public class UserRestController {
     	filter.setBirthFrom(birthFrom);
     	filter.setBirthTo(birthTo);
     	filter.setOccupation(occ);
-    	if(state != null)
-    		filter.setState(state.equals("1"));
+    	filter.setState(state);
     	filter.setInterest(interest);
     	
     	//check page range

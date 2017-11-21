@@ -12,7 +12,7 @@ public class UserFilter
 
     private String name;
 
-    private Boolean state;
+    private String state;
 
     private String birthTo;
     
@@ -70,12 +70,12 @@ public class UserFilter
         this.name = name;
     }
 
-    public Boolean getState ()
+    public String getState ()
     {
         return state;
     }
 
-    public void setState (Boolean state)
+    public void setState (String state)
     {
         this.state = state;
     }

@@ -1,6 +1,11 @@
 package com.harku.config;
 
-import org.springframework.context.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -21,5 +26,13 @@ public class AppConfig {
 	@Bean
 	public JdbcTemplate jdbcTemplate() {
 		return new JdbcTemplate(dataSource());
+	}
+	
+	@Bean
+	public Map<String, String> statusOption() {
+		Map<String, String> option = new HashMap<String, String>();
+		option.put("1", "enable");
+		option.put("0", "disable");
+		return option;
 	}
 }

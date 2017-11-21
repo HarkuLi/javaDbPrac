@@ -7,7 +7,7 @@
 <html>
 <head>
 	<jsp:include page="/WEB-INF/partial/head.jsp"></jsp:include>
-	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/sign_in.css">	
+	<link rel="stylesheet" type="text/css" href="/javaDbPrac/css/signIn.css">	
 	<title><spring:message code="signIn" text="Sign In" /></title>
 </head>
 <body>

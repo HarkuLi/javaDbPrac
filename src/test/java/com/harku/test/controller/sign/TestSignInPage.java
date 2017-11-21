@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 
 import org.junit.Before;
@@ -20,12 +22,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.harku.config.AppConfig;
 import com.harku.config.ConstantConfig;
 import com.harku.config.WebConfig;
 import com.harku.controller.sign.AccountValidator;
@@ -35,8 +36,6 @@ import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = WebConfig.class)
 public class TestSignInPage {
 	private MockMvc mockMvc;
 	private User userTestData;
@@ -53,6 +52,9 @@ public class TestSignInPage {
 	
 	@Spy
 	private AccountValidator accountValidator = new AccountValidator();
+	
+	@Spy
+	private Map<String, String> statusOption = new AppConfig().statusOption();
 	
 	@InjectMocks
 	private SignPageController SPController;
@@ -154,14 +156,14 @@ public class TestSignInPage {
 		userTestData = RandomData.genUser();
 		
 		disabledUser = RandomData.genUser();
-		disabledUser.setState(false);
+		disabledUser.setState("0");
 		//reset the password, because RandomData.genUser() generate a hashed password
 		//and we can't know the plain text
 		disabledUserPassword = RandomData.genStr(20, 20);
 		disabledUser.setPassword(BCrypt.hashpw(disabledUserPassword, BCrypt.gensalt(RandomData.workload)));
 		
 		enabledUser = RandomData.genUser();
-		enabledUser.setState(true);
+		enabledUser.setState("1");
 		enabledUserPassword = RandomData.genStr(20, 20);
 		enabledUser.setPassword(BCrypt.hashpw(enabledUserPassword, BCrypt.gensalt(RandomData.workload)));
 	}

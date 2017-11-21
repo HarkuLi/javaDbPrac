@@ -91,7 +91,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isCreated())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -113,7 +113,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isCreated())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -139,7 +139,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0")
+							.param("state"			, randomUser.getState())
 							.param("interest[]"		, randomUser.getInterest()))
 					 .andExpect(status().isCreated())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -161,7 +161,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -183,7 +183,7 @@ public class TestSignUpAction {
 							.param("age"			, notNumberAge)
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -205,7 +205,7 @@ public class TestSignUpAction {
 							.param("age"			, Integer.toString(negativeAge))
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -228,7 +228,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -249,7 +249,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -272,7 +272,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -293,7 +293,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -316,7 +316,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -338,7 +338,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, invalidBirth)
 							.param("occupation"		, randomUser.getOccupation())
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -360,7 +360,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, notExistingOccupation)
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -381,7 +381,7 @@ public class TestSignUpAction {
 							.param("age"			, randomUser.getAge().toString())
 							.param("birth"			, randomUser.getBirth())
 							.param("occupation"		, "other")
-							.param("state"			, randomUser.getState()?"1":"0"))
+							.param("state"			, randomUser.getState()))
 					 .andExpect(status().isCreated())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();

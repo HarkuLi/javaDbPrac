@@ -88,7 +88,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -108,7 +108,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -132,7 +132,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0")
+							.param("state"		, userTestData.getState())
 							.param("interest[]"	, userTestData.getInterest()))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -152,7 +152,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -172,7 +172,7 @@ public class TestUserUpdate {
 							.param("age"		, notExistingUser.getAge().toString())
 							.param("birth"		, notExistingUser.getBirth())
 							.param("occupation"	, notExistingUser.getOccupation())
-							.param("state"		, notExistingUser.getState()?"1":"0"))
+							.param("state"		, notExistingUser.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -192,7 +192,7 @@ public class TestUserUpdate {
 							.param("age"		, notNumberAge)
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -212,7 +212,7 @@ public class TestUserUpdate {
 							.param("age"		, Integer.toString(negativeAge))
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -232,7 +232,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, invalidBirth)
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -252,7 +252,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, notExistingOccupation)
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -271,7 +271,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, "other")
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isOk())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();
@@ -291,7 +291,7 @@ public class TestUserUpdate {
 							.param("age"		, userTestData.getAge().toString())
 							.param("birth"		, userTestData.getBirth())
 							.param("occupation"	, userTestData.getOccupation())
-							.param("state"		, userTestData.getState()?"1":"0"))
+							.param("state"		, userTestData.getState()))
 					 .andExpect(status().isBadRequest())
 					 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 					 .andReturn();

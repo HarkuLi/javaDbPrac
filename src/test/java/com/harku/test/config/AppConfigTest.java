@@ -59,7 +59,7 @@ public class AppConfigTest {
 		sqlStr += "id varchar(40) not null, ";
 		sqlStr += "account varchar(32), ";
 		sqlStr += "password varchar(60), ";
-		sqlStr += "state boolean default true, ";
+		sqlStr += "state varchar(2), ";
 		sqlStr += "sign_in_time bigint, ";
 		sqlStr += "token varchar(100), ";
 		sqlStr += "unique (account), ";

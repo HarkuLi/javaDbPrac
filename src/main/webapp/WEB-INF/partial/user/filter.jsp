@@ -1,4 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <div class="form-group">
 	<label class="control-label col-md-2"><spring:message code="name" />:</label>
 	<div class="col-md-10">
@@ -28,8 +30,9 @@
 	<div class="col-md-10">
 		<select name="state" class="form-control">
 			<option value="">--</option>
-			<option value="1"><spring:message code="enable" /></option>
-			<option value="0"><spring:message code="disable" /></option>
+			<c:forEach items="${statusOption}" var="option">
+				<option value="${option.key}"><spring:message code="${option.value}" /></option>
+			</c:forEach>
 		</select>
 	</div>
 </div>

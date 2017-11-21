@@ -14,7 +14,7 @@ public class User{
 	//a list of interest id
 	private String[] interest;
 	private String occupation;
-	private Boolean state;
+	private String state;
 	private Long signInTime;
 	private String token;
 	
@@ -74,7 +74,7 @@ public class User{
 		occupation = _occupation;
 	}
 	
-	public void setState(Boolean _state) {
+	public void setState(String _state) {
 		state = _state;
 	}
 	
@@ -122,7 +122,7 @@ public class User{
 		return occupation;
 	}
 	
-	public Boolean getState() {
+	public String getState() {
 		return state;
 	}
 	

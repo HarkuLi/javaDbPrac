@@ -42,7 +42,7 @@ public class RandomData {
 		String photoName  = UUID.randomUUID().toString() + "." + genImageType();
 		String[] interest = genInterestSet(1, 10).toArray(new String[0]);
 		String occupation = UUID.randomUUID().toString();
-		Boolean state     = new Random().nextBoolean();
+		String state     = (new Random().nextBoolean()) ? "1" : "0";
 		Long signInTime   = (long)(Math.random()*System.currentTimeMillis());
 		String token      = genToken();
 		
