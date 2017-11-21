@@ -13,21 +13,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.harku.config.ConstantConfig;
-import com.harku.config.WebConfig;
 import com.harku.controller.sign.SignPageController;
 import com.harku.model.User;
 import com.harku.service.UserAccountService;
 import com.harku.test.util.RandomData;
 
 @RunWith(MockitoJUnitRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = WebConfig.class)
 public class TestSignUpPage {
 	private MockMvc mockMvc;
 	private User userTestData;
@@ -43,7 +38,6 @@ public class TestSignUpPage {
 	public void init() {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(SPController)
-				.setViewResolvers(new WebConfig().viewResolver())
 				.build();
 		
 		setTestData();
