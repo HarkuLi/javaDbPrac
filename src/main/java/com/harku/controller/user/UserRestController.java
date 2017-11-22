@@ -181,6 +181,7 @@ public class UserRestController {
 		
 		//set result
 		tableList = usersService.getPage(page, filter);
+		for(User user : tableList) user.eraseSecretInfo();
 		rstMap.put("list", tableList); 
 		rstMap.put("totalPage", totalPage);
 		
