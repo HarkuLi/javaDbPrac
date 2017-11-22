@@ -51,7 +51,7 @@ public class SignRestController {
 	 * @throws IllegalStateException 
 	 */
 	@RequestMapping(value = {"/sign_up/action", "/user/new"}, method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> NewUser(
+	public ResponseEntity<Map<String, Object>> newUser(
 		@RequestParam String account, 
 		@RequestParam String password,
 		@RequestParam String passwordCheck,

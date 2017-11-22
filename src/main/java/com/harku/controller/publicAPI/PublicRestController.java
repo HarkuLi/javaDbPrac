@@ -44,7 +44,7 @@ public class PublicRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/get_occupation_list", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> GetOccList() {
+	public ResponseEntity<Map<String, Object>> getOccList() {
 		
 		ArrayList<Occupation> occList = occupationService.getList();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
@@ -63,7 +63,7 @@ public class PublicRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/get_interest_list", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> GetIntList() {
+	public ResponseEntity<Map<String, Object>> getIntList() {
 		
 		ArrayList<Interest> interestList = interestService.getList();
     	Map<String, Object> rstMap = new HashMap<String, Object>();
@@ -82,7 +82,7 @@ public class PublicRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/set_language", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> SetLanguage(@RequestParam String language, HttpServletRequest req, HttpServletResponse res) {
+	public ResponseEntity<Map<String, Object>> setLanguage(@RequestParam String language, HttpServletRequest req, HttpServletResponse res) {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		
@@ -107,7 +107,7 @@ public class PublicRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/get_current_language", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> GetCurrentLanguage(HttpServletRequest req) {
+	public ResponseEntity<Map<String, Object>> getCurrentLanguage(HttpServletRequest req) {
 		
 		Locale locale = localeResolver.resolveLocale(req);
 		if(!Arrays.asList(ConstantConfig.SUPPORTED_LOCALES).contains(locale)) {

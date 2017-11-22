@@ -8,12 +8,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Controller
 public class RootPageController {
 	@RequestMapping(value = "/**", method = RequestMethod.GET)
-	public String ShowDefault() throws NoHandlerFoundException {
+	public String showDefault() throws NoHandlerFoundException {
 		throw new NoHandlerFoundException(null, null, null);
 	}
 	
 	@RequestMapping(value = "/setting", method = RequestMethod.GET)
-	public String ShowSettingPage() {
+	public String showSettingPage() {
 		return "views/setting";
 	}
 }

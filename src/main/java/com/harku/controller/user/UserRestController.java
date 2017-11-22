@@ -49,7 +49,7 @@ public class UserRestController {
 	 * 404: (the image name is not found)
 	 */
 	@RequestMapping(value = "/photo", method = RequestMethod.GET, produces = {"image/jpeg", "image/gif", "image/png"})
-	public ResponseEntity<byte[]> UserPhoto(
+	public ResponseEntity<byte[]> userPhoto(
 		@RequestParam(value = "n", required = false, defaultValue = PhotoService.DEFAULT_PHOTO_NAME) String fileName) throws IOException {
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -82,7 +82,7 @@ public class UserRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> UpdateUser(
+	public ResponseEntity<Map<String, Object>> updateUser(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String age,
@@ -152,7 +152,7 @@ public class UserRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> GetPage(
+	public ResponseEntity<Map<String, Object>> getPage(
 		@RequestParam int page,
 		@RequestParam(required=false) String name,
 		@RequestParam(required=false) String birthFrom,
@@ -194,7 +194,7 @@ public class UserRestController {
 	 * 404: (no user matches the token)
 	 */
 	@RequestMapping(value = "/get_by_token", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<User> GetUserByToken(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO) {
+	public ResponseEntity<User> getUserByToken(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO) {
 		
 		if(LOGIN_INFO == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		
@@ -218,7 +218,7 @@ public class UserRestController {
 	 * 404: (no user matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<User> GetUser(@RequestParam String id) {
+	public ResponseEntity<User> getUser(@RequestParam String id) {
 		
 		User user = usersService.getUser(id);
 		if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -240,7 +240,7 @@ public class UserRestController {
 	 *   }
 	 */
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> DeleteUser(@RequestParam String id) {
+	public ResponseEntity<Map<String, Object>> deleteUser(@RequestParam String id) {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		rstMap.put("id", id);
@@ -275,7 +275,7 @@ public class UserRestController {
 	 *   }
 	 */
 	@RequestMapping(value = "/change_password", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> ChangePassword(
+	public ResponseEntity<Map<String, Object>> changePassword(
 		@RequestParam String id,
 		@RequestParam String account,
 		@RequestParam String password,

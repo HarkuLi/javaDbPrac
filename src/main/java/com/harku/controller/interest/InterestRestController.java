@@ -41,7 +41,7 @@ public class InterestRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> UpdateInt(
+	public ResponseEntity<Map<String, Object>> updateInt(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String state) {
@@ -89,7 +89,7 @@ public class InterestRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> NewInt(
+	public ResponseEntity<Map<String, Object>> newInt(
 		@RequestParam String name,
 		@RequestParam String state) {
     	
@@ -129,7 +129,7 @@ public class InterestRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> GetIntPage(
+	public ResponseEntity<Map<String, Object>> getIntPage(
 		@RequestParam int page,
 		@RequestParam(required = false) String name,
 		@RequestParam(required = false) String state) {
@@ -163,7 +163,7 @@ public class InterestRestController {
 	 * 404: (no interest matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Interest> GetInterest(@RequestParam String id) {
+	public ResponseEntity<Interest> getInterest(@RequestParam String id) {
 		
 		Interest interest = interestService.getInterest(id);
     	if(interest == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -184,7 +184,7 @@ public class InterestRestController {
 	 *   }
 	 */
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> DeleteInterest(@RequestParam String id) {
+	public ResponseEntity<Map<String, Object>> deleteInterest(@RequestParam String id) {
     	
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		rstMap.put("id", id);

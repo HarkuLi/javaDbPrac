@@ -17,7 +17,7 @@ public class InterestPageController {
 	private Map<String, String> statusOption;
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public String ShowPage(ModelMap model) {
+	public String showPage(ModelMap model) {
 		model.addAttribute("statusOption", statusOption);
 		return "views/interest";
 	}

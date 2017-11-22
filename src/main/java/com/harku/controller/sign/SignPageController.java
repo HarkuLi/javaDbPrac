@@ -40,7 +40,7 @@ public class SignPageController {
 	}
 		
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.GET)
-	public String ShowSingInPage(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO, ModelMap model) {
+	public String showSingInPage(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO, ModelMap model) {
 		
 		//check token, and redirect to user page if signed in
 		if(LOGIN_INFO != null && userAccountService.checkToken(LOGIN_INFO)) {
@@ -54,7 +54,7 @@ public class SignPageController {
 	}
 	
 	@RequestMapping(value = "/sign_in/page", method = RequestMethod.POST)
-	public String SingInAction(@Valid @ModelAttribute("account_form") User user, Errors errors, ModelMap model, HttpServletResponse res) {
+	public String singInAction(@Valid @ModelAttribute("account_form") User user, Errors errors, ModelMap model, HttpServletResponse res) {
 		
 		//error generated in the validator
 		if(errors.hasErrors()) {
@@ -93,7 +93,7 @@ public class SignPageController {
 	}
 	
 	@RequestMapping(value = "/sign_up/page", method = RequestMethod.GET)
-	public String ShowSingUpPage(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO) {
+	public String showSingUpPage(@CookieValue(value = ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, required = false) String LOGIN_INFO) {
 		
 		//check token, and redirect to user page if signed in
 		if(LOGIN_INFO != null && userAccountService.checkToken(LOGIN_INFO)) {
@@ -104,7 +104,7 @@ public class SignPageController {
 	}
 	
 	@RequestMapping(value = "/sign_out", method = RequestMethod.GET)
-	public String SignOut(HttpServletResponse res) {
+	public String signOut(HttpServletResponse res) {
 		
 		Cookie cookie = new Cookie(ConstantConfig.LOGIN_TOKEN_COOKIE_NAME, "");
 		cookie.setMaxAge(0);

@@ -41,7 +41,7 @@ public class OccupationRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> UpdateOcc(
+	public ResponseEntity<Map<String, Object>> updateOcc(
 		@RequestParam String id,
 		@RequestParam String name,
 		@RequestParam String state) {
@@ -89,7 +89,7 @@ public class OccupationRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> NewOcc(
+	public ResponseEntity<Map<String, Object>> newOcc(
 		@RequestParam String name,
 		@RequestParam String state) {
     	
@@ -129,7 +129,7 @@ public class OccupationRestController {
 	 * }
 	 */
 	@RequestMapping(value = "/get_page", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> GetPage(
+	public ResponseEntity<Map<String, Object>> getPage(
 		@RequestParam int page,
 		@RequestParam(required = false) String name,
 		@RequestParam(required = false) String state) {
@@ -163,7 +163,7 @@ public class OccupationRestController {
 	 * 404: (no occupation matches the id)
 	 */
 	@RequestMapping(value = "/get_one", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Occupation> GetOcc(@RequestParam String id) {
+	public ResponseEntity<Occupation> getOcc(@RequestParam String id) {
 		
     	Occupation occupation = occupationService.getOcc(id);
     	if(occupation == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -184,7 +184,7 @@ public class OccupationRestController {
 	 *   }
 	 */
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Map<String, Object>> DeleteOcc(@RequestParam String id) {
+	public ResponseEntity<Map<String, Object>> deleteOcc(@RequestParam String id) {
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		rstMap.put("id", id);
