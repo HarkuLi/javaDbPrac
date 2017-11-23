@@ -180,7 +180,7 @@ $(() => {
 			});
   });
   
-  $("#popup_form_chpw").on("click", "[type='submit']", () => {
+  $("#popup_form_chpw").on("click", "[type='submit']", (event) => {
   	event.preventDefault();
   	
   	if(processing) return;

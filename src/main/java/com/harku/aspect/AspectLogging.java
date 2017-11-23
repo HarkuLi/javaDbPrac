@@ -19,8 +19,8 @@ public class AspectLogging {
 	@Pointcut("execution(* com.harku..*.*(..))")
 	private void selectAll() {}
 	
-	@AfterReturning(pointcut = "execution(* com.harku.controller.sign.SignRestController.NewUser(..))", returning = "retVal")
-	private void NewUserAdvice(JoinPoint joinPoint, Object retVal) {
+	@AfterReturning(pointcut = "execution(* com.harku.controller.sign.SignRestController.newUser(..))", returning = "retVal")
+	private void newUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
 		ResponseEntity<Map<String, String>> retEntity = (ResponseEntity<Map<String, String>>) retVal;
@@ -36,8 +36,8 @@ public class AspectLogging {
 			log.info(String.format("[%s] Create a new account: " + account, sourceName));
 	}
 	
-	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.UpdateUser(..))", returning = "retVal")
-	private void UpdateUserAdvice(JoinPoint joinPoint, Object retVal) {
+	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.updateUser(..))", returning = "retVal")
+	private void updateUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
 		ResponseEntity<Map<String, String>> retEntity = (ResponseEntity<Map<String, String>>) retVal;
@@ -53,8 +53,8 @@ public class AspectLogging {
 			log.info(String.format("[%s] Update a account whose id is: %s", sourceName, id));
 	}
 	
-	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.DeleteUser(..))", returning = "retVal")
-	private void DeleteUserAdvice(JoinPoint joinPoint, Object retVal) {
+	@AfterReturning(pointcut = "execution(* com.harku.controller.user.UserRestController.deleteUser(..))", returning = "retVal")
+	private void deleteUserAdvice(JoinPoint joinPoint, Object retVal) {
 		
 		@SuppressWarnings("unchecked")
 		ResponseEntity<Map<String, String>> retEntity = (ResponseEntity<Map<String, String>>) retVal;
