@@ -1,15 +1,16 @@
 package com.harku.controller.sign;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +57,15 @@ public class SignRestController {
 		@RequestParam String password,
 		@RequestParam String passwordCheck,
 		@RequestParam String name,
-		@RequestParam String age,
-		@RequestParam String birth,
+		@RequestParam Integer age,
+		@RequestParam @DateTimeFormat(pattern = ConstantConfig.DATE_FORMAT) Date birth,
 		@RequestParam(required = false) MultipartFile photo,
 		@RequestParam(required = false) String photoType,
 		@RequestParam(value = "interest[]", required = false) String[] interest,
 		@RequestParam String occupation,
 		@RequestParam(required = false, defaultValue = "1") String state) throws IllegalStateException, IOException {
+		
+		final SimpleDateFormat sdf = new SimpleDateFormat(ConstantConfig.DATE_FORMAT);
 		
 		Map<String, Object> rstMap = new HashMap<String, Object>();
 		StringBuffer errMsg = new StringBuffer();
@@ -75,12 +78,8 @@ public class SignRestController {
 		newData.setName(name);
     	newData.setAccount(account);
     	newData.setPassword(password);
-    	try {
-    		newData.setAge(Integer.parseInt(age));
-    	} catch(Exception e) {
-    		errMsg.append("Wrong input for age.\n");
-    	}
-    	newData.setBirth(birth);
+    	newData.setAge(age);
+    	newData.setBirth(sdf.format(birth));
     	newData.setInterest(interest);
     	newData.setOccupation(occupation);
     	newData.setState(state);
@@ -133,13 +132,14 @@ public class SignRestController {
 		
 		//age
 		Integer age = user.getAge();
-		if(age != null && age < 0) errMsg.append("The age shouldn't be lower than 0.\n");
+		if(age == null) errMsg.append("You should input age.\n");
+		else if(age < 0) errMsg.append("The age shouldn't be lower than 0.\n");
 		
 		//birth
-    	String patternStr = "^\\d{1,4}-\\d{2}-\\d{2}$";
-    	Pattern pattern = Pattern.compile(patternStr);
-    	Matcher matcher = pattern.matcher(user.getBirth());
-    	if(!matcher.find()) errMsg.append("Wrong format for birth.\n");
+//    	String patternStr = "^\\d{1,4}-\\d{2}-\\d{2}$";
+//    	Pattern pattern = Pattern.compile(patternStr);
+//    	Matcher matcher = pattern.matcher(user.getBirth());
+//    	if(!matcher.find()) errMsg.append("Wrong format for birth.\n");
     	
 		//occupation
     	String occ = user.getOccupation();

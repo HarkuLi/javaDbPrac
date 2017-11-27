@@ -1,16 +1,17 @@
 package com.harku.controller.user;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,14 +86,16 @@ public class UserRestController {
 	public ResponseEntity<Map<String, Object>> updateUser(
 		@RequestParam String id,
 		@RequestParam String name,
-		@RequestParam String age,
-		@RequestParam String birth,
+		@RequestParam Integer age,
+		@RequestParam @DateTimeFormat(pattern = ConstantConfig.DATE_FORMAT) Date birth,
 		@RequestParam(required = false) MultipartFile photo,
 		@RequestParam(required = false) String photoType,
 		@RequestParam(required = false) String photoName,
 		@RequestParam(value = "interest[]", required = false) String[] interest,
 		@RequestParam String occupation,
 		@RequestParam String state) {
+		
+		final SimpleDateFormat sdf = new SimpleDateFormat(ConstantConfig.DATE_FORMAT);
 		
     	Map<String, Object> rstMap = new HashMap<String, Object>();
     	StringBuffer errMsg = new StringBuffer();
@@ -104,12 +107,8 @@ public class UserRestController {
     	//check data
     	newData.setId(id);
     	newData.setName(name);
-    	try {
-    		newData.setAge(Integer.parseInt(age));
-    	} catch(Exception e) {
-    		errMsg.append("Wrong input for age.\n");
-    	}
-		newData.setBirth(birth);
+    	newData.setAge(age);
+		newData.setBirth(sdf.format(birth));
 		newData.setInterest(interest);
     	newData.setOccupation(occupation);
     	newData.setState(state);
@@ -155,11 +154,13 @@ public class UserRestController {
 	public ResponseEntity<Map<String, Object>> getPage(
 		@RequestParam int page,
 		@RequestParam(required=false) String name,
-		@RequestParam(required=false) String birthFrom,
-		@RequestParam(required=false) String birthTo,
+		@RequestParam(required=false) @DateTimeFormat(pattern = ConstantConfig.DATE_FORMAT) Date birthFrom,
+		@RequestParam(required=false) @DateTimeFormat(pattern = ConstantConfig.DATE_FORMAT) Date birthTo,
 		@RequestParam(required=false) String occ,
 		@RequestParam(required=false) String state,
 		@RequestParam(value = "interest[]", required=false) String[] interest) {
+		
+		final SimpleDateFormat sdf = new SimpleDateFormat(ConstantConfig.DATE_FORMAT);
 		
 		int totalPage;
 		List<User> tableList;
@@ -168,8 +169,8 @@ public class UserRestController {
 		
 		//set filter
     	filter.setName(name);
-    	filter.setBirthFrom(birthFrom);
-    	filter.setBirthTo(birthTo);
+    	if(birthFrom != null) filter.setBirthFrom(sdf.format(birthFrom));
+    	if(birthTo != null) filter.setBirthTo(sdf.format(birthTo));
     	filter.setOccupation(occ);
     	filter.setState(state);
     	filter.setInterest(interest);
@@ -342,13 +343,14 @@ public class UserRestController {
 		
 		//age
 		Integer age = user.getAge();
-		if(age != null && age < 0) errMsg.append("The age shouldn't be lower than 0.\n");
+		if(age == null) errMsg.append("You should input age.\n");
+		else if(age < 0) errMsg.append("The age shouldn't be lower than 0.\n");
 		
 		//birth
-    	String patternStr = "^\\d{1,4}-\\d{2}-\\d{2}$";
-    	Pattern pattern = Pattern.compile(patternStr);
-    	Matcher matcher = pattern.matcher(user.getBirth());
-    	if(!matcher.find()) errMsg.append("Wrong format for birth.\n");
+//    	String patternStr = "^\\d{1,4}-\\d{2}-\\d{2}$";
+//    	Pattern pattern = Pattern.compile(patternStr);
+//    	Matcher matcher = pattern.matcher(user.getBirth());
+//    	if(!matcher.find()) errMsg.append("Wrong format for birth.\n");
     	
 		//occupation
     	String occ = user.getOccupation();

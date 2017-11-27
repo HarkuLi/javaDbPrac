@@ -20,7 +20,7 @@ public class ConstantConfig {
 	
 	//
 	
-	//data limitation
+	//data format
 	
 	public static final int MAX_NAME_LENGTH = 40;
 	
@@ -29,6 +29,8 @@ public class ConstantConfig {
 	public static final int MAX_PASSWORD_LENGTH = 60;
 	
 	public static final int MAX_UPLOAD_SIZE = 10485760; //10MB
+	
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
 	
 	//
 	
